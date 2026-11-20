@@ -99,13 +99,13 @@ if(window.visualViewport){const vv=()=>{document.documentElement.style.setProper
 /* ---------- live sync ---------- */
 addEventListener('storage',e=>{
  if(e.key===K){db=load();if(W.line)renderW();else render()}});
-setInterval(()=>{if(!me||W.line)return;const d=load();if(!d)return;const u=U(d,me),s=d.sessions[me];
+setInterval(()=>{if(NET||!me||W.line)return;const d=load();if(!d)return;const u=U(d,me),s=d.sessions[me];
  if(!u){db=d;return logout(t('Seu acesso foi removido.'))}
  if(s&&s.kick){s.kick=false;s.on=false;save(d);me=null;setSid(null);sel=null;mclose();return showLogin(t('Você foi desconectado por um supervisor.'))}
  d.sessions[me]={...(d.sessions[me]||{}),on:true,lastSeen:now(),kick:false};maintain(d);save(d);db=d;render()},5000);
-setInterval(()=>{if(W.line){renderW();return}if(!me)return;const d=load();if(!d)return;if(maintain(d))save(d);db=d;const _n=alertTick(d)+notifyTick(d);document.title=_n?`(${_n}) SAC`:'SAC';if(view==='atendimento')renderList();if(view==='alertas')renderAlerts()},1000);
+setInterval(()=>{if(W.line){renderW();return}if(!me)return;const d=load();if(!d)return;if(!NET&&maintain(d))save(d);db=d;const _n=alertTick(d)+notifyTick(d);document.title=_n?`(${_n}) SAC`:'SAC';if(view==='atendimento')renderList();if(view==='alertas')renderAlerts()},1000);
 
-(async()=>{db=load();if(!db){db={v:1,users:[{id:'god',name:'Acesso Total',email:'god@sac.local',pass:await hash('Sac@2026'),role:'god',lines:DEFLINES.map(l=>l.id),createdAt:now()}],sessions:{},chats:[],scripts:[],chatSeq:-1,cfg:{timeout:240,alert:300},lines:DEFLINES.map(l=>({...l}))};save(db)}
+if(!NET)(async()=>{db=load();if(!db){db={v:1,users:[{id:'god',name:'Acesso Total',email:'god@sac.local',pass:await hash('Sac@2026'),role:'god',lines:DEFLINES.map(l=>l.id),createdAt:now()}],sessions:{},chats:[],scripts:[],chatSeq:-1,cfg:{timeout:240,alert:300},lines:DEFLINES.map(l=>({...l}))};save(db)}
  if(!db.lines){db.lines=DEFLINES.map(l=>({...l}));save(db)}
  if(!db.cfg.alert){db.cfg.alert=300;save(db)}
  if(db.chatSeq===undefined){[...db.chats].sort((x,y)=>x.createdAt-y.createdAt).forEach((c,i)=>c.no=i);db.chatSeq=db.chats.length-1;save(db)}

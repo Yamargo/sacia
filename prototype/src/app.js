@@ -1,4 +1,5 @@
-const K='sac_db_v1',$=s=>document.querySelector(s),now=()=>Date.now();
+let SKEW=0;const MAXF=NET?10*1024*1024:1.5*1024*1024;const siteHref=l=>NET?'/demo/'+encodeURIComponent(l):'#site-'+l;
+const K='sac_db_v1',$=s=>document.querySelector(s),now=()=>Date.now()+SKEW;
 const LANGS=[['pt','Português','pt-BR'],['en','English','en-US'],['vi','Tiếng Việt','vi-VN'],['ur','Roman Urdu','en-GB'],['zh','中文','zh-CN']];
 const D={};LANGS.slice(1).forEach(([k],i)=>{D[k]={};for(const r of ROWS)if(r[i+1])D[k][r[0]]=r[i+1]});
 let lang=(()=>{try{const v=localStorage.getItem('sac_lang');return LANGS.some(l=>l[0]===v)?v:'pt'}catch(e){return 'pt'}})();
@@ -135,7 +136,7 @@ function buildApp(){const u=ME();const nb=(v,ic,l,extra='')=>`<button class="nb"
    <form class="card" id="fSimMsg"><h2>${t('Cliente responde')}</h2>
     <label class="f">${t('Conversa aberta')}<select id="smChat"></select></label><label class="f">${t('Mensagem do cliente')}<textarea id="smMsg" rows="3" required></textarea></label>
     <button class="btn pri" style="width:100%">${t('Enviar como cliente')}</button></form>
-   <div class="card"><h2>${t('Testar vários usuários')}</h2>
+   <div class="card" ${NET?'hidden':''}><h2>${t('Testar vários usuários')}</h2>
     <p style="margin:0 0 8px;font-size:14px">${t('Cada aba deste navegador guarda um login próprio. Abra este mesmo link em outras abas (normais, não anônimas) e entre com o agente, o supervisor e o admin. Todos veem os mesmos dados ao vivo.')}</p>
     <p class="mute" style="margin:0;font-size:13px">${t('Os dados ficam só neste navegador. Para uso real com várias pessoas, o próximo passo é um servidor.')}</p></div>
   </div></section>
@@ -189,7 +190,7 @@ function logout(msg){document.title='SAC';if(typeof AL!=='undefined'){AL.seen.cl
 
 /* ---------- render ---------- */
 function render(){if(!me)return;db=db||load();const u=ME();if(!u)return logout(t('Seu acesso foi removido.'));
- $('#warn').hidden=lsOK;$('#warn').textContent=t('Modo temporário: este navegador não permite salvar dados. Tudo some ao recarregar.');
+ if(!NET){$('#warn').hidden=lsOK;$('#warn').textContent=t('Modo temporário: este navegador não permite salvar dados. Tudo some ao recarregar.')}
  $('#meBtn').textContent=ini(u.name);renderStatus();
  $('#nav-usuarios').hidden=!isBoss();$('#nav-integracao').hidden=!isTop();$('#nav-alertas').hidden=!isSup();
  if((view==='alertas'&&!isSup())||(view==='integracao'&&!isTop())||(view==='usuarios'&&!isBoss()))view='atendimento';
@@ -247,7 +248,7 @@ function renderUsers(){const u=ME(),full=isTop();
  <td><div class="ta">${canEdit(x)?`<button class="btn" data-act="edit" data-id="${x.id}">${t('Editar')}</button>`:''}${canPass(x)?`<button class="btn" data-act="pass" data-id="${x.id}">${t('Senha')}</button>`:''}${canEdit(x)&&x.id!==me&&x.role!=='god'?`<button class="btn bad" data-act="del" data-id="${x.id}">${t('Excluir')}</button>`:''}${!canPass(x)?`<span class="mute" style="font-size:13px">${t('Protegido')}</span>`:''}</div></td></tr>`).join('')}
 
 function renderSim(){const sl=$('#snLine'),sv=sl.value;sl.innerHTML=LS().map(l=>`<option value="${esc(l.id)}">${esc(l.id)} · ${esc(l.name)}</option>`).join('');if(LINES().includes(sv))sl.value=sv;
- $('#simSites').innerHTML=LS().map(l=>`<a class="btn pri" href="#site-${esc(l.id)}" target="_blank" rel="opener" style="text-decoration:none">${t('Abrir site {l}',{l:esc(l.id)})}</a>`).join('');
+ $('#simSites').innerHTML=LS().map(l=>`<a class="btn pri" href="${siteHref(l.id)}" target="_blank" rel="opener" style="text-decoration:none">${t('Abrir site {l}',{l:esc(l.id)})}</a>`).join('');
  const s=$('#smChat'),v=s.value,O=db.chats.filter(c=>c.status==='open');
  s.innerHTML=O.length?O.map(c=>`<option value="${c.id}">${esc(c.customer.name)} · ${c.line}</option>`).join(''):`<option value="">${t('Nenhum chat aberto')}</option>`;if(O.some(c=>c.id===v))s.value=v}
 
@@ -335,7 +336,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){mclose();const p=$(
 document.addEventListener('input',e=>{if(e.target.id==='q')renderList()});
 document.addEventListener('change',e=>{
  if(e.target.id==='lLang'){setLang(e.target.value);buildLogin();return}
- if(e.target.id==='file'){const f=e.target.files[0];e.target.value='';if(!f)return;if(f.size>1.5*1024*1024)return toast(t('Arquivo acima de 1,5 MB. Neste protótipo os anexos ficam no navegador.'));
+ if(e.target.id==='file'){const f=e.target.files[0];e.target.value='';if(!f)return;if(f.size>MAXF)return toast(NET?t('Arquivo acima de {n} MB.',{n:10}):t('Arquivo acima de 1,5 MB. Neste protótipo os anexos ficam no navegador.'));
   const r=new FileReader();r.onload=()=>{pend={name:f.name,type:f.type||'application/octet-stream',size:f.size,data:r.result};$('#att').innerHTML=`<span class="chip">${esc(f.name)} · ${(f.size/1024).toFixed(0)} KB <button class="ib" style="width:26px;height:26px" data-act="rmAtt" aria-label="${t('Remover anexo')}">${X}</button></span>`;$('#txt').focus()};r.readAsDataURL(f)}});
 
 /* line management (god/admin) */

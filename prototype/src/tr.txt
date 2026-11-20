@@ -324,3 +324,15 @@ Sem limite || No limit || Không giới hạn || Koi limit nahin || 不限
 Nova mensagem de {n} || New message from {n} || Tin nhắn mới từ {n} || {n} ka naya message || 来自 {n} 的新消息
 Sair do SAC? || Sign out of the help desk? || Đăng xuất khỏi CSKH? || Help desk se logout karen? || 退出客服系统？
 Seus chats abertos ficam com você por alguns segundos e depois vão para outro agente disponível. || Your open chats stay with you for a few seconds and then go to another available agent. || Các chat đang mở sẽ ở lại với bạn vài giây rồi chuyển cho nhân viên sẵn sàng khác. || Aap ki khuli chats kuch second aap ke paas rahengi phir kisi aur dastiyab agent ke paas chali jayengi. || 您的进行中会话会保留几秒，然后转给其他空闲客服。
+Arquivo acima de {n} MB. || File over {n} MB. || Tệp lớn hơn {n} MB. || File {n} MB se bari hai. || 文件超过 {n} MB。
+Sua sessão expirou. Entre de novo. || Your session expired. Please sign in again. || Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại. || Aap ka session khatam ho gaya. Dobara login karen. || 登录已过期，请重新登录。
+Muitas tentativas. Tente de novo em 15 minutos. || Too many attempts. Try again in 15 minutes. || Quá nhiều lần thử. Hãy thử lại sau 15 phút. || Bohat zyada koshishen. 15 minute baad dobara koshish karen. || 尝试次数过多，请 15 分钟后再试。
+Chat não encontrado. || Chat not found. || Không tìm thấy chat. || Chat nahin mili. || 未找到会话。
+Idioma inválido. || Invalid language. || Ngôn ngữ không hợp lệ. || Ghalat zaban. || 语言无效。
+Arquivo inválido. || Invalid file. || Tệp không hợp lệ. || Ghalat file. || 文件无效。
+Sua senha foi alterada. Entre de novo. || Your password was changed. Please sign in again. || Mật khẩu của bạn đã được đổi. Vui lòng đăng nhập lại. || Aap ka password badal diya gaya. Dobara login karen. || 您的密码已被修改，请重新登录。
+Sem conexão com o servidor. Tentando reconectar… || No connection to the server. Trying to reconnect… || Mất kết nối với máy chủ. Đang thử kết nối lại… || Server se rabta nahin. Dobara jorne ki koshish ho rahi hai… || 与服务器的连接已断开，正在重新连接…
+Erro interno. || Internal error. || Lỗi hệ thống. || Andaruni ghalti. || 内部错误。
+Comando desconhecido. || Unknown command. || Lệnh không xác định. || Na-maloom command. || 未知命令。
+Sem permissão. || Not allowed. || Không có quyền. || Ijazat nahin. || 无权限。
+Muitas mensagens. Aguarde um pouco. || Too many messages. Please wait a moment. || Quá nhiều tin nhắn. Vui lòng chờ một chút. || Bohat zyada messages. Thora intezar karen. || 消息过多，请稍候。

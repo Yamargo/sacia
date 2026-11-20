@@ -51,17 +51,18 @@ const GI={
   secTrouble:'常见问题',trouble:[['看不到气泡','请确认代码位于 </body> 之前且所有页面都已添加。广告拦截插件也可能隐藏气泡，请在无扩展的窗口中测试。'],['消息没有到达客服系统','请确认 data-linha 中的线路代码与“设置”中登记的一致。如果没有空闲客服，会话会进入排队，并显示在“未分配”中。'],['网站设置了安全策略（CSP）','请在 script-src、connect-src（包括 wss://）和 img-src 中放行客服系统地址。'],['我有多个网站','每个网站使用一段代码，并各自对应一条线路。如需分开接待，同一网站的不同页面也可以使用不同线路。']],
   secReq:'要求',req:['网站使用 HTTPS。','手机和电脑上的主流新版浏览器。','组件体积小，在页面加载后异步加载，不会拖慢网站。']}
 };
+const SAC_BASE=()=>NET?location.origin:'https://sac.example.com';
 const GEN={line:null,lang:'auto',pos:'direita',id:false};
 const ID_SNIP='\x3Cscript>\n  window.SAC = window.SAC || {};\n  SAC.jogador = { id: "PLAYER_ID", nome: "PLAYER_NAME" };\n\x3C/script>';
 function genCode(){const L=LN(GEN.line)||LS()[0];if(!L)return '';
- return `\x3C!-- SAC · ${L.name} -->\n`+(GEN.id?ID_SNIP+'\n':'')+`\x3Cscript src="https://sac.example.com/widget.js"\n        data-linha="${L.id}"\n        data-idioma="${GEN.lang}"\n        data-posicao="${GEN.pos}"\n        async>\x3C/script>`}
+ return `\x3C!-- SAC · ${L.name} -->\n`+(GEN.id?ID_SNIP+'\n':'')+`\x3Cscript src="${SAC_BASE()}/widget.js"\n        data-linha="${L.id}"\n        data-idioma="${GEN.lang}"\n        data-posicao="${GEN.pos}"\n        async>\x3C/script>`}
 const hl=s=>esc(s).replace(/(&lt;!--.*?--&gt;)/g,'<span class="c">$1</span>').replace(/(data-[a-z]+=&quot;[^&]*&quot;)/g,'<span class="a">$1</span>');
 function renderGen(){const g=GI[lang],b=$('#genOut');if(!b)return;b.innerHTML=hl(genCode());const p=$('#genPrev');if(p)p.classList.toggle('left',GEN.pos==='esquerda')}
 function renderGuide(){const g=GI[lang],o=GUIDE[lang];if(!GEN.line||!LN(GEN.line))GEN.line=LS()[0]?.id||null;
  const sec=(id,ti)=>`<h2 class="gsec" id="g-${id}">${ti}</h2>`;
  const toc=[['how',g.secHow],['gen',g.secGen],['steps',g.secSteps],['where',g.secWhere],['id',g.secId],['opts',g.secOpts],['trouble',g.secTrouble]];
  $('#guide').innerHTML=`<h1>${g.title}</h1><p class="mute" style="margin:0;max-width:70ch">${g.intro}</p>
- <div class="gnote">${esc(g.status)}</div>
+ ${NET?'':`<div class="gnote">${esc(g.status)}</div>`}
  <nav class="gtoc scroll">${toc.map(([k,v])=>`<a href="#g-${k}" data-act="gJump" data-k="${k}">${v}</a>`).join('')}</nav>
  ${sec('how',g.secHow)}<div class="flow">${o.flow.map((x,i)=>`<div class="node ${i===2?'hl':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${FI[i]}</svg>${esc(x)}</div>`).join('')}</div>
  ${sec('gen',g.secGen)}<div class="gen card">
@@ -84,7 +85,7 @@ function renderGuide(){const g=GI[lang],o=GUIDE[lang];if(!GEN.line||!LN(GEN.line
  <div class="cols"><div class="card"><h2><span class="dot on"></span>${o.ready}</h2><ul>${o.readyL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
  <div class="card"><h2><span class="dot" style="background:var(--ink)"></span>${o.we}</h2><ul>${o.weL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
  <div class="card"><h2><span class="dot" style="background:var(--bad)"></span>${o.you}</h2><ul>${o.youL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div>
- <div class="card" style="margin-top:14px;display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap"><div><h2 style="margin:0 0 4px">${o.simT}</h2><p class="mute" style="margin:0;max-width:60ch">${o.simD}</p></div><div style="display:flex;gap:8px;flex-wrap:wrap">${LINES().map(l=>`<a class="btn pri" href="#site-${esc(l)}" target="_blank" rel="opener" style="text-decoration:none">${o.simB} ${esc(l)}</a>`).join('')}</div></div>`;
+ <div class="card" style="margin-top:14px;display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap"><div><h2 style="margin:0 0 4px">${o.simT}</h2><p class="mute" style="margin:0;max-width:60ch">${o.simD}</p></div><div style="display:flex;gap:8px;flex-wrap:wrap">${LINES().map(l=>`<a class="btn pri" href="${siteHref(l)}" target="_blank" rel="opener" style="text-decoration:none">${o.simB} ${esc(l)}</a>`).join('')}</div></div>`;
  renderGen()}
 Object.assign(A,{
  genPos:b=>{GEN.pos=b.dataset.v;document.querySelectorAll('[data-act=genPos]').forEach(x=>x.classList.toggle('on',x===b));renderGen()},

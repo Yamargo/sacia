@@ -1,0 +1,19 @@
+{
+  "name": "sacia-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Servidor do SAC Multilinha: login, chat em tempo real, widget e banco de dados.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.22.3",
+    "pg": "^8.23.1",
+    "ws": "^8.23.0"
+  }
+}
