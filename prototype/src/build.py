@@ -4,7 +4,7 @@ for ln in open('tr.txt',encoding='utf8'):
   ln=ln.rstrip('\n')
   if not ln.strip(): continue
   p=[x.strip() for x in ln.split(' || ')]; assert len(p)==5,ln; rows.append(p)
-src=open('app.js').read()+open('tail.js').read()
+src=open('app.js').read()+open('tail.js').read()+open('guide3.js').read()
 keys=set(re.findall(r"\bt\('((?:[^'\\]|\\.)*)'",src))
 keys|=set(re.findall(r"(?:sys|assign)\([^,]+,(?:[^,]+,)?'((?:[^'\\]|\\.)*)'",src))
 keys|=set(re.findall(r"assign\(c,(?:n|null|to),'((?:[^'\\]|\\.)*)'",src))
@@ -16,7 +16,7 @@ for r in rows:
     if sorted(re.findall(r'\{\w+\}',x))!=ph: print('PH',r)
 head=open('head.part').read().replace('<title>SAC Multilinha</title>','<title>SAC</title>').replace('.wf .pri,.wstart .pri{','.wf .pri,.wstart .pri,.wend .pri{')
 head+=open('extra.css').read()
-js='const ROWS='+json.dumps(rows,ensure_ascii=False)+';\n'+open('guide2.js').read()+"\n"+open('guidefix.js').read()+"\n"+open('app.js').read()+"\n"+open('tail.js').read()
+js='const ROWS='+json.dumps(rows,ensure_ascii=False)+';\n'+open('guide2.js').read()+"\n"+open('guidefix.js').read()+"\n"+open('app.js').read()+"\n"+open('tail.js').read()+"\n"+open('guide3.js').read()
 assert not re.search(r'</?script|<!--',js)
 out=head+"""</style>
 </head>

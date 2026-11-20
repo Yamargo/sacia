@@ -70,6 +70,7 @@ prototype/
     tail.js         ← integração, site de demonstração, widget do cliente, sincronização, inicialização
     guide2.js       ← textos da página Integração (5 idiomas)
     guidefix.js     ← ajustes dos textos da Integração
+    guide3.js       ← guia de integração do widget (gerador de código, plataformas, opções, problemas)
     tr.txt          ← traduções da interface: português || inglês || vietnamita || roman urdu || chinês
     head.part       ← <head> e CSS base
     extra.css       ← CSS adicional

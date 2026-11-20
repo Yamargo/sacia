@@ -321,6 +321,34 @@ pre.code .c{color:#8a8a92}pre.code .a{color:var(--mint)}
 .nb.lgo{width:42px;height:42px;margin-top:6px}.nb.lgo:hover{color:#fff;background:#3a1512}
 .nb.lgo svg{width:20px;height:20px}
 @media(max-width:760px){.nb.lgo{margin:0}}
+/* integration guide */
+.gnote{margin:16px 0 0;background:var(--mint);color:var(--mintInk);border-radius:12px;padding:12px 16px;font-size:15px;max-width:1100px}
+.gtoc{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0;padding-bottom:4px;max-width:1100px}
+.gtoc a{flex:none;padding:8px 12px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:14px;white-space:nowrap}.gtoc a:hover{background:var(--panel)}
+.gsec{font-size:24px;margin:40px 0 14px;scroll-margin-top:20px}
+.gsub{font:700 18px var(--h);margin:24px 0 10px}
+.gen{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:20px;max-width:1100px}
+.genf .f{margin-bottom:12px}
+.seg{display:flex;gap:4px;background:var(--panel);padding:4px;border-radius:10px;margin-top:4px}
+.seg button{flex:1;min-height:38px;border-radius:8px;font-weight:500;color:var(--mute)}.seg button.on{background:var(--bg);color:var(--ink);box-shadow:0 1px 2px #0002}
+.gchk{display:flex;gap:8px;align-items:center;font-size:14px;margin:4px 0 14px}.gchk input{width:auto}
+.gprev{position:relative;height:120px;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:14px;display:grid;gap:8px;align-content:start}
+.gprev i{display:block;height:9px;border-radius:5px;background:var(--line)}.gprev i:nth-child(2){width:70%}.gprev i:nth-child(3){width:45%}
+.gprev b{position:absolute;right:12px;bottom:12px;width:38px;height:38px;border-radius:50%;background:var(--mint);color:var(--mintInk);display:grid;place-items:center;transition:right .2s,left .2s}
+.gprev b svg{width:18px;height:18px}.gprev.left b{right:auto;left:12px}
+@media(prefers-reduced-motion:reduce){.gprev b{transition:none}}
+.genc{min-width:0}.genh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.genc pre.code{min-height:120px;white-space:pre}
+.gwhere{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px;max-width:1100px}
+.gwhere h2{font-size:17px}
+.gfaq{max-width:1100px;display:grid;gap:8px}
+.gfaq details{border:1px solid var(--line);border-radius:12px;padding:0 16px}
+.gfaq summary{cursor:pointer;font-weight:600;min-height:48px;display:flex;align-items:center}
+.gfaq p{margin:0 0 14px;color:var(--mute);max-width:72ch}
+.greq{margin:0;padding-left:20px;max-width:72ch}.greq li{margin-bottom:6px}
+#v-integracao .tw{max-width:1100px}
+#v-integracao code{font:13px ui-monospace,Menlo,monospace;background:var(--panel);padding:1px 5px;border-radius:5px}
+@media(max-width:760px){.gen{grid-template-columns:1fr}.gsec{font-size:21px;margin-top:32px}}
 </style>
 </head>
 <body>
@@ -917,24 +945,7 @@ document.addEventListener('pointerdown',()=>{if(me&&nsoundPref()&&(!AL.ac||AL.ac
 A.askLogout=()=>modal(`<h2>${t('Sair do SAC?')}</h2><p class="mute">${t('Seus chats abertos ficam com você por alguns segundos e depois vão para outro agente disponível.')}</p><div class="mact"><button class="btn" data-act="mclose">${t('Cancelar')}</button><button class="btn pri" data-act="logout">${t('Sair')}</button></div>`);
 
 /* ---------- integration guide (god/admin) ---------- */
-const SNIP=()=>LS().map(l=>`\x3C!-- ${l.name} -->\n\x3Cscript src="https://sac.example.com/widget.js" data-linha="${l.id}">\x3C/script>`).join('\n\n');
 const FI=['<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',IC.chat,'<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>','<path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13" width="4" height="6" rx="1.5"/><rect x="17.5" y="13" width="4" height="6" rx="1.5"/>'];
-function renderGuide(){const g=GUIDE[lang];
- const code=esc(SNIP()).replace(/(&lt;!--.*?--&gt;)/g,'<span class="c">$1</span>').replace(/(data-linha=&quot;[^&]+&quot;)/g,'<span class="a">$1</span>');
- $('#guide').innerHTML=`<h1>${g.title}</h1><p class="mute" style="margin:0;max-width:68ch">${g.intro}</p>
- <div class="flow">${g.flow.map((x,i)=>`<div class="node ${i===2?'hl':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${FI[i]}</svg>${esc(x)}</div>`).join('')}</div>
- <div class="steps">${g.steps.map((s,i)=>`<div class="step"><div class="no">${i+1}</div><div><h2>${esc(s[0])}${i===3?`<span class="opt">(${g.opt})</span>`:''}</h2><p>${esc(s[1]).replace('data-linha','<code>data-linha</code>')}</p><span class="whob"><b>${g.who}:</b> ${esc(s[2])}</span>
- ${i===1?`<div style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap"><b style="font-size:14px">${g.code}</b><button class="btn" data-act="copySnip">${g.copy}</button></div><pre class="code">${code}</pre><p class="mute" style="font-size:13px;margin:8px 0 0">${g.codeNote}</p></div>`:''}</div></div>`).join('')}</div>
- <h2 style="margin-top:30px;font-size:22px">${g.st}</h2>
- <div class="cols"><div class="card"><h2><span class="dot on"></span>${g.ready}</h2><ul>${g.readyL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
- <div class="card"><h2><span class="dot" style="background:var(--ink)"></span>${g.we}</h2><ul>${g.weL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
- <div class="card"><h2><span class="dot" style="background:var(--bad)"></span>${g.you}</h2><ul>${g.youL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div>
- <div class="ask">${g.ask}</div>
- <div class="card" style="margin-top:14px;display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap"><div><h2 style="margin:0 0 4px">${g.simT}</h2><p class="mute" style="margin:0;max-width:60ch">${g.simD}</p></div><div style="display:flex;gap:8px;flex-wrap:wrap">${LINES().map(l=>`<a class="btn pri" href="#site-${esc(l)}" target="_blank" rel="opener" style="text-decoration:none">${g.simB} ${esc(l)}</a>`).join('')}</div></div>`}
-A.copySnip=b=>{const g=GUIDE[lang];const done=()=>{b.textContent=g.copied;setTimeout(()=>b.textContent=g.copy,1600)};
- const sel=()=>{const p=$('#guide pre.code');if(!p)return;const r=document.createRange();r.selectNodeContents(p);const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Ctrl+C')};
- try{navigator.clipboard.writeText(SNIP()).then(done,sel)}catch(e){sel()}};
-
 /* ---------- demo game site + customer widget (mobile first) ---------- */
 const WL=['vi','ur','en','zh'];
 const wDetect=()=>{try{const v=localStorage.getItem('sac_wlang');if(WL.includes(v))return v}catch(e){}return null};
@@ -1049,6 +1060,103 @@ setInterval(()=>{if(W.line){renderW();return}if(!me)return;const d=load();if(!d)
  const s=getSid();if(s&&U(db,s)){me=s;const d=load()||db;d.sessions[me]={...(d.sessions[me]||{}),on:true,lastSeen:now(),kick:false};save(d);db=d;known=new Set(d.chats.filter(c=>c.agentId===me).map(c=>c.id));enter()}else showLogin()})();
 const stackObs=new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}});
 stackObs.observe(document.body,{childList:true,subtree:true});
+
+/* ---------- widget integration guide (God/Admin) ---------- */
+const GI={
+ pt:{title:'Guia de integração do widget',intro:'Tudo o que é preciso para colocar o chat do SAC nos seus sites: gerar o código, onde colar, como identificar o jogador e como resolver problemas.',
+  status:'O arquivo widget.js passa a funcionar quando o servidor do SAC estiver no ar. Até lá, use o site de demonstração para testar.',
+  secHow:'Como funciona',secGen:'Gerar o código',genLine:'Linha',genLang:'Idioma do widget',genLangAuto:'O cliente escolhe',genPos:'Posição do balão',posR:'Direita',posL:'Esquerda',genId:'Identificar o jogador logado',genNote:'Cole este código antes de </body> em todas as páginas do site.',
+  secSteps:'Passo a passo',steps:[['Cadastre a linha','Em Configurações → Linhas de empresas, crie uma linha para o site. O código da linha é o que liga o site aos agentes certos.'],['Gere o código','Use o gerador acima: escolha a linha, o idioma e a posição do balão, e copie o código.'],['Cole no site','Cole o código antes de </body>, em todas as páginas. Veja abaixo onde fica isso em cada tipo de site.'],['Teste','Abra o site no celular e no computador, clique no balão e mande uma mensagem. Ela deve chegar no SAC, na linha certa, em poucos segundos.']],
+  secWhere:'Onde colar, por tipo de site',where:[['Plataforma de jogos (back office)','Procure no painel administrativo um campo como “código de chat ao vivo”, “script personalizado” ou “integração de suporte”. É o mesmo lugar usado para LiveChat ou Tawk.to. Se não existir, peça à equipe técnica da plataforma.'],['WordPress','Instale um plugin de cabeçalho e rodapé (por exemplo, WPCode) e cole o código na área de rodapé (footer) de todo o site.'],['Google Tag Manager','Crie uma tag do tipo HTML personalizado, cole o código, marque o acionador “All Pages” e publique o contêiner.'],['Site próprio (HTML, React, etc.)','Cole o código no modelo principal do site, logo antes de </body>. Em aplicações React ou Vue, coloque no index.html.']],
+  secId:'Identificar o jogador (opcional)',idText:'Se o site já sabe quem está logado, ele pode enviar o ID e o nome do jogador. Assim o agente vê os dados sem precisar perguntar. Coloque este trecho antes do código do widget e troque os valores pelas variáveis do seu site.',idNote:'Para evitar que alguém se passe por outro jogador, na versão com servidor o site também enviará uma assinatura gerada no servidor dele. A equipe técnica recebe a chave secreta junto com o servidor.',
+  secOpts:'Opções do código',optHead:['Atributo','Valores','Padrão','Para que serve'],o:['Código da linha cadastrada. Obrigatório.','Fixa o idioma do widget. Com auto, o cliente escolhe.','Lado da tela onde o balão aparece.'],
+  secApi:'Comandos para o site (JavaScript)',a:['Abre o chat.','Fecha o chat.','Informa o jogador logado depois que a página carregou.','Troca o idioma do widget.'],
+  secTrouble:'Problemas comuns',trouble:[['O balão não aparece','Confira se o código está antes de </body> e em todas as páginas. Bloqueadores de anúncio também podem esconder o balão: teste numa janela sem extensões.'],['As mensagens não chegam no SAC','Confira se o código da linha no atributo data-linha é igual ao cadastrado em Configurações. Se nenhum agente estiver disponível, o chat fica na fila e aparece em Não atribuídos.'],['O site tem política de segurança (CSP)','Libere o endereço do SAC em script-src, connect-src (incluindo wss://) e img-src.'],['Tenho vários sites','Use um código por site, cada um com a sua linha. Um mesmo site pode usar linhas diferentes em páginas diferentes, se quiser separar atendimentos.']],
+  secReq:'Requisitos',req:['Site em HTTPS.','Navegadores atuais no celular e no computador.','O widget é leve e carrega depois da página (async), sem atrasar o site.']},
+ en:{title:'Widget integration guide',intro:'Everything needed to put the help desk chat on your sites: generate the code, where to paste it, how to identify the player and how to fix problems.',
+  status:'The widget.js file starts working once the help desk server is live. Until then, use the demo site to test.',
+  secHow:'How it works',secGen:'Generate the code',genLine:'Line',genLang:'Widget language',genLangAuto:'Customer chooses',genPos:'Bubble position',posR:'Right',posL:'Left',genId:'Identify the logged-in player',genNote:'Paste this code before </body> on every page of the site.',
+  secSteps:'Step by step',steps:[['Register the line','In Settings → Company lines, create a line for the site. The line code is what connects the site to the right agents.'],['Generate the code','Use the generator above: choose the line, the language and the bubble position, and copy the code.'],['Paste it on the site','Paste the code before </body> on every page. See below where that is for each kind of site.'],['Test','Open the site on a phone and a computer, click the bubble and send a message. It should reach the help desk, on the right line, within seconds.']],
+  secWhere:'Where to paste it, by kind of site',where:[['Gaming platform (back office)','Look in the admin panel for a field such as “live chat code”, “custom script” or “support integration”. It is the same place used for LiveChat or Tawk.to. If there is none, ask the platform’s tech team.'],['WordPress','Install a header and footer plugin (for example, WPCode) and paste the code in the site-wide footer area.'],['Google Tag Manager','Create a Custom HTML tag, paste the code, set the “All Pages” trigger and publish the container.'],['Your own site (HTML, React, etc.)','Paste the code in the main site template, right before </body>. In React or Vue apps, put it in index.html.']],
+  secId:'Identify the player (optional)',idText:'If the site already knows who is logged in, it can send the player’s ID and name. That way the agent sees the details without asking. Put this snippet before the widget code and replace the values with your site’s variables.',idNote:'To stop anyone from posing as another player, the server version will also have the site send a signature generated on its own server. The tech team receives the secret key together with the server.',
+  secOpts:'Code options',optHead:['Attribute','Values','Default','What it does'],o:['Registered line code. Required.','Locks the widget language. With auto, the customer chooses.','Side of the screen where the bubble appears.'],
+  secApi:'Commands for the site (JavaScript)',a:['Opens the chat.','Closes the chat.','Sends the logged-in player after the page has loaded.','Changes the widget language.'],
+  secTrouble:'Common problems',trouble:[['The bubble does not show up','Check that the code is before </body> and on every page. Ad blockers can also hide the bubble: test in a window without extensions.'],['Messages do not reach the help desk','Check that the line code in data-linha matches the one registered in Settings. If no agent is available, the chat waits in the queue and shows under Unassigned.'],['The site has a security policy (CSP)','Allow the help desk address in script-src, connect-src (including wss://) and img-src.'],['I have several sites','Use one code per site, each with its own line. The same site can use different lines on different pages if you want to split support.']],
+  secReq:'Requirements',req:['Site on HTTPS.','Current browsers on phones and computers.','The widget is light and loads after the page (async), without slowing the site down.']},
+ vi:{title:'Hướng dẫn tích hợp widget',intro:'Mọi thứ cần để đưa chat CSKH lên các trang của bạn: tạo mã, nơi dán mã, cách nhận diện người chơi và cách xử lý sự cố.',
+  status:'Tệp widget.js sẽ hoạt động khi máy chủ CSKH đi vào vận hành. Trước đó, hãy dùng trang demo để thử.',
+  secHow:'Cách hoạt động',secGen:'Tạo mã',genLine:'Line',genLang:'Ngôn ngữ widget',genLangAuto:'Khách hàng tự chọn',genPos:'Vị trí bong bóng',posR:'Phải',posL:'Trái',genId:'Nhận diện người chơi đang đăng nhập',genNote:'Dán mã này trước </body> trên tất cả các trang của website.',
+  secSteps:'Từng bước',steps:[['Đăng ký line','Trong Cài đặt → Line của các công ty, tạo một line cho trang web. Mã line là thứ kết nối trang web với đúng nhân viên.'],['Tạo mã','Dùng công cụ tạo mã ở trên: chọn line, ngôn ngữ và vị trí bong bóng, rồi sao chép mã.'],['Dán vào trang web','Dán mã trước </body> trên tất cả các trang. Xem bên dưới vị trí này ở từng loại trang web.'],['Kiểm tra','Mở trang web trên điện thoại và máy tính, nhấn vào bong bóng và gửi tin nhắn. Tin nhắn phải đến CSKH, đúng line, trong vài giây.']],
+  secWhere:'Nơi dán mã theo loại trang web',where:[['Nền tảng game (back office)','Tìm trong trang quản trị một mục như “mã live chat”, “script tùy chỉnh” hoặc “tích hợp hỗ trợ”. Đây là nơi thường dùng cho LiveChat hoặc Tawk.to. Nếu không có, hãy hỏi đội kỹ thuật của nền tảng.'],['WordPress','Cài một plugin header và footer (ví dụ WPCode) và dán mã vào phần footer của toàn trang.'],['Google Tag Manager','Tạo thẻ HTML tùy chỉnh, dán mã, chọn trình kích hoạt “All Pages” và xuất bản vùng chứa.'],['Trang web riêng (HTML, React, v.v.)','Dán mã vào mẫu chính của trang, ngay trước </body>. Với ứng dụng React hoặc Vue, đặt trong index.html.']],
+  secId:'Nhận diện người chơi (tùy chọn)',idText:'Nếu trang web đã biết ai đang đăng nhập, trang có thể gửi ID và tên người chơi. Nhờ vậy nhân viên thấy thông tin mà không cần hỏi. Đặt đoạn mã này trước mã widget và thay các giá trị bằng biến của trang web.',idNote:'Để không ai giả mạo người chơi khác, ở phiên bản có máy chủ, trang web cũng sẽ gửi một chữ ký được tạo trên máy chủ của trang. Đội kỹ thuật sẽ nhận khóa bí mật cùng với máy chủ.',
+  secOpts:'Tùy chọn của mã',optHead:['Thuộc tính','Giá trị','Mặc định','Công dụng'],o:['Mã line đã đăng ký. Bắt buộc.','Cố định ngôn ngữ widget. Với auto, khách hàng tự chọn.','Phía màn hình hiển thị bong bóng.'],
+  secApi:'Lệnh cho trang web (JavaScript)',a:['Mở chat.','Đóng chat.','Gửi thông tin người chơi đang đăng nhập sau khi trang đã tải.','Đổi ngôn ngữ widget.'],
+  secTrouble:'Sự cố thường gặp',trouble:[['Không thấy bong bóng','Kiểm tra mã đã nằm trước </body> và có trên tất cả các trang. Trình chặn quảng cáo cũng có thể ẩn bong bóng: hãy thử trong cửa sổ không có tiện ích mở rộng.'],['Tin nhắn không đến CSKH','Kiểm tra mã line trong data-linha có giống mã đã đăng ký trong Cài đặt không. Nếu không có nhân viên sẵn sàng, chat sẽ chờ trong hàng và hiện ở mục Chưa phân công.'],['Trang web có chính sách bảo mật (CSP)','Cho phép địa chỉ CSKH trong script-src, connect-src (kể cả wss://) và img-src.'],['Tôi có nhiều trang web','Dùng một mã cho mỗi trang, mỗi trang một line. Một trang cũng có thể dùng line khác nhau cho từng trang con nếu muốn tách hỗ trợ.']],
+  secReq:'Yêu cầu',req:['Trang web dùng HTTPS.','Trình duyệt hiện đại trên điện thoại và máy tính.','Widget nhẹ và tải sau trang (async), không làm chậm website.']},
+ ur:{title:'Widget jorne ki guide',intro:'Help desk chat ko apni sites par lagane ke liye sab kuch: code banana, kahan paste karna hai, player ki pehchan kaise karni hai aur masail kaise hal karne hain.',
+  status:'widget.js file us waqt kaam karegi jab help desk ka server live hoga. Tab tak test ke liye demo site istemal karen.',
+  secHow:'Yeh kaise kaam karta hai',secGen:'Code banayen',genLine:'Line',genLang:'Widget ki zaban',genLangAuto:'Customer khud chunega',genPos:'Bubble ki jagah',posR:'Dayen',posL:'Bayen',genId:'Login player ki pehchan bhejen',genNote:'Yeh code site ke har page par </body> se pehle paste karen.',
+  secSteps:'Qadam ba qadam',steps:[['Line register karen','Settings → Companies ki lines mein site ke liye ek line banayen. Line code hi site ko sahi agents se jorta hai.'],['Code banayen','Upar wale generator se line, zaban aur bubble ki jagah chunen aur code copy karen.'],['Site par paste karen','Code har page par </body> se pehle paste karen. Neeche dekhen ke har qisam ki site mein yeh jagah kahan hai.'],['Test karen','Site ko phone aur computer par kholen, bubble par click karen aur message bhejen. Message chand second mein sahi line par help desk tak pohanchna chahiye.']],
+  secWhere:'Site ki qisam ke hisab se kahan paste karen',where:[['Gaming platform (back office)','Admin panel mein “live chat code”, “custom script” ya “support integration” jaisa field talash karen. Yeh wahi jagah hai jahan LiveChat ya Tawk.to lagaya jata hai. Agar na mile to platform ki tech team se poochen.'],['WordPress','Header aur footer ka plugin (misal ke tor par WPCode) install karen aur code poori site ke footer hisse mein paste karen.'],['Google Tag Manager','Custom HTML tag banayen, code paste karen, “All Pages” trigger lagayen aur container publish karen.'],['Apni site (HTML, React waghera)','Code site ke main template mein </body> se bilkul pehle paste karen. React ya Vue apps mein index.html mein rakhen.']],
+  secId:'Player ki pehchan (optional)',idText:'Agar site ko pata hai ke kaun login hai to woh player ki ID aur naam bhej sakti hai. Is tarah agent ko poochna nahin parta. Yeh hissa widget code se pehle rakhen aur values ko apni site ke variables se badlen.',idNote:'Taake koi doosre player ka roop na dhaar sake, server wale version mein site apne server par bani hui signature bhi bhejegi. Tech team ko secret key server ke sath milegi.',
+  secOpts:'Code ke options',optHead:['Attribute','Values','Default','Kaam'],o:['Register shuda line code. Zaroori.','Widget ki zaban fix karta hai. auto par customer khud chunta hai.','Screen ki woh taraf jahan bubble nazar aata hai.'],
+  secApi:'Site ke liye commands (JavaScript)',a:['Chat kholta hai.','Chat band karta hai.','Page load hone ke baad login player ki maloomat bhejta hai.','Widget ki zaban badalta hai.'],
+  secTrouble:'Aam masail',trouble:[['Bubble nazar nahin aata','Check karen ke code </body> se pehle aur har page par hai. Ad blockers bhi bubble chhupa sakte hain: baghair extensions wali window mein test karen.'],['Messages help desk tak nahin pohanchte','Check karen ke data-linha mein line code wahi hai jo Settings mein register hai. Agar koi agent dastiyab na ho to chat queue mein rehti hai aur Ghair assigned mein nazar aati hai.'],['Site par security policy (CSP) hai','Help desk ka address script-src, connect-src (wss:// samait) aur img-src mein allow karen.'],['Meri kai sites hain','Har site ke liye alag code istemal karen, har ek ki apni line ho. Support alag karne ke liye ek hi site ke mukhtalif pages par mukhtalif lines bhi lag sakti hain.']],
+  secReq:'Zaroriyat',req:['Site HTTPS par ho.','Phone aur computer par naye browsers.','Widget halka hai aur page ke baad load hota hai (async), site ko slow nahin karta.']},
+ zh:{title:'聊天组件接入指南',intro:'在您的网站上接入客服聊天所需的一切：生成代码、粘贴位置、如何识别玩家以及常见问题处理。',
+  status:'widget.js 文件将在客服服务器上线后生效。在此之前，请使用演示网站进行测试。',
+  secHow:'工作原理',secGen:'生成代码',genLine:'线路',genLang:'组件语言',genLangAuto:'由客户选择',genPos:'气泡位置',posR:'右侧',posL:'左侧',genId:'识别已登录的玩家',genNote:'请将此代码粘贴到网站每个页面的 </body> 之前。',
+  secSteps:'操作步骤',steps:[['登记线路','在“设置 → 公司线路”中为网站创建一条线路。线路代码用于将网站连接到对应的客服。'],['生成代码','使用上方的生成器：选择线路、语言和气泡位置，然后复制代码。'],['粘贴到网站','将代码粘贴到每个页面的 </body> 之前。下方列出了各类网站中对应的位置。'],['测试','在手机和电脑上打开网站，点击气泡并发送消息。消息应在几秒内到达客服系统的对应线路。']],
+  secWhere:'按网站类型说明粘贴位置',where:[['游戏平台（后台）','在管理后台查找“在线客服代码”、“自定义脚本”或“客服集成”之类的字段，也就是安装 LiveChat 或 Tawk.to 的位置。如果没有，请联系平台技术团队。'],['WordPress','安装页眉页脚插件（例如 WPCode），将代码粘贴到全站页脚区域。'],['Google Tag Manager','创建“自定义 HTML”代码，粘贴代码，选择“All Pages”触发器并发布容器。'],['自建网站（HTML、React 等）','将代码粘贴到网站主模板中 </body> 之前。React 或 Vue 应用请放在 index.html 中。']],
+  secId:'识别玩家（可选）',idText:'如果网站已知道当前登录的玩家，可以发送玩家 ID 和姓名，客服无需再询问。请将这段代码放在组件代码之前，并把值替换为网站的变量。',idNote:'为防止冒充其他玩家，服务器版本中网站还会发送一个在其服务器上生成的签名。技术团队会随服务器一起获得密钥。',
+  secOpts:'代码选项',optHead:['属性','取值','默认值','用途'],o:['已登记的线路代码，必填。','固定组件语言；设为 auto 时由客户选择。','气泡显示在屏幕的哪一侧。'],
+  secApi:'网站可用命令（JavaScript）',a:['打开聊天。','关闭聊天。','页面加载后发送已登录玩家的信息。','切换组件语言。'],
+  secTrouble:'常见问题',trouble:[['看不到气泡','请确认代码位于 </body> 之前且所有页面都已添加。广告拦截插件也可能隐藏气泡，请在无扩展的窗口中测试。'],['消息没有到达客服系统','请确认 data-linha 中的线路代码与“设置”中登记的一致。如果没有空闲客服，会话会进入排队，并显示在“未分配”中。'],['网站设置了安全策略（CSP）','请在 script-src、connect-src（包括 wss://）和 img-src 中放行客服系统地址。'],['我有多个网站','每个网站使用一段代码，并各自对应一条线路。如需分开接待，同一网站的不同页面也可以使用不同线路。']],
+  secReq:'要求',req:['网站使用 HTTPS。','手机和电脑上的主流新版浏览器。','组件体积小，在页面加载后异步加载，不会拖慢网站。']}
+};
+const GEN={line:null,lang:'auto',pos:'direita',id:false};
+const ID_SNIP='\x3Cscript>\n  window.SAC = window.SAC || {};\n  SAC.jogador = { id: "PLAYER_ID", nome: "PLAYER_NAME" };\n\x3C/script>';
+function genCode(){const L=LN(GEN.line)||LS()[0];if(!L)return '';
+ return `\x3C!-- SAC · ${L.name} -->\n`+(GEN.id?ID_SNIP+'\n':'')+`\x3Cscript src="https://sac.example.com/widget.js"\n        data-linha="${L.id}"\n        data-idioma="${GEN.lang}"\n        data-posicao="${GEN.pos}"\n        async>\x3C/script>`}
+const hl=s=>esc(s).replace(/(&lt;!--.*?--&gt;)/g,'<span class="c">$1</span>').replace(/(data-[a-z]+=&quot;[^&]*&quot;)/g,'<span class="a">$1</span>');
+function renderGen(){const g=GI[lang],b=$('#genOut');if(!b)return;b.innerHTML=hl(genCode());const p=$('#genPrev');if(p)p.classList.toggle('left',GEN.pos==='esquerda')}
+function renderGuide(){const g=GI[lang],o=GUIDE[lang];if(!GEN.line||!LN(GEN.line))GEN.line=LS()[0]?.id||null;
+ const sec=(id,ti)=>`<h2 class="gsec" id="g-${id}">${ti}</h2>`;
+ const toc=[['how',g.secHow],['gen',g.secGen],['steps',g.secSteps],['where',g.secWhere],['id',g.secId],['opts',g.secOpts],['trouble',g.secTrouble]];
+ $('#guide').innerHTML=`<h1>${g.title}</h1><p class="mute" style="margin:0;max-width:70ch">${g.intro}</p>
+ <div class="gnote">${esc(g.status)}</div>
+ <nav class="gtoc scroll">${toc.map(([k,v])=>`<a href="#g-${k}" data-act="gJump" data-k="${k}">${v}</a>`).join('')}</nav>
+ ${sec('how',g.secHow)}<div class="flow">${o.flow.map((x,i)=>`<div class="node ${i===2?'hl':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${FI[i]}</svg>${esc(x)}</div>`).join('')}</div>
+ ${sec('gen',g.secGen)}<div class="gen card">
+  <div class="genf"><label class="f">${g.genLine}<select id="genLine">${LS().map(l=>`<option value="${esc(l.id)}" ${l.id===GEN.line?'selected':''}>${esc(l.id)} · ${esc(l.name)}</option>`).join('')}</select></label>
+   <label class="f">${g.genLang}<select id="genLang"><option value="auto">${g.genLangAuto}</option>${WL.map(k=>`<option value="${k}" ${GEN.lang===k?'selected':''}>${LANGS.find(l=>l[0]===k)[1]}</option>`).join('')}</select></label>
+   <div class="f">${g.genPos}<div class="seg"><button type="button" data-act="genPos" data-v="direita" class="${GEN.pos==='direita'?'on':''}">${g.posR}</button><button type="button" data-act="genPos" data-v="esquerda" class="${GEN.pos==='esquerda'?'on':''}">${g.posL}</button></div></div>
+   <label class="gchk"><input type="checkbox" id="genId" ${GEN.id?'checked':''}> ${g.genId}</label>
+   <div class="gprev" id="genPrev" aria-hidden="true"><i></i><i></i><i></i><b>${svg('chat')}</b></div></div>
+  <div class="genc"><div class="genh"><span class="mute" style="font-size:13px">${esc(g.genNote)}</span><button class="btn" data-act="copyGen">${o.copy}</button></div><pre class="code" id="genOut"></pre></div></div>
+ ${sec('steps',g.secSteps)}<div class="steps">${g.steps.map((s,i)=>`<div class="step"><div class="no">${i+1}</div><div><h2>${esc(s[0])}</h2><p>${esc(s[1])}</p></div></div>`).join('')}</div>
+ ${sec('where',g.secWhere)}<div class="gwhere">${g.where.map(w=>`<div class="card"><h2>${esc(w[0])}</h2><p class="mute" style="margin:0;font-size:15px">${esc(w[1])}</p></div>`).join('')}</div>
+ ${sec('id',g.secId)}<p style="max-width:72ch;margin-top:0">${esc(g.idText)}</p><pre class="code">${hl(ID_SNIP)}</pre><p class="mute" style="font-size:14px;max-width:72ch">${esc(g.idNote)}</p>
+ ${sec('opts',g.secOpts)}<div class="tw"><table class="stack"><thead><tr>${g.optHead.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>
+  ${[['data-linha',LS().map(l=>l.id).slice(0,3).join(', ')+(LS().length>3?', …':''),'—'],['data-idioma','auto, vi, ur, en, zh','auto'],['data-posicao','direita, esquerda','direita']].map((r,i)=>`<tr><td><code>${r[0]}</code></td><td>${esc(r[1])}</td><td><code>${r[2]}</code></td><td>${esc(g.o[i])}</td></tr>`).join('')}</tbody></table></div>
+ <h3 class="gsub">${g.secApi}</h3><div class="tw"><table class="stack"><thead><tr><th>${g.optHead[0]}</th><th>${g.optHead[3]}</th></tr></thead><tbody>
+  ${['SAC.open()','SAC.close()','SAC.identify({ id, nome })','SAC.setLanguage("vi")'].map((c,i)=>`<tr><td><code>${esc(c)}</code></td><td>${esc(g.a[i])}</td></tr>`).join('')}</tbody></table></div>
+ ${sec('trouble',g.secTrouble)}<div class="gfaq">${g.trouble.map(q=>`<details><summary>${esc(q[0])}</summary><p>${esc(q[1])}</p></details>`).join('')}</div>
+ <h3 class="gsub">${g.secReq}</h3><ul class="greq">${g.req.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+ <h2 class="gsec">${o.st}</h2>
+ <div class="cols"><div class="card"><h2><span class="dot on"></span>${o.ready}</h2><ul>${o.readyL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+ <div class="card"><h2><span class="dot" style="background:var(--ink)"></span>${o.we}</h2><ul>${o.weL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+ <div class="card"><h2><span class="dot" style="background:var(--bad)"></span>${o.you}</h2><ul>${o.youL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div>
+ <div class="card" style="margin-top:14px;display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap"><div><h2 style="margin:0 0 4px">${o.simT}</h2><p class="mute" style="margin:0;max-width:60ch">${o.simD}</p></div><div style="display:flex;gap:8px;flex-wrap:wrap">${LINES().map(l=>`<a class="btn pri" href="#site-${esc(l)}" target="_blank" rel="opener" style="text-decoration:none">${o.simB} ${esc(l)}</a>`).join('')}</div></div>`;
+ renderGen()}
+Object.assign(A,{
+ genPos:b=>{GEN.pos=b.dataset.v;document.querySelectorAll('[data-act=genPos]').forEach(x=>x.classList.toggle('on',x===b));renderGen()},
+ copyGen:b=>{const o=GUIDE[lang],code=genCode(),done=()=>{b.textContent=o.copied;setTimeout(()=>b.textContent=o.copy,1600)};
+  const sel=()=>{const p=$('#genOut');if(!p)return;const r=document.createRange();r.selectNodeContents(p);const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Ctrl+C')};
+  try{navigator.clipboard.writeText(code).then(done,sel)}catch(e){sel()}},
+ gJump:b=>{const el=document.getElementById('g-'+b.dataset.k);if(el)el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
+});
+document.addEventListener('change',e=>{const id=e.target.id;if(id==='genLine'){GEN.line=e.target.value;renderGen()}if(id==='genLang'){GEN.lang=e.target.value;renderGen()}if(id==='genId'){GEN.id=e.target.checked;renderGen()}});
 
 }
 </script>

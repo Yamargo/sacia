@@ -1,22 +1,5 @@
 /* ---------- integration guide (god/admin) ---------- */
-const SNIP=()=>LS().map(l=>`\x3C!-- ${l.name} -->\n\x3Cscript src="https://sac.example.com/widget.js" data-linha="${l.id}">\x3C/script>`).join('\n\n');
 const FI=['<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',IC.chat,'<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>','<path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13" width="4" height="6" rx="1.5"/><rect x="17.5" y="13" width="4" height="6" rx="1.5"/>'];
-function renderGuide(){const g=GUIDE[lang];
- const code=esc(SNIP()).replace(/(&lt;!--.*?--&gt;)/g,'<span class="c">$1</span>').replace(/(data-linha=&quot;[^&]+&quot;)/g,'<span class="a">$1</span>');
- $('#guide').innerHTML=`<h1>${g.title}</h1><p class="mute" style="margin:0;max-width:68ch">${g.intro}</p>
- <div class="flow">${g.flow.map((x,i)=>`<div class="node ${i===2?'hl':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${FI[i]}</svg>${esc(x)}</div>`).join('')}</div>
- <div class="steps">${g.steps.map((s,i)=>`<div class="step"><div class="no">${i+1}</div><div><h2>${esc(s[0])}${i===3?`<span class="opt">(${g.opt})</span>`:''}</h2><p>${esc(s[1]).replace('data-linha','<code>data-linha</code>')}</p><span class="whob"><b>${g.who}:</b> ${esc(s[2])}</span>
- ${i===1?`<div style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap"><b style="font-size:14px">${g.code}</b><button class="btn" data-act="copySnip">${g.copy}</button></div><pre class="code">${code}</pre><p class="mute" style="font-size:13px;margin:8px 0 0">${g.codeNote}</p></div>`:''}</div></div>`).join('')}</div>
- <h2 style="margin-top:30px;font-size:22px">${g.st}</h2>
- <div class="cols"><div class="card"><h2><span class="dot on"></span>${g.ready}</h2><ul>${g.readyL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
- <div class="card"><h2><span class="dot" style="background:var(--ink)"></span>${g.we}</h2><ul>${g.weL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
- <div class="card"><h2><span class="dot" style="background:var(--bad)"></span>${g.you}</h2><ul>${g.youL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div>
- <div class="ask">${g.ask}</div>
- <div class="card" style="margin-top:14px;display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap"><div><h2 style="margin:0 0 4px">${g.simT}</h2><p class="mute" style="margin:0;max-width:60ch">${g.simD}</p></div><div style="display:flex;gap:8px;flex-wrap:wrap">${LINES().map(l=>`<a class="btn pri" href="#site-${esc(l)}" target="_blank" rel="opener" style="text-decoration:none">${g.simB} ${esc(l)}</a>`).join('')}</div></div>`}
-A.copySnip=b=>{const g=GUIDE[lang];const done=()=>{b.textContent=g.copied;setTimeout(()=>b.textContent=g.copy,1600)};
- const sel=()=>{const p=$('#guide pre.code');if(!p)return;const r=document.createRange();r.selectNodeContents(p);const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Ctrl+C')};
- try{navigator.clipboard.writeText(SNIP()).then(done,sel)}catch(e){sel()}};
-
 /* ---------- demo game site + customer widget (mobile first) ---------- */
 const WL=['vi','ur','en','zh'];
 const wDetect=()=>{try{const v=localStorage.getItem('sac_wlang');if(WL.includes(v))return v}catch(e){}return null};
