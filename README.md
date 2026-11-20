@@ -6,7 +6,9 @@ Central de atendimento (SAC) com várias linhas de empresas, perfis de acesso e 
 
 ## Como abrir
 
-Abra `prototype/index.html` no navegador. Não precisa instalar nada.
+**Online (GitHub Pages):** https://yamargo.github.io/sacia/ (depois de ativar em Settings → Pages → Deploy from a branch → `main` / `(root)`).
+
+**No computador:** abra `prototype/index.html` no navegador. Não precisa instalar nada.
 
 Acesso inicial:
 
