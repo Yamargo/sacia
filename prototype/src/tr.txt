@@ -1,0 +1,326 @@
+(você) || (you) || (bạn) || (aap) || （您）
+1 atendente online || 1 agent online || 1 nhân viên trực tuyến || 1 agent online || 1 位客服在线
+Aberto em || Opened || Mở lúc || Khula || 开启时间
+Abrir chat || Open chat || Mở chat || Chat kholen || 开启会话
+Abrir site {l} || Open site {l} || Mở trang {l} || Site {l} kholen || 打开网站 {l}
+Abrir suporte || Open support || Mở hỗ trợ || Support kholen || 打开客服
+Acesso atualizado. || Access updated. || Đã cập nhật tài khoản. || Access update ho gaya. || 账号已更新。
+Acesso excluído. || Access deleted. || Đã xóa tài khoản. || Access delete ho gaya. || 账号已删除。
+Acesso total || Full access || Toàn quyền || Full access || 最高权限
+Admin || Admin || Quản trị viên || Admin || 管理员
+Agente || Agent || Nhân viên || Agent || 客服
+Agentes online na linha {l}. || Agents online on line {l}. || Nhân viên trực tuyến ở line {l}. || Line {l} par online agents. || 线路 {l} 的在线客服。
+Aguardando um atendente… || Waiting for an agent… || Đang chờ nhân viên… || Agent ka intezar… || 正在等待客服…
+Alterar senha || Change password || Đổi mật khẩu || Password badlen || 修改密码
+Anexar || Attach || Đính kèm || Attach karen || 附件
+Anexo: {f} || Attachment: {f} || Tệp đính kèm: {f} || Attachment: {f} || 附件：{f}
+Arcade || Arcade || Arcade || Arcade || 街机
+Armazenamento cheio. Anexos grandes ocupam espaço. || Storage full. Large attachments take up space. || Bộ nhớ đã đầy. Tệp đính kèm lớn chiếm nhiều dung lượng. || Storage bhar gaya. Bari attachments jagah leti hain. || 存储空间已满。大附件会占用空间。
+Arquivo acima de 1,5 MB. Neste protótipo os anexos ficam no navegador. || File over 1.5 MB. In this prototype attachments are stored in the browser. || Tệp lớn hơn 1,5 MB. Trong bản thử này, tệp đính kèm được lưu trong trình duyệt. || File 1.5 MB se bari hai. Is prototype mein attachments browser mein rehti hain. || 文件超过 1.5 MB。在此原型中，附件保存在浏览器内。
+As senhas não conferem. || Passwords do not match. || Mật khẩu không khớp. || Passwords match nahin karte. || 两次密码不一致。
+Assumido por {a}. || Taken over by {a}. || {a} đã nhận chat. || {a} ne chat le liya. || 由 {a} 接手。
+Assumir || Take over || Nhận chat || Le len || 接手
+Atendido por || Handled by || Được xử lý bởi || Kis ne attend kiya || 接待人员
+Atendimento || Inbox || Hộp chat || Inbox || 会话
+Atendimento encerrado. Obrigado pelo contato! || Chat ended. Thank you for contacting us! || Cuộc trò chuyện đã kết thúc. Cảm ơn bạn đã liên hệ! || Chat khatam ho gayi. Rabta karne ka shukriya! || 会话已结束，感谢您的联系！
+Atribuído a {b}. || Assigned to {b}. || Đã giao cho {b}. || {b} ko assign kiya gaya. || 已分配给 {b}。
+Aventura || Adventure || Phiêu lưu || Adventure || 冒险
+Ações || Actions || Thao tác || Actions || 操作
+Boa tarde, preciso de ajuda com a minha fatura. || Good afternoon, I need help with my bill. || Chào buổi chiều, tôi cần hỗ trợ về hóa đơn. || Assalam o alaikum, mujhe apne bill mein madad chahiye. || 下午好，我的账单需要帮助。
+Buscar nome, telefone ou ID || Search name, phone or ID || Tìm tên, số điện thoại hoặc ID || Naam, phone ya ID talash karen || 搜索姓名、电话或 ID
+Cada aba deste navegador guarda um login próprio. Abra este mesmo link em outras abas (normais, não anônimas) e entre com o agente, o supervisor e o admin. Todos veem os mesmos dados ao vivo. || Each tab in this browser keeps its own login. Open this same link in other tabs (normal, not incognito) and sign in as the agent, the supervisor and the admin. Everyone sees the same live data. || Mỗi tab trong trình duyệt này giữ một lần đăng nhập riêng. Mở cùng liên kết này ở các tab khác (tab thường, không ẩn danh) và đăng nhập bằng nhân viên, giám sát viên và quản trị viên. Mọi người đều thấy cùng dữ liệu theo thời gian thực. || Is browser ka har tab apna alag login rakhta hai. Yehi link doosre tabs mein kholen (normal, incognito nahin) aur agent, supervisor aur admin se login karen. Sab ko live wahi data nazar aata hai. || 此浏览器的每个标签页各自保存登录状态。在其他标签页（普通模式，非无痕）打开同一链接，分别以客服、主管和管理员身份登录，所有人都能实时看到相同的数据。
+Cancelar || Cancel || Hủy || Cancel || 取消
+Cartas || Cards || Bài || Cards || 卡牌
+Central de atendimento || Help desk || Trung tâm chăm sóc khách hàng || Help desk || 客服中心
+Chat aberto e atribuído a {n}. || Chat opened and assigned to {n}. || Đã mở chat và giao cho {n}. || Chat khul gayi aur {n} ko assign hui. || 会话已开启并分配给 {n}。
+Chat aberto. Sem agente disponível na linha {l}: ficou na fila. || Chat opened. No agent available on line {l}: it is in the queue. || Đã mở chat. Không có nhân viên sẵn sàng ở line {l}: chat đang trong hàng chờ. || Chat khul gayi. Line {l} par koi agent dastiyab nahin: chat queue mein hai. || 会话已开启。线路 {l} 暂无空闲客服，已进入排队。
+Chat assumido. || Chat taken over. || Đã nhận chat. || Chat le li gayi. || 已接手会话。
+Chat encerrado. || Chat ended. || Đã kết thúc chat. || Chat khatam ho gayi. || 会话已结束。
+Chat transferido. || Chat transferred. || Đã chuyển chat. || Chat transfer ho gayi. || 会话已转接。
+Chats abertos || Open chats || Chat đang mở || Khuli chats || 进行中会话
+Cliente entrou pela linha {l}. || Customer came in on line {l}. || Khách hàng vào từ line {l}. || Customer line {l} se aaya. || 客户从线路 {l} 进入。
+Cliente entrou pelo site, linha {l}. || Customer came in from the site, line {l}. || Khách hàng vào từ trang web, line {l}. || Customer site se aaya, line {l}. || 客户从网站进入，线路 {l}。
+Cliente responde || Customer replies || Khách hàng trả lời || Customer jawab deta hai || 客户回复
+Com {n} || With {n} || Đang với {n} || {n} ke paas || 由 {n} 接待
+Conectado como {n}. || Signed in as {n}. || Đang đăng nhập với tên {n}. || {n} ke tor par login. || 当前登录：{n}。
+Configurações || Settings || Cài đặt || Settings || 设置
+Conversa aberta || Open conversation || Cuộc trò chuyện đang mở || Khuli guftagu || 进行中的会话
+Conversas || Conversations || Cuộc trò chuyện || Guftagu || 会话列表
+Corrida || Racing || Đua xe || Racing || 竞速
+Corrida Turbo || Turbo Race || Đua Tốc Độ || Turbo Race || 极速赛车
+Criar acesso || Create access || Tạo tài khoản || Access banayen || 创建账号
+Criar script || Create script || Tạo script || Script banayen || 创建话术
+Deixe sua mensagem, respondemos em breve || Leave a message, we will reply soon || Hãy để lại tin nhắn, chúng tôi sẽ trả lời sớm || Apna message chhoren, hum jald jawab denge || 请留言，我们会尽快回复
+Depois desse tempo sem resposta, o chat vai para outro agente online da mesma linha. Padrão: 240 s (4 min). Para testar rápido, use 30. || After this time without a reply, the chat goes to another online agent on the same line. Default: 240 s (4 min). To test quickly, use 30. || Sau khoảng thời gian không trả lời này, chat sẽ chuyển cho nhân viên trực tuyến khác cùng line. Mặc định: 240 giây (4 phút). Để thử nhanh, dùng 30. || Itni der jawab na milne par chat usi line ke kisi aur online agent ke paas chali jati hai. Default: 240 s (4 min). Jaldi test karne ke liye 30 rakhen. || 超过此时间未回复，会话将转给同一线路的其他在线客服。默认：240 秒（4 分钟）。快速测试可设为 30。
+Desconectar || Disconnect || Ngắt kết nối || Disconnect karen || 强制下线
+Duas linhas, uma equipe. Entre com seu acesso para atender, supervisionar ou administrar. || Two lines, one team. Sign in to handle chats, supervise or manage. || Hai line, một đội. Đăng nhập để hỗ trợ khách, giám sát hoặc quản trị. || Do lines, ek team. Chat attend karne, supervise karne ya manage karne ke liye login karen. || 两条线路，一个团队。登录后即可接待、监督或管理。
+E-mail || Email || Email || Email || 邮箱
+E-mail ou senha incorretos. || Incorrect email or password. || Email hoặc mật khẩu không đúng. || Email ya password ghalat hai. || 邮箱或密码错误。
+Editar || Edit || Sửa || Edit || 编辑
+Editar acesso || Edit access || Sửa tài khoản || Access edit karen || 编辑账号
+Editar script || Edit script || Sửa script || Script edit karen || 编辑话术
+Em aberto || Open || Đang mở || Khuli || 进行中
+Em atendimento || In progress || Đang xử lý || Jari hai || 接待中
+Encerrado || Ended || Đã kết thúc || Khatam || 已结束
+Encerrado por || Ended by || Kết thúc bởi || Kis ne khatam ki || 结束人
+Encerrado por {a}. || Ended by {a}. || {a} đã kết thúc. || {a} ne khatam ki. || 由 {a} 结束。
+Encerrado por {n} em {d}. || Ended by {n} on {d}. || {n} đã kết thúc lúc {d}. || {n} ne {d} ko khatam ki. || 由 {n} 于 {d} 结束。
+Encerrados || Ended || Đã kết thúc || Khatam || 已结束
+Encerrar || End chat || Kết thúc || Khatam karen || 结束
+Encerrar chat || End chat || Kết thúc chat || Chat khatam karen || 结束会话
+Enquanto nenhum canal real está ligado, use esta tela para fazer clientes chegarem nas linhas e responderem. || While no real channel is connected, use this screen to bring customers into the lines and have them reply. || Khi chưa kết nối kênh thật, dùng màn hình này để tạo khách hàng vào các line và trả lời. || Jab tak koi asli channel connect nahin, is screen se customers ko lines mein layen aur un se jawab dilwayen. || 在接入真实渠道之前，可在此页面模拟客户进入线路并回复。
+Entrar || Sign in || Đăng nhập || Login || 登录
+Enviar || Send || Gửi || Bhejen || 发送
+Enviar como cliente || Send as customer || Gửi với tư cách khách hàng || Customer ban kar bhejen || 以客户身份发送
+Equipe online || Team online || Đội ngũ trực tuyến || Online team || 在线团队
+Escolha ao menos uma linha. || Choose at least one line. || Chọn ít nhất một line. || Kam az kam ek line chunen. || 请至少选择一条线路。
+Escolha uma conversa na lista || Pick a conversation from the list || Chọn một cuộc trò chuyện trong danh sách || List se koi guftagu chunen || 从列表中选择会话
+Escreva a justificativa (mínimo 5 caracteres). || Write the reason (at least 5 characters). || Ghi lý do (ít nhất 5 ký tự). || Wajah likhen (kam az kam 5 huroof). || 请填写理由（至少 5 个字符）。
+Escreva sua mensagem || Write your message || Nhập tin nhắn || Apna message likhen || 输入消息
+Escreva uma mensagem. Enter envia, Shift+Enter quebra linha. || Write a message. Enter sends, Shift+Enter adds a line. || Nhập tin nhắn. Enter để gửi, Shift+Enter để xuống dòng. || Message likhen. Enter se send, Shift+Enter se nayi line. || 输入消息。Enter 发送，Shift+Enter 换行。
+Esportes || Sports || Thể thao || Sports || 体育
+Esse agente ficou offline. || That agent went offline. || Nhân viên này đã ngoại tuyến. || Yeh agent offline ho gaya. || 该客服已离线。
+Esse chat já foi encerrado. || This chat has already ended. || Chat này đã kết thúc. || Yeh chat pehle hi khatam ho chuki hai. || 该会话已结束。
+Esse e-mail já está em uso. || This email is already in use. || Email này đã được sử dụng. || Yeh email pehle se istemal mein hai. || 该邮箱已被使用。
+Estrela Cadente || Shooting Star || Sao Băng || Shooting Star || 流星
+Excluir || Delete || Xóa || Delete karen || 删除
+Excluir acesso? || Delete access? || Xóa tài khoản? || Access delete karen? || 删除账号？
+Falando com {n} || Talking to {n} || Đang trò chuyện với {n} || {n} se baat ho rahi hai || 正在与 {n} 对话
+Fechar || Close || Đóng || Band karen || 关闭
+Fila || Queue || Hàng chờ || Queue || 排队
+Fila vazia. || Queue is empty. || Hàng chờ trống. || Queue khali hai. || 暂无排队。
+Função || Role || Vai trò || Role || 角色
+ID do jogador || Player ID || ID người chơi || Player ID || 玩家 ID
+ID do jogador: {id} || Player ID: {id} || ID người chơi: {id} || Player ID: {id} || 玩家 ID：{id}
+Idioma || Language || Ngôn ngữ || Zaban || 语言
+Idioma alterado. || Language changed. || Đã đổi ngôn ngữ. || Zaban badal di gayi. || 语言已切换。
+Iniciar conversa || Start chat || Bắt đầu trò chuyện || Chat shuru karen || 开始对话
+Integração || Integration || Tích hợp || Integration || 接入
+Início || Home || Trang chủ || Home || 首页
+Jogos || Games || Trò chơi || Games || 游戏
+Jogos em destaque || Featured games || Trò chơi nổi bật || Numayan games || 精选游戏
+Justificativa || Reason || Lý do || Wajah || 理由
+Justificativa (obrigatória) || Reason (required) || Lý do (bắt buộc) || Wajah (zaroori) || 理由（必填）
+Justificativa: {r} || Reason: {r} || Lý do: {r} || Wajah: {r} || 理由：{r}
+Liga dos Pênaltis || Penalty League || Giải Đá Phạt || Penalty League || 点球联赛
+Linha || Line || Line || Line || 线路
+Linha de chat || Chat line || Line chat || Chat line || 聊天线路
+Linhas || Lines || Các line || Lines || 线路
+Mensagem || Message || Tin nhắn || Message || 消息
+Mensagem do cliente || Customer message || Tin nhắn của khách hàng || Customer ka message || 客户消息
+Mensagem do cliente enviada. || Customer message sent. || Đã gửi tin nhắn của khách hàng. || Customer ka message bhej diya gaya. || 客户消息已发送。
+Meu perfil || My profile || Hồ sơ của tôi || Mera profile || 我的资料
+Meus || Mine || Của tôi || Meri || 我的
+Meus scripts || My scripts || Script của tôi || Meri scripts || 我的话术
+Minha conta || My account || Tài khoản của tôi || Mera account || 我的账户
+Minha senha || My password || Mật khẩu của tôi || Mera password || 我的密码
+Missão Lunar || Moon Mission || Sứ Mệnh Mặt Trăng || Moon Mission || 登月任务
+Modo temporário: este navegador não permite salvar dados. Tudo some ao recarregar. || Temporary mode: this browser does not allow saving data. Everything is lost on reload. || Chế độ tạm thời: trình duyệt này không cho phép lưu dữ liệu. Mọi thứ sẽ mất khi tải lại. || Temporary mode: yeh browser data save nahin karne deta. Reload par sab mit jayega. || 临时模式：此浏览器不允许保存数据，刷新后将全部丢失。
+Mínimo 6 caracteres. || At least 6 characters. || Tối thiểu 6 ký tự. || Kam az kam 6 huroof. || 至少 6 个字符。
+Na fila || In queue || Đang chờ || Queue mein || 排队中
+Nada por aqui. || Nothing here. || Không có gì ở đây. || Yahan kuch nahin. || 暂无内容。
+Nenhum chat aberto || No open chats || Không có chat đang mở || Koi khuli chat nahin || 没有进行中的会话
+Nenhum chat com você agora. Novos clientes chegam aqui automaticamente. || No chats with you right now. New customers arrive here automatically. || Hiện bạn không có chat nào. Khách hàng mới sẽ tự động đến đây. || Abhi aap ke paas koi chat nahin. Naye customers khud yahan aa jayenge. || 您当前没有会话。新客户会自动分配到这里。
+Nenhum outro agente online na linha {l} agora. || No other agent online on line {l} right now. || Hiện không có nhân viên nào khác trực tuyến ở line {l}. || Abhi line {l} par koi aur agent online nahin. || 线路 {l} 目前没有其他在线客服。
+Nenhum script ainda. Crie respostas prontas para usar com um clique. || No scripts yet. Create ready replies to use with one click. || Chưa có script. Tạo câu trả lời mẫu để dùng chỉ với một cú nhấp. || Abhi koi script nahin. Tayyar jawab banayen jo ek click mein istemal hon. || 还没有话术。创建快捷回复，一键使用。
+Nenhuma conversa aberta || No conversation open || Chưa mở cuộc trò chuyện nào || Koi guftagu khuli nahin || 未打开会话
+Ninguém cadastrado ainda. || No one registered yet. || Chưa có ai được đăng ký. || Abhi koi register nahin. || 暂无用户。
+Nome || Name || Tên || Naam || 姓名
+Nome do cliente || Customer name || Tên khách hàng || Customer ka naam || 客户姓名
+Nova conversa || New chat || Cuộc trò chuyện mới || Nayi chat || 新对话
+Nova senha || New password || Mật khẩu mới || Naya password || 新密码
+Novo chat: {n} (linha {l}) || New chat: {n} (line {l}) || Chat mới: {n} (line {l}) || Nayi chat: {n} (line {l}) || 新会话：{n}（线路 {l}）
+Novo cliente chega || New customer arrives || Khách hàng mới đến || Naya customer aata hai || 新客户进入
+Novo script || New script || Script mới || Nayi script || 新话术
+Não consigo acessar minha conta. || I can't access my account. || Tôi không đăng nhập được tài khoản. || Main apne account mein login nahin kar pa raha. || 我无法登录我的账户。
+Observação (opcional) || Note (optional) || Ghi chú (tùy chọn) || Note (optional) || 备注（可选）
+Offline || Offline || Ngoại tuyến || Offline || 离线
+Oi! Quero trocar um produto. || Hi! I want to exchange a product. || Xin chào! Tôi muốn đổi sản phẩm. || Hi! Mujhe ek product tabdeel karna hai. || 你好！我想换一个商品。
+Olá! Conte o que aconteceu e um atendente responde por aqui. || Hi! Tell us what happened and an agent will reply here. || Xin chào! Hãy cho chúng tôi biết chuyện gì đã xảy ra, nhân viên sẽ trả lời tại đây. || Assalam o alaikum! Batayen kya hua, agent yahin jawab dega. || 您好！请描述您遇到的问题，客服会在这里回复。
+Olá, meu pedido ainda não chegou. || Hello, my order hasn't arrived yet. || Xin chào, đơn hàng của tôi vẫn chưa đến. || Assalam o alaikum, mera order abhi tak nahin aaya. || 你好，我的订单还没到。
+Online || Online || Trực tuyến || Online || 在线
+Opcional || Optional || Tùy chọn || Optional || 可选
+Os dados do cliente aparecem aqui. || Customer details appear here. || Thông tin khách hàng hiển thị tại đây. || Customer ki maloomat yahan nazar aayegi. || 客户资料显示在这里。
+Os dados ficam só neste navegador. Para uso real com várias pessoas, o próximo passo é um servidor. || Data stays only in this browser. For real use with several people, the next step is a server. || Dữ liệu chỉ lưu trong trình duyệt này. Để dùng thật với nhiều người, bước tiếp theo là máy chủ. || Data sirf isi browser mein rehta hai. Kai logon ke sath asli istemal ke liye agla qadam server hai. || 数据仅保存在此浏览器中。要多人正式使用，下一步需要服务器。
+Perfil salvo. || Profile saved. || Đã lưu hồ sơ. || Profile save ho gaya. || 资料已保存。
+Pesca Profunda || Deep Fishing || Câu Cá Biển Sâu || Deep Fishing || 深海垂钓
+Preencha nome e e-mail válidos. || Enter a valid name and email. || Nhập tên và email hợp lệ. || Durust naam aur email likhen. || 请填写有效的姓名和邮箱。
+Preencha título e texto. || Fill in title and text. || Nhập tiêu đề và nội dung. || Title aur text likhen. || 请填写标题和内容。
+Preencher exemplo || Fill example || Điền mẫu || Misal bharen || 填入示例
+Preferências da sua conta e do atendimento. || Preferences for your account and the help desk. || Tùy chọn cho tài khoản và hệ thống CSKH. || Aap ke account aur help desk ki settings. || 您的账号和客服系统偏好设置。
+Primeira mensagem || First message || Tin nhắn đầu tiên || Pehla message || 第一条消息
+Protegido || Protected || Được bảo vệ || Mehfooz || 受保护
+Puzzle || Puzzle || Giải đố || Puzzle || 益智
+Qual o prazo de entrega para o meu CEP? || What is the delivery time to my postal code? || Thời gian giao hàng đến mã bưu chính của tôi là bao lâu? || Mere postal code par delivery mein kitna waqt lagega? || 送到我的邮编需要多久？
+Quem está conectado agora, por linha. || Who is connected now, by line. || Ai đang trực tuyến, theo từng line. || Abhi kaun connected hai, line ke hisab se. || 当前在线人员（按线路）。
+Ranking || Ranking || Bảng xếp hạng || Ranking || 排行榜
+Reino das Cartas || Card Kingdom || Vương Quốc Bài || Card Kingdom || 卡牌王国
+Remover anexo || Remove attachment || Gỡ tệp đính kèm || Attachment hatayen || 移除附件
+Repita a nova senha || Repeat the new password || Nhập lại mật khẩu mới || Naya password dobara likhen || 再次输入新密码
+Sair || Sign out || Đăng xuất || Logout || 退出登录
+Salvar || Save || Lưu || Save karen || 保存
+Salvar perfil || Save profile || Lưu hồ sơ || Profile save karen || 保存资料
+Salvar senha || Save password || Lưu mật khẩu || Password save karen || 保存密码
+Script || Script || Script || Script || 话术
+Script salvo. || Script saved. || Đã lưu script. || Script save ho gayi. || 话术已保存。
+Segundos || Seconds || Giây || Seconds || 秒
+Selecione uma conversa para ver as mensagens. || Select a conversation to see the messages. || Chọn một cuộc trò chuyện để xem tin nhắn. || Messages dekhne ke liye koi guftagu chunen. || 选择会话以查看消息。
+Sem resposta de {a} em {t}. Transferido automaticamente para {b}. || No reply from {a} in {t}. Automatically transferred to {b}. || {a} không trả lời trong {t}. Đã tự động chuyển cho {b}. || {a} ne {t} mein jawab nahin diya. Khud ba khud {b} ko transfer ho gayi. || {a} 在 {t} 内未回复，已自动转接给 {b}。
+Senha || Password || Mật khẩu || Password || 密码
+Senha alterada. || Password changed. || Đã đổi mật khẩu. || Password badal diya gaya. || 密码已修改。
+Senha atual || Current password || Mật khẩu hiện tại || Maujooda password || 当前密码
+Senha atual incorreta. || Current password is incorrect. || Mật khẩu hiện tại không đúng. || Maujooda password ghalat hai. || 当前密码错误。
+Senha provisória || Temporary password || Mật khẩu tạm thời || Aarzi password || 临时密码
+Sessão || Session || Phiên đăng nhập || Session || 会话登录
+Seu acesso foi removido. || Your access was removed. || Tài khoản của bạn đã bị xóa. || Aap ka access hata diya gaya. || 您的账号已被删除。
+Seu nome || Your name || Tên của bạn || Aap ka naam || 您的姓名
+Simulador de cliente || Customer simulator || Mô phỏng khách hàng || Customer simulator || 客户模拟器
+Simulação: site de jogos fictício na linha {l}. O chat chega no SAC em tempo real. || Simulation: fictional gaming site on line {l}. The chat reaches the help desk in real time. || Mô phỏng: trang game giả lập ở line {l}. Chat đến hệ thống CSKH theo thời gian thực. || Simulation: line {l} par farzi gaming site. Chat foran help desk tak pohanchti hai. || 模拟：线路 {l} 的虚构游戏网站，聊天实时进入客服系统。
+Site de demonstração. Clique no balão no canto da tela para falar com o suporte. || Demo site. Click the bubble in the corner of the screen to talk to support. || Trang demo. Nhấn vào bong bóng ở góc màn hình để trò chuyện với hỗ trợ. || Demo site. Support se baat karne ke liye screen ke kone mein bubble par click karen. || 演示网站。点击屏幕角落的气泡即可联系客服。
+Site de jogos de demonstração || Demo gaming site || Trang game demo || Demo gaming site || 演示游戏网站
+Somente leitura. Só o agente responsável responde a este cliente. || Read only. Only the assigned agent replies to this customer. || Chỉ xem. Chỉ nhân viên phụ trách mới trả lời khách hàng này. || Sirf parhne ke liye. Is customer ko sirf zimmedar agent jawab deta hai. || 只读。仅负责的客服可回复该客户。
+Status || Status || Trạng thái || Status || 状态
+Sua senha foi alterada. || Your password was changed. || Mật khẩu của bạn đã được đổi. || Aap ka password badal diya gaya. || 您的密码已修改。
+Supervisor || Supervisor || Giám sát viên || Supervisor || 主管
+Suporte || Support || Hỗ trợ || Support || 客服
+Tabuleiro || Board || Cờ bàn || Board game || 棋盘
+Telefone || Phone || Số điện thoại || Phone || 电话
+Tempo sem resposta || Reply time limit || Thời gian chờ trả lời || Jawab ka waqt || 回复时限
+Tempo sem resposta: {t}. || Reply time limit: {t}. || Thời gian chờ trả lời: {t}. || Jawab ka waqt: {t}. || 回复时限：{t}。
+Testar vários usuários || Test several users || Thử nhiều người dùng || Kai users test karen || 测试多个用户
+Texto || Text || Nội dung || Text || 内容
+Torneio de fim de semana || Weekend tournament || Giải đấu cuối tuần || Weekend tournament || 周末锦标赛
+Torneios || Tournaments || Giải đấu || Tournaments || 锦标赛
+Torre de Blocos || Block Tower || Tháp Khối || Block Tower || 积木塔
+Transferido por {a} para {b}. || Transferred by {a} to {b}. || {a} đã chuyển cho {b}. || {a} ne {b} ko transfer kiya. || 由 {a} 转接给 {b}。
+Transferir || Transfer || Chuyển || Transfer karen || 转接
+Transferir chat || Transfer chat || Chuyển chat || Chat transfer karen || 转接会话
+Transferências automáticas || Automatic transfers || Lượt chuyển tự động || Automatic transfers || 自动转接次数
+Um site fictício com o balão de chat, como vai ficar no 7987.com e no 8557.com. Abra numa nova aba, escreva como jogador e responda aqui no SAC. || A fictional site with the chat bubble, as it will look on 7987.com and 8557.com. Open it in a new tab, write as a player and reply here in the help desk. || Một trang giả lập có bong bóng chat, giống như trên 7987.com và 8557.com. Mở trong tab mới, nhắn tin như người chơi và trả lời tại đây. || Chat bubble ke sath ek farzi site, jaisi 7987.com aur 8557.com par hogi. Naye tab mein kholen, player ban kar likhen aur yahan help desk mein jawab den. || 一个带聊天气泡的虚构网站，效果与 7987.com 和 8557.com 上一致。在新标签页打开，以玩家身份发消息，然后在这里回复。
+Usuários || Users || Người dùng || Users || 用户
+Vale para todo o sistema, inclusive o site de demonstração, e fica salvo no seu acesso. || Applies to the whole system, including the demo site, and is saved to your account. || Áp dụng cho toàn hệ thống, kể cả trang demo, và được lưu vào tài khoản của bạn. || Poore system par lagu hota hai, demo site samait, aur aap ke account mein save rehta hai. || 适用于整个系统（包括演示网站），并保存在您的账号中。
+Veio pelo site || Came from the site || Đến từ trang web || Site se aaya || 来自网站
+Via site || Via site || Qua trang web || Site ke zariye || 通过网站
+Você está na fila. Um atendente vai falar com você em instantes. || You are in the queue. An agent will be with you shortly. || Bạn đang trong hàng chờ. Nhân viên sẽ liên hệ với bạn ngay. || Aap queue mein hain. Agent thori der mein aap se baat karega. || 您正在排队，客服马上为您服务。
+Você foi desconectado por um supervisor. || You were disconnected by a supervisor. || Bạn đã bị giám sát viên ngắt kết nối. || Supervisor ne aap ko disconnect kar diya. || 您已被主管强制下线。
+Você pode alterar a senha dos agentes das suas linhas. || You can change the passwords of agents on your lines. || Bạn có thể đổi mật khẩu của nhân viên thuộc line của bạn. || Aap apni lines ke agents ka password badal sakte hain. || 您可以修改自己线路下客服的密码。
+Você pode criar e alterar acessos, exceto o acesso total. || You can create and change access, except full access. || Bạn có thể tạo và sửa tài khoản, trừ tài khoản toàn quyền. || Aap access bana aur badal sakte hain, siwaye full access ke. || 您可以创建和修改账号，最高权限账号除外。
+Você pode criar e alterar qualquer acesso. || You can create and change any access. || Bạn có thể tạo và sửa mọi tài khoản. || Aap koi bhi access bana aur badal sakte hain. || 您可以创建和修改任何账号。
+Você pode encerrar sem justificativa. || You can end without a reason. || Bạn có thể kết thúc mà không cần lý do. || Aap baghair wajah ke khatam kar sakte hain. || 您可以不填理由直接结束。
+Voltar || Back || Quay lại || Wapas || 返回
+Voltar ao SAC || Back to help desk || Quay lại CSKH || Help desk par wapas || 返回客服系统
+Xadrez Relâmpago || Blitz Chess || Cờ Vua Chớp Nhoáng || Blitz Chess || 闪电象棋
+agentes online na {l} || agents online on {l} || nhân viên trực tuyến ở {l} || {l} par online agents || {l} 在线客服
+chats na fila || chats in queue || chat trong hàng chờ || queue mein chats || 排队中的会话
+título || title || tiêu đề || title || 标题
+{a} assumiu o chat de {b}. || {a} took over {b}'s chat. || {a} đã nhận chat của {b}. || {a} ne {b} ki chat le li. || {a} 接手了 {b} 的会话。
+{a} ficou offline. Chat transferido para {b}. || {a} went offline. Chat transferred to {b}. || {a} đã ngoại tuyến. Chat được chuyển cho {b}. || {a} offline ho gaya. Chat {b} ko transfer ho gayi. || {a} 已离线，会话已转接给 {b}。
+{a} ficou offline. Chat voltou para a fila da linha {l}. || {a} went offline. Chat went back to the line {l} queue. || {a} đã ngoại tuyến. Chat quay lại hàng chờ của line {l}. || {a} offline ho gaya. Chat line {l} ki queue mein wapas chali gayi. || {a} 已离线，会话已退回线路 {l} 的排队。
+{n} ({e}) perde o acesso. Os chats abertos dele voltam para a fila. || {n} ({e}) loses access. Their open chats go back to the queue. || {n} ({e}) sẽ mất quyền truy cập. Các chat đang mở sẽ quay lại hàng chờ. || {n} ({e}) ka access khatam ho jayega. Un ki khuli chats queue mein wapas chali jayengi. || {n}（{e}）将失去访问权限，其进行中的会话将退回排队。
+{n} atendentes online || {n} agents online || {n} nhân viên trực tuyến || {n} agents online || {n} 位客服在线
+{n} chats abertos || {n} open chats || {n} chat đang mở || {n} khuli chats || {n} 个进行中会话
+{n} foi desconectado. || {n} was disconnected. || {n} đã bị ngắt kết nối. || {n} ko disconnect kar diya gaya. || {n} 已被强制下线。
+{r} criado: {e} || {r} created: {e} || Đã tạo {r}: {e} || {r} ban gaya: {e} || 已创建{r}：{e}
++{n} linhas || +{n} lines || +{n} line || +{n} lines || 另有 {n} 条线路
+Crie uma linha em Configurações primeiro. || Create a line in Settings first. || Hãy tạo một line trong Cài đặt trước. || Pehle Settings mein ek line banayen. || 请先在“设置”中创建线路。
+Linhas de empresas || Company lines || Line của các công ty || Companies ki lines || 公司线路
+Cada linha é uma empresa ou site. Os chats chegam pela linha e vão para os agentes dela. || Each line is a company or site. Chats arrive through the line and go to its agents. || Mỗi line là một công ty hoặc trang web. Chat đến qua line và được chuyển cho nhân viên của line đó. || Har line ek company ya site hai. Chats line ke zariye aati hain aur usi line ke agents ke paas jati hain. || 每条线路对应一家公司或一个网站。会话从线路进入，并分配给该线路的客服。
+Código da linha || Line code || Mã line || Line code || 线路代码
+Nome da empresa ou site || Company or site name || Tên công ty hoặc trang web || Company ya site ka naam || 公司或网站名称
+Cor || Color || Màu || Rang || 颜色
+Adicionar linha || Add line || Thêm line || Line add karen || 添加线路
+Código || Code || Mã || Code || 代码
+Empresa || Company || Công ty || Company || 公司
+Agentes || Agents || Nhân viên || Agents || 客服
+Nenhuma linha. Crie a primeira para começar a receber chats. || No lines. Create the first one to start receiving chats. || Chưa có line nào. Hãy tạo line đầu tiên để bắt đầu nhận chat. || Koi line nahin. Chats lena shuru karne ke liye pehli line banayen. || 暂无线路。创建第一条线路即可开始接收会话。
+Editar linha || Edit line || Sửa line || Line edit karen || 编辑线路
+Linha atualizada. || Line updated. || Đã cập nhật line. || Line update ho gayi. || 线路已更新。
+Feche os chats abertos da linha {l} antes de excluir. || Close the open chats on line {l} before deleting. || Hãy kết thúc các chat đang mở của line {l} trước khi xóa. || Delete karne se pehle line {l} ki khuli chats khatam karen. || 删除前请先结束线路 {l} 的进行中会话。
+Excluir linha {l}? || Delete line {l}? || Xóa line {l}? || Line {l} delete karen? || 删除线路 {l}？
+Os agentes deixam de atender esta linha. Os chats encerrados continuam no histórico. || Agents stop handling this line. Ended chats stay in the history. || Nhân viên sẽ ngừng xử lý line này. Các chat đã kết thúc vẫn còn trong lịch sử. || Agents is line ko attend karna band kar denge. Khatam chats history mein rahengi. || 客服将不再接待此线路。已结束的会话仍保留在记录中。
+Linha excluída. || Line deleted. || Đã xóa line. || Line delete ho gayi. || 线路已删除。
+Use de 2 a 20 letras, números ou hífen. || Use 2 to 20 letters, numbers or hyphens. || Dùng 2 đến 20 chữ cái, chữ số hoặc dấu gạch ngang. || 2 se 20 huroof, numbers ya hyphen istemal karen. || 请使用 2 到 20 个字母、数字或连字符。
+Esse código já existe. || This code already exists. || Mã này đã tồn tại. || Yeh code pehle se mojood hai. || 该代码已存在。
+Linha {l} criada. || Line {l} created. || Đã tạo line {l}. || Line {l} ban gayi. || 线路 {l} 已创建。
+Linha não encontrada. || Line not found. || Không tìm thấy line. || Line nahin mili. || 未找到线路。
+Enviar imagem ou arquivo || Send image or file || Gửi ảnh hoặc tệp || Tasveer ya file bhejen || 发送图片或文件
+Idioma do cliente || Customer language || Ngôn ngữ của khách hàng || Customer ki zaban || 客户语言
+Encerrar conversa || End chat || Kết thúc cuộc trò chuyện || Chat khatam karen || 结束对话
+Encerrar esta conversa? || End this chat? || Kết thúc cuộc trò chuyện này? || Yeh chat khatam karen? || 结束此对话？
+Você pode abrir uma nova conversa quando quiser. || You can start a new chat whenever you want. || Bạn có thể bắt đầu cuộc trò chuyện mới bất cứ lúc nào. || Aap jab chahen nayi chat shuru kar sakte hain. || 您可以随时开始新的对话。
+Você encerrou a conversa. || You ended the chat. || Bạn đã kết thúc cuộc trò chuyện. || Aap ne chat khatam kar di. || 您已结束对话。
+Encerrado pelo cliente. || Ended by the customer. || Khách hàng đã kết thúc. || Customer ne khatam ki. || 客户已结束会话。
+Encerrado pelo cliente em {d}. || Ended by the customer on {d}. || Khách hàng đã kết thúc lúc {d}. || Customer ne {d} ko khatam ki. || 客户于 {d} 结束会话。
+Cliente || Customer || Khách hàng || Customer || 客户
+{n} encerrou o chat. || {n} ended the chat. || {n} đã kết thúc chat. || {n} ne chat khatam kar di. || {n} 结束了会话。
+Alertas || Alerts || Cảnh báo || Alerts || 警报
+Alertas de chats || Chat alerts || Cảnh báo chat || Chat alerts || 会话警报
+Clientes esperando resposta há mais de {t}. || Customers waiting for a reply for more than {t}. || Khách hàng chờ trả lời hơn {t}. || Customers {t} se zyada jawab ka intezar kar rahe hain. || 等待回复超过 {t} 的客户。
+O som toca quando surge um alerta e repete a cada minuto até você marcar Ciente. || The sound plays when an alert appears and repeats every minute until you mark Got it. || Âm thanh phát khi có cảnh báo và lặp lại mỗi phút cho đến khi bạn bấm Đã biết. || Alert aane par awaz bajti hai aur har minute dohrayi jati hai jab tak aap Theek hai na dabayen. || 出现警报时会响铃，并每分钟重复，直到您点击“知道了”。
+Alerta de demora || Delay alert || Cảnh báo chậm trả lời || Der ka alert || 延迟警报
+Avisa o supervisor quando um cliente espera resposta por esse tempo. Padrão: 300 s (5 min). || Alerts the supervisor when a customer waits this long for a reply. Default: 300 s (5 min). || Báo cho giám sát viên khi khách hàng chờ trả lời quá thời gian này. Mặc định: 300 giây (5 phút). || Jab customer itni der jawab ka intezar kare to supervisor ko alert milta hai. Default: 300 s (5 min). || 客户等待回复达到此时长时提醒主管。默认：300 秒（5 分钟）。
+Alerta de demora: {t}. || Delay alert: {t}. || Cảnh báo chậm trả lời: {t}. || Der ka alert: {t}. || 延迟警报：{t}。
+Alerta: {n} esperando há {t}. || Alert: {n} waiting for {t}. || Cảnh báo: {n} đang chờ {t}. || Alert: {n} {t} se intezar mein. || 警报：{n} 已等待 {t}。
+Som ativado || Sound on || Đã bật âm thanh || Awaz on || 声音已开启
+Som desativado || Sound off || Đã tắt âm thanh || Awaz off || 声音已关闭
+Ativar som || Turn on sound || Bật âm thanh || Awaz on karen || 开启声音
+Desativar som || Turn off sound || Tắt âm thanh || Awaz off karen || 关闭声音
+Testar som || Test sound || Thử âm thanh || Awaz test karen || 测试声音
+Clique em qualquer lugar para reativar o som. || Click anywhere to re-enable the sound. || Nhấp vào bất kỳ đâu để bật lại âm thanh. || Awaz dobara on karne ke liye kahin bhi click karen. || 点击任意位置以重新启用声音。
+Esperando || Waiting || Đang chờ || Intezar || 等待中
+Abrir conversa || Open chat || Mở cuộc trò chuyện || Guftagu kholen || 打开会话
+Ciente || Got it || Đã biết || Theek hai || 知道了
+Silenciado || Muted || Đã tắt tiếng || Khamosh || 已静音
+Nenhum alerta agora. Tudo em dia. || No alerts right now. All caught up. || Hiện không có cảnh báo. Mọi thứ đều ổn. || Abhi koi alert nahin. Sab theek hai. || 当前没有警报，一切正常。
+Chats || Chats || Chat || Chats || 会话
+Meus || Mine || Của tôi || Meri || 我的
+Não atribuídos || Unassigned || Chưa phân công || Ghair assigned || 未分配
+Equipe || Team || Đội ngũ || Team || 团队
+Silenciados || Muted || Đã tắt tiếng || Khamosh || 已静音
+Todos || All || Tất cả || Sab || 全部
+Não lidas || Unread || Chưa đọc || Unread || 未读
+Aguardando resposta || Pending reply || Chờ trả lời || Jawab baqi || 待回复
+Recolher painel de pastas || Collapse folders panel || Thu gọn bảng thư mục || Folders panel band karen || 收起文件夹面板
+Mostrar painel de pastas || Show folders panel || Hiện bảng thư mục || Folders panel dikhayen || 显示文件夹面板
+ID do chat, nome, telefone… || Chat ID, name, phone… || ID chat, tên, số điện thoại… || Chat ID, naam, phone… || 会话 ID、姓名、电话…
+Buscar chats || Search chats || Tìm chat || Chats talash karen || 搜索会话
+Filtros || Filters || Bộ lọc || Filters || 筛选
+Mais opções || More options || Tùy chọn khác || Mazeed options || 更多选项
+Pasta || Folder || Thư mục || Folder || 文件夹
+Resultados da busca || Search results || Kết quả tìm kiếm || Talash ke nataij || 搜索结果
+Nenhum chat encontrado para “{q}”. || No chats found for “{q}”. || Không tìm thấy chat cho “{q}”. || “{q}” ke liye koi chat nahin mili. || 未找到与“{q}”相关的会话。
+Nenhuma mensagem não lida. || No unread messages. || Không có tin nhắn chưa đọc. || Koi unread message nahin. || 没有未读消息。
+Nenhum cliente aguardando resposta. || No customers waiting for a reply. || Không có khách hàng nào đang chờ trả lời. || Koi customer jawab ka intezar nahin kar raha. || 没有等待回复的客户。
+Nenhum chat silenciado. || No muted chats. || Không có chat bị tắt tiếng. || Koi khamosh chat nahin. || 没有已静音的会话。
+Marcar todas como lidas || Mark all as read || Đánh dấu tất cả đã đọc || Sab ko parha hua mark karen || 全部标为已读
+Ordenar || Sort || Sắp xếp || Tarteeb || 排序
+Mais recentes || Newest first || Mới nhất || Naye pehle || 最新优先
+Mais antigas || Oldest first || Cũ nhất || Purane pehle || 最早优先
+Maior espera || Longest wait || Chờ lâu nhất || Sab se lamba intezar || 等待最久
+Limpar filtros || Clear filters || Xóa bộ lọc || Filters saaf karen || 清除筛选
+Período || Period || Khoảng thời gian || Muddat || 时间范围
+Hoje || Today || Hôm nay || Aaj || 今天
+Últimos 7 dias || Last 7 days || 7 ngày qua || Pichle 7 din || 最近 7 天
+Todas marcadas como lidas. || All marked as read. || Đã đánh dấu tất cả là đã đọc. || Sab parha hua mark ho gaya. || 已全部标为已读。
+Chat silenciado. || Chat muted. || Đã tắt tiếng chat. || Chat khamosh kar di gayi. || 会话已静音。
+Som do chat reativado. || Chat sound back on. || Đã bật lại âm thanh chat. || Chat ki awaz wapas on. || 会话声音已恢复。
+ID copiado: {v} || ID copied: {v} || Đã sao chép ID: {v} || ID copy ho gaya: {v} || 已复制 ID：{v}
+Copiar ID || Copy ID || Sao chép ID || ID copy karen || 复制 ID
+Silenciar chat || Mute chat || Tắt tiếng chat || Chat khamosh karen || 静音会话
+Reativar som do chat || Unmute chat || Bật lại âm thanh chat || Chat ki awaz on karen || 取消静音
+ID do chat || Chat ID || ID chat || Chat ID || 会话 ID
+Detalhes do cliente || Customer details || Thông tin khách hàng || Customer ki tafseel || 客户详情
+Disponível || Available || Sẵn sàng || Dastiyab || 空闲
+Em pausa || On break || Đang tạm nghỉ || Break par || 暂停中
+Alterar status || Change status || Đổi trạng thái || Status badlen || 切换状态
+Você está em pausa: não recebe chats novos. || You are on break: you won't receive new chats. || Bạn đang tạm nghỉ: sẽ không nhận chat mới. || Aap break par hain: nayi chats nahin milengi. || 您已暂停：不会收到新会话。
+Você está disponível para novos chats. || You are available for new chats. || Bạn đã sẵn sàng nhận chat mới. || Aap nayi chats ke liye dastiyab hain. || 您已可以接收新会话。
+Notificações || Notifications || Thông báo || Notifications || 通知
+Tocar som quando chega um chat novo ou uma mensagem nos seus chats. || Play a sound when a new chat or a message arrives in your chats. || Phát âm thanh khi có chat mới hoặc tin nhắn mới trong chat của bạn. || Jab aap ki chats mein nayi chat ya message aaye to awaz bajayen. || 您的会话有新会话或新消息时播放提示音。
+Limite de chats por agente || Chat limit per agent || Giới hạn chat mỗi nhân viên || Har agent ki chat limit || 每位客服会话上限
+Quantos chats abertos cada agente pode ter ao mesmo tempo. Novos chats esperam na fila quando todos estão no limite. 0 = sem limite. || How many open chats each agent can have at the same time. New chats wait in the queue when everyone is at the limit. 0 = no limit. || Số chat đang mở tối đa mỗi nhân viên có thể xử lý cùng lúc. Chat mới sẽ chờ trong hàng khi mọi người đều đạt giới hạn. 0 = không giới hạn. || Har agent ek waqt mein kitni khuli chats rakh sakta hai. Jab sab limit par hon to nayi chats queue mein intezar karti hain. 0 = koi limit nahin. || 每位客服可同时处理的进行中会话数。所有人都达到上限时，新会话进入排队。0 = 不限。
+Limite de chats: {n}. || Chat limit: {n}. || Giới hạn chat: {n}. || Chat limit: {n}. || 会话上限：{n}。
+Sem limite || No limit || Không giới hạn || Koi limit nahin || 不限
+Nova mensagem de {n} || New message from {n} || Tin nhắn mới từ {n} || {n} ka naya message || 来自 {n} 的新消息
+Sair do SAC? || Sign out of the help desk? || Đăng xuất khỏi CSKH? || Help desk se logout karen? || 退出客服系统？
+Seus chats abertos ficam com você por alguns segundos e depois vão para outro agente disponível. || Your open chats stay with you for a few seconds and then go to another available agent. || Các chat đang mở sẽ ở lại với bạn vài giây rồi chuyển cho nhân viên sẵn sàng khác. || Aap ki khuli chats kuch second aap ke paas rahengi phir kisi aur dastiyab agent ke paas chali jayengi. || 您的进行中会话会保留几秒，然后转给其他空闲客服。

@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SAC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm, precise work tool — a shipped help-desk product, not a mock.
+   IDEA: an operator's switchboard: two phone lines (7987, 8557) routing calls to people.
+   PICTURE: the working inbox itself — list, conversation, details — is the picture.
+   COLOUR and TYPE: black and white plus one mint field; Space Grotesk 700 titles, Inter body.
+   LAYOUT: dark rail, three working columns; stacks to list/chat with a bottom bar on phones. */
+:root{color-scheme:light dark;--bg:light-dark(#fff,#0f1012);--panel:light-dark(#f4f4f2,#17181b);--panel2:light-dark(#ebebe8,#202126);--ink:light-dark(#0b0b0c,#f2f2f0);--mute:light-dark(#66666c,#9b9ba3);--line:light-dark(#e3e3df,#2a2b30);--mint:#b8f5d0;--mintInk:#0b3d24;--rail:#0b0b0c;--bad:#d4382a;--h:'Space Grotesk',system-ui,sans-serif}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,sans-serif;overflow-x:clip}
+button,input,select,textarea{font:inherit;color:inherit}
+input,select,textarea{font-size:16px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+textarea{resize:vertical}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+button{cursor:pointer;border:0;background:none}
+.btn{min-height:40px;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);font-weight:500;white-space:nowrap}
+.btn:hover{background:var(--panel)}
+.pri{background:var(--ink);color:var(--bg);border-color:var(--ink)}.pri:hover{background:var(--ink);opacity:.88}
+.bad{color:var(--bad)}
+.mute{color:var(--mute)}
+h1{font:700 32px/1.05 var(--h);margin:0 0 6px;text-wrap:balance}
+h2{font:700 19px/1.2 var(--h);margin:0 0 12px}
+label.f{display:block;font-size:13px;color:var(--mute);margin:0 0 12px}label.f>input,label.f>select,label.f>textarea{margin-top:4px;color:var(--ink)}
+.chk{display:flex;gap:14px;flex-wrap:wrap;margin:4px 0 14px}.chk label{display:flex;gap:6px;align-items:center;font-size:14px}.chk input{width:auto}
+.tag{display:inline-block;font:600 12px/1 Inter;padding:4px 7px;border-radius:6px;white-space:nowrap}
+.l7987{background:var(--mint);color:var(--mintInk)}.l8557{background:var(--ink);color:var(--bg)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--line);margin-right:6px;vertical-align:1px}.dot.on{background:#1fbf6a}
+/* login */
+#login{min-height:100%;display:grid;grid-template-columns:1fr 1fr}
+#login .side{background:var(--rail);color:#f2f2f0;padding:clamp(28px,5vw,64px);display:flex;flex-direction:column;justify-content:space-between;gap:32px;overflow:hidden}
+#login .side h1{font-size:clamp(36px,4.4vw,52px);color:#fff}
+.board{display:grid;gap:12px;max-width:440px}
+.jack{display:flex;align-items:center;gap:14px;background:#17181b;border:1px solid #26272c;border-radius:14px;padding:14px 16px}
+.jack b{font:700 26px var(--h)}.jack span{color:#9b9ba3;font-size:14px}
+.jack i{margin-left:auto;width:14px;height:14px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 6px #b8f5d022;animation:pulse 2.4s infinite}
+.jack:nth-child(2) i{animation-delay:1.2s}
+@keyframes pulse{50%{box-shadow:0 0 0 12px #b8f5d000}}
+@media(prefers-reduced-motion:reduce){.jack i{animation:none}}
+#login form{align-self:center;justify-self:center;width:min(380px,90vw);padding:32px 0}
+.err{color:var(--bad);font-size:14px;min-height:21px;margin:4px 0 8px}
+/* app */
+#app{height:100%;display:grid;grid-template-columns:72px minmax(0,1fr)}
+.rail{background:var(--rail);display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:6px}
+.logo{font:700 15px var(--h);color:var(--rail);background:var(--mint);width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin-bottom:14px}
+.nb{width:52px;height:52px;border-radius:12px;color:#9b9ba3;display:grid;place-items:center;position:relative}
+.nb svg{width:22px;height:22px}
+.nb:hover{color:#fff;background:#1c1d21}.nb.on{color:var(--rail);background:var(--mint)}
+.nb .cnt{position:absolute;top:5px;right:5px;background:#fff;color:#000;font:600 11px/1 Inter;padding:3px 5px;border-radius:9px}
+.nb[title]::after{content:attr(title);position:absolute;left:62px;background:#000;color:#fff;font-size:12px;padding:4px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:.15s}
+.nb:hover::after{opacity:1}
+.meb{margin-top:auto;width:42px;height:42px;border-radius:50%;background:#26272c;color:#fff;font:600 14px Inter;display:grid;place-items:center}
+.view{height:100%;overflow:auto}.view[hidden]{display:none}
+.pad{padding:clamp(20px,3vw,40px) max(3vw,16px)}
+/* inbox */
+.work{display:grid;grid-template-columns:330px minmax(0,1fr) 290px;height:100%;overflow:hidden}
+.list{border-right:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;background:var(--panel)}
+.lh{padding:16px 16px 10px}.lh h2{margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.tabs button{padding:6px 10px;border-radius:8px;font-size:13px;font-weight:500;color:var(--mute);min-height:32px}
+.tabs button.on{background:var(--ink);color:var(--bg)}
+.tabs button span{opacity:.7;margin-left:3px}
+#chatList{overflow:auto;flex:1;padding:0 8px 8px}
+.ci{display:flex;gap:10px;width:100%;text-align:left;padding:11px 10px;border-radius:12px;margin-bottom:2px}
+.ci:hover{background:var(--panel2)}.ci.on{background:var(--bg);box-shadow:0 1px 0 var(--line),0 0 0 1px var(--line)}
+.av{flex:none;width:40px;height:40px;border-radius:50%;background:var(--panel2);display:grid;place-items:center;font:600 13px Inter}
+.ci .av{background:var(--bg);border:1px solid var(--line)}
+.cm{flex:1;display:grid;gap:2px}
+.r1{display:flex;justify-content:space-between;gap:8px}.r1 b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.r1 time{font-size:12px;color:var(--mute)}
+.r2{font-size:13px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.r3{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--mute);flex-wrap:wrap}
+.wait{font:600 12px Inter;font-variant-numeric:tabular-nums;padding:3px 6px;border-radius:6px;background:var(--panel2);color:var(--ink)}
+.wait.hot{background:var(--bad);color:#fff}
+.empty{padding:40px 20px;text-align:center;color:var(--mute);font-size:14px}
+.chat{display:flex;flex-direction:column;overflow:hidden}
+.ch{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap;min-height:66px}
+.ch .who{flex:1;display:grid}.ch .who b{font-weight:600}.ch .who span{font-size:13px;color:var(--mute)}
+.ch .acts{display:flex;gap:6px;flex-wrap:wrap}
+.back{display:none}
+#msgs{flex:1;overflow:auto;padding:20px clamp(12px,3vw,36px);display:flex;flex-direction:column;gap:8px;background:var(--bg)}
+.m{width:fit-content;flex:none;max-width:min(560px,82%);padding:9px 13px;border-radius:14px;background:var(--panel);align-self:flex-start;white-space:pre-wrap;overflow-wrap:anywhere}
+.m.me{align-self:flex-end;background:var(--mint);color:var(--mintInk)}
+.m small{display:block;font-size:11px;opacity:.65;margin-top:3px}
+.m img{display:block;max-width:100%;max-height:260px;border-radius:10px;margin-bottom:6px}
+.fc{display:flex;gap:8px;align-items:center;padding:8px 10px;background:#ffffff66;border-radius:10px;margin-bottom:6px;color:inherit;text-decoration:none;font-size:14px}
+.sys{align-self:center;font-size:12px;color:var(--mute);background:var(--panel);padding:4px 10px;border-radius:20px;text-align:center;max-width:90%}
+.comp{border-top:1px solid var(--line);padding:10px 14px 14px;position:relative}
+.tools{display:flex;gap:6px;margin-bottom:8px}
+.tb{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:6px 11px;border-radius:9px;font-size:13px;font-weight:500;background:var(--panel);cursor:pointer}
+.tb svg{width:16px;height:16px}
+.crow{display:flex;gap:8px;align-items:flex-end}.crow textarea{min-height:48px;max-height:180px}
+.crow .pri{min-height:48px}
+#att:not(:empty){margin-bottom:8px}
+.chip{display:inline-flex;gap:8px;align-items:center;background:var(--panel);padding:6px 10px;border-radius:8px;font-size:13px}
+.note{padding:14px 16px;border-top:1px solid var(--line);font-size:14px;color:var(--mute);background:var(--panel)}
+#pop{position:absolute;bottom:calc(100% - 4px);left:14px;width:min(380px,calc(100% - 28px));max-height:420px;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px #0003;padding:14px;z-index:5}
+.sc{display:flex;gap:4px;align-items:center;border-radius:10px}.sc:hover{background:var(--panel)}
+.sc>button:first-child{flex:1;text-align:left;padding:8px 10px}.sc>button:first-child b{display:block;font-weight:600;font-size:14px}.sc>button:first-child span{font-size:12px;color:var(--mute);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ib{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;color:var(--mute);flex:none}.ib:hover{background:var(--panel2);color:var(--ink)}.ib svg{width:16px;height:16px}
+.info{border-left:1px solid var(--line);overflow:auto;padding:20px 18px}
+.info .big{width:64px;height:64px;font-size:20px;margin-bottom:10px}
+dl{margin:16px 0 0;display:grid;gap:12px}dt{font-size:12px;color:var(--mute)}dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+/* tables & cards */
+.card{border:1px solid var(--line);border-radius:16px;padding:20px;background:var(--bg)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;margin-top:20px;align-items:start}
+.tw{border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:16px}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12px;font-weight:500;color:var(--mute);background:var(--panel)}tr:last-child td{border-bottom:0}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.ta{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.ta .btn{min-height:34px;padding:5px 10px;font-size:13px}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.stat{background:var(--panel);border-radius:14px;padding:14px 18px;min-width:150px}.stat b{display:block;font:700 30px/1.1 var(--h)}.stat span{font-size:13px;color:var(--mute)}
+.stat.mint{background:var(--mint);color:var(--mintInk)}.stat.mint span{color:var(--mintInk)}
+.hdr{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;flex-wrap:wrap}
+/* guide */
+.lang{display:flex;gap:4px;flex-wrap:wrap;background:var(--panel);padding:4px;border-radius:12px;width:fit-content}
+.lang button{min-height:38px;padding:6px 14px;border-radius:9px;font-weight:500;color:var(--mute)}.lang button.on{background:var(--ink);color:var(--bg)}
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin:26px 0 8px;background:var(--rail);border-radius:20px;padding:26px}
+.node{position:relative;background:#17181b;border:1px solid #2a2b30;border-radius:14px;padding:16px;color:#f2f2f0;font-weight:500;font-size:14px;display:grid;gap:10px}
+.node svg{width:26px;height:26px;color:var(--mint)}
+.node:not(:last-child)::after{content:'';position:absolute;right:-22px;top:50%;width:16px;height:2px;background:var(--mint)}
+.node:not(:last-child)::before{content:'';position:absolute;right:-23px;top:calc(50% - 4px);border:5px solid transparent;border-left-color:var(--mint);border-right:0}
+.node.hl{background:var(--mint);color:var(--mintInk);border-color:var(--mint)}.node.hl svg{color:var(--mintInk)}
+.steps{display:grid;gap:14px;margin-top:22px}
+.step{display:grid;grid-template-columns:56px minmax(0,1fr);gap:16px;border:1px solid var(--line);border-radius:16px;padding:20px}
+.step .no{font:700 32px/1 var(--h)}.step p{margin:0 0 10px;max-width:72ch}
+.whob{display:inline-block;background:var(--panel);border-radius:8px;padding:6px 10px;font-size:14px}.whob b{font-weight:600}
+.opt{font-size:12px;color:var(--mute);font-weight:500;margin-left:6px}
+pre.code{background:var(--rail);color:#e9e9e6;border-radius:14px;padding:16px 18px;margin:0;overflow-x:auto;font:13px/1.6 ui-monospace,Menlo,Consolas,monospace}
+pre.code .c{color:#8a8a92}pre.code .a{color:var(--mint)}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.cols ul{margin:0;padding-left:18px}.cols li{margin-bottom:6px;font-size:15px}
+.cols .card h2{font-size:16px;display:flex;align-items:center;gap:8px}
+.ask{margin-top:18px;background:var(--mint);color:var(--mintInk);border-radius:16px;padding:18px 20px;font-weight:500}
+#v-integracao>*{max-width:1100px}
+@media(max-width:900px){.flow{grid-template-columns:1fr 1fr}.node:nth-child(2)::after,.node:nth-child(2)::before{display:none}.cols{grid-template-columns:1fr}}
+@media(max-width:520px){.flow{grid-template-columns:1fr;gap:22px;padding:18px}.node::after,.node::before{display:none!important}.step{grid-template-columns:1fr;gap:6px}}
+/* demo game site + widget */
+#site{min-height:100%;background:#0d0f1a;color:#eef0f7;font-family:Inter,system-ui,sans-serif}
+#site.l8557{background:#120d10}
+.simbar{background:var(--mint);color:var(--mintInk);font-size:14px;padding:8px 16px;text-align:center}
+.simbar a{color:inherit;font-weight:600;margin-left:8px}
+.sh{display:flex;align-items:center;gap:24px;padding:16px max(4vw,16px);border-bottom:1px solid #ffffff14;flex-wrap:wrap}
+.brand{font:700 20px var(--h);display:flex;align-items:center;gap:10px}
+.brand i{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#7c8cff,#3dd6c4);display:block}
+#site.l8557 .brand i{background:linear-gradient(135deg,#ff8a5c,#ffd25c)}
+.sh nav{display:flex;gap:18px;font-size:14px;color:#a9adc2;flex-wrap:wrap}.sh nav b{color:#fff;font-weight:600}
+.pl{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:14px;background:#ffffff0f;padding:6px 12px 6px 6px;border-radius:30px}
+.pl span{width:28px;height:28px;border-radius:50%;background:#ffffff22;display:grid;place-items:center;font-size:12px;font-weight:600}
+.hero{margin:24px max(4vw,16px);border-radius:24px;min-height:240px;padding:clamp(24px,4vw,48px);position:relative;overflow:hidden;background:linear-gradient(120deg,#26307a,#11163a 60%);display:flex;flex-direction:column;justify-content:flex-end}
+#site.l8557 .hero{background:linear-gradient(120deg,#7a2f26,#3a1411 60%)}
+.hero h2{font:700 clamp(28px,4vw,46px)/1.05 var(--h);margin:0 0 8px;max-width:14ch;position:relative}
+.hero p{margin:0;color:#c9cde0;max-width:40ch;position:relative}
+.hero .orb{position:absolute;border-radius:50%;filter:blur(2px)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;padding:0 max(4vw,16px) 120px}
+.tile{aspect-ratio:4/5;border-radius:18px;padding:14px;display:flex;flex-direction:column;justify-content:flex-end;font-weight:600;position:relative;overflow:hidden}
+.tile small{display:block;font-weight:400;opacity:.75;font-size:12px}
+.tile svg{position:absolute;top:14px;right:14px;width:56px;height:56px;opacity:.9}
+.sect{padding:0 max(4vw,16px);font:700 20px var(--h);margin:8px 0 14px}
+/* widget */
+.wb{position:fixed;right:22px;bottom:22px;width:62px;height:62px;border-radius:50%;background:var(--mint);color:var(--mintInk);display:grid;place-items:center;box-shadow:0 10px 30px #0006;z-index:40}
+.wb svg{width:28px;height:28px}.wb .cnt{position:absolute;top:-2px;right:-2px;background:var(--bad);color:#fff;font:600 12px/1 Inter;padding:4px 7px;border-radius:12px}
+.wp{position:fixed;right:22px;bottom:96px;width:min(370px,calc(100vw - 24px));height:min(560px,calc(100vh - 120px));background:#fff;color:#0b0b0c;border-radius:20px;box-shadow:0 20px 60px #0008;display:flex;flex-direction:column;overflow:hidden;z-index:40;color-scheme:light}
+.wh{background:#0b0b0c;color:#fff;padding:16px 18px;display:flex;align-items:center;gap:12px}
+.wh b{display:block;font:700 17px var(--h)}.wh span{font-size:13px;color:#b5b5bd}
+.wh .ib{color:#fff;margin-left:auto}.wh .ib:hover{background:#ffffff1a;color:#fff}
+.wbody{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:8px;background:#f4f4f2}
+.wm{max-width:82%;width:fit-content;flex:none;padding:9px 12px;border-radius:14px;background:#fff;white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;box-shadow:0 1px 0 #e3e3df}
+.wm.p{align-self:flex-end;background:var(--mint);color:var(--mintInk)}
+.wm small{display:block;font-size:11px;opacity:.6;margin-top:2px}
+.wm img{display:block;max-width:100%;border-radius:8px;margin-bottom:4px}
+.wsys{align-self:center;font-size:12px;color:#66666c;text-align:center}
+.wf{padding:12px;border-top:1px solid #e3e3df;display:flex;gap:8px;align-items:flex-end;background:#fff}
+.wf textarea,.wstart input,.wstart textarea{background:#fff;color:#0b0b0c;border-color:#d8d8d4}
+.wf textarea{min-height:44px;max-height:120px}
+.wf .pri,.wstart .pri,.wend .pri{background:#0b0b0c;color:#fff;border-color:#0b0b0c}
+.wstart{padding:18px;overflow:auto;flex:1;background:#fff}.wstart label.f{color:#66666c}
+.wend{padding:14px;border-top:1px solid #e3e3df;text-align:center;font-size:14px;color:#66666c;background:#fff}
+@media(max-width:600px){.sh nav{display:none}.wp{right:12px;bottom:90px}.wb{right:14px;bottom:14px}}
+/* modal & toast */
+#modal{position:fixed;inset:0;background:#0007;display:grid;place-items:center;padding:16px;z-index:20}#modal[hidden]{display:none}
+.mbox{background:var(--bg);border-radius:18px;padding:24px;width:min(460px,100%);max-height:90vh;overflow:auto}
+.mact{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;flex-wrap:wrap}
+.pick{display:flex;align-items:center;gap:10px;width:100%;padding:10px;border-radius:12px;text-align:left;border:1px solid var(--line);margin-bottom:8px}.pick:hover{background:var(--panel)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:30;max-width:90vw}#toast[hidden]{display:none}
+#warn{background:var(--bad);color:#fff;font-size:13px;padding:6px 12px;text-align:center}
+@media(max-width:1180px){.work{grid-template-columns:300px minmax(0,1fr)}.info{display:none}}
+@media(max-width:760px){
+ #login{grid-template-columns:1fr}#login .side{padding:28px 20px}.board{display:none}
+ #app{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 62px}
+ .rail{order:2;flex-direction:row;justify-content:space-around;padding:5px 8px}.logo{display:none}.meb{margin:0}.nb[title]::after{display:none}
+ .work{grid-template-columns:1fr}.work .chat{display:none}.work.mc .list{display:none}.work.mc .chat{display:flex}.back{display:grid}
+ table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flow-root;border:0;padding:3px 14px;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;color:var(--mute)}.stack td:empty{display:none}.ta{justify-content:flex-start}
+}
+/* settings */
+.set{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:16px;margin-top:20px;max-width:1100px;align-items:start}
+.set>.card:first-child{grid-column:1/-1}
+.langs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.lc{border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-align:left;min-height:56px;font-weight:600;font-size:16px}
+.lc:hover{background:var(--panel)}.lc.on{background:var(--mint);color:var(--mintInk);border-color:var(--mint)}
+.lineform{display:grid;grid-template-columns:150px minmax(0,1fr) auto auto;gap:12px;align-items:end}
+.lineform label.f,.lineform .f{margin:0}.lineform .btn{min-height:46px}
+.sw{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}.sw label{position:relative;display:block}
+.sw input{position:absolute;opacity:0;width:1px;height:1px}
+.sw span{display:block;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);cursor:pointer}
+.sw input:checked+span{outline:3px solid var(--ink);outline-offset:2px}.sw input:focus-visible+span{outline:3px dashed var(--ink);outline-offset:2px}
+.chk label .tag{margin-right:2px}
+@media(max-width:900px){.lineform{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.lineform{grid-template-columns:1fr}}
+@media(max-width:760px){.stack tr{padding-left:14px}}
+/* customer widget, mobile first */
+.wh .wt{flex:1;min-width:0}.wh .wt span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wib{min-width:44px;height:44px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:3px;color:#fff;flex:none;cursor:pointer;padding:0 6px}
+.wib:hover{background:#ffffff1a}.wib svg{width:22px;height:22px}.wib em{font:600 11px Inter;font-style:normal}
+.wib.dark{color:#0b0b0c}.wib.dark:hover{background:#0000000d}
+.wlang{flex:1;overflow:auto;padding:20px 18px;background:#fff;display:grid;gap:10px;align-content:start;color:#0b0b0c}
+.wlang h3{font:500 14px/1.5 Inter;margin:0 0 6px;color:#66666c}
+.wlb{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;min-height:62px;padding:12px 16px;border:1px solid #d8d8d4;border-radius:14px;background:#fff;color:#0b0b0c;text-align:left}
+.wlb b{font:700 19px var(--h)}.wlb span{font-size:13px;color:#66666c;text-align:right}.wlb.on{border-color:#0b0b0c;box-shadow:inset 0 0 0 1px #0b0b0c}.wlb:hover{background:#f4f4f2}
+.wlead{margin:0 0 14px;font-size:16px}
+.wgo{width:100%;min-height:50px;border-radius:14px;background:#0b0b0c;color:#fff;font-weight:600;font-size:16px;margin-top:4px;display:block}
+.wend .wgo{margin-top:12px}
+.wf{align-items:flex-end;gap:6px;padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+.wf textarea{min-height:44px;height:44px;max-height:120px;resize:none;border-radius:22px;padding:10px 16px;line-height:1.4}
+.wsend{width:44px;height:44px;border-radius:50%;background:#0b0b0c;color:#fff;display:grid;place-items:center;flex:none}.wsend svg{width:20px;height:20px}
+.watt{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 12px;border-top:1px solid #e3e3df;background:#fff;font-size:14px;color:#0b0b0c}
+.watt img{width:44px;height:44px;object-fit:cover;border-radius:8px}.watt span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.watt>svg{width:20px;height:20px}
+#wAtt:empty{display:none}
+.wfile{display:flex;align-items:center;gap:6px;font-weight:600;margin-bottom:4px}.wfile svg{width:16px;height:16px}
+.wm{font-size:16px;line-height:1.4}
+.wb[hidden]{display:none!important}
+@media(max-width:600px){
+ .wp{inset:0;right:0;bottom:auto;width:100%;height:var(--wvh,100dvh);max-height:none;border-radius:0}
+ .wh{padding:calc(10px + env(safe-area-inset-top)) 6px 10px 14px}
+ body.wlock{overflow:hidden;position:fixed;inset:0;width:100%}
+ .wb{right:14px;bottom:calc(14px + env(safe-area-inset-bottom))}
+ .wstart,.wlang{padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+ .tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .hero{min-height:200px;margin:16px}
+ .simbar{font-size:12px}
+}
+.wp{position:fixed}
+.wconf{position:absolute;inset:0;background:#0b0b0c99;display:flex;align-items:flex-end;z-index:3}
+.wconf>div{background:#fff;color:#0b0b0c;width:100%;border-radius:20px 20px 0 0;padding:20px 18px calc(18px + env(safe-area-inset-bottom))}
+.wconf b{font:700 19px var(--h);display:block}.wconf p{margin:6px 0 16px;color:#66666c;font-size:15px}
+.wconfb{display:flex;gap:10px}.wconfb .wgo{margin:0}
+.wgo.ghost{background:#f1f1ef;color:#0b0b0c}.wgo.bad{background:var(--bad)}
+.wend{display:grid;gap:4px;padding:16px 16px calc(16px + env(safe-area-inset-bottom));font-size:15px;color:#3a3a40}
+/* alerts */
+.nb .cnt.al{background:var(--bad);color:#fff}
+.sndbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.snd{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:14px}.snd::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--line)}.snd.on::before{background:#1fbf6a}
+.allist{display:grid;gap:12px;margin-top:18px;max-width:1100px}
+.alc{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:16px;align-items:center;border:1px solid var(--bad);border-left-width:6px;border-radius:16px;padding:16px 18px;background:var(--bg)}
+.alc.ack{border-color:var(--line);border-left-color:var(--mute)}
+.alt b{display:block;font:700 32px/1 var(--h);color:var(--bad);font-variant-numeric:tabular-nums}.alc.ack .alt b{color:var(--mute)}.alt span{font-size:12px;color:var(--mute)}
+.alm .r1{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.alm .r1 b{font-size:17px}
+.alq{margin-top:6px;font-size:14px;background:var(--panel);border-radius:10px;padding:6px 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.alok{display:flex;flex-direction:column;align-items:center;gap:10px;padding:56px 20px;border:1px dashed var(--line);border-radius:16px;color:var(--mute)}.alok svg{width:36px;height:36px}.alok b{color:var(--ink);font-weight:600}
+@media(max-width:700px){.alc{grid-template-columns:1fr}.alc .ta{justify-content:flex-start}}
+.alm .r1{justify-content:flex-start}
+/* inbox v2 */
+.work{grid-template-columns:200px 330px minmax(0,1fr) 290px}
+.work.fcol{grid-template-columns:62px 330px minmax(0,1fr) 290px}
+.fold{border-right:1px solid var(--line);background:var(--bg);display:flex;flex-direction:column;overflow:auto}
+.fh{display:flex;align-items:center;justify-content:space-between;padding:16px 10px 10px 16px;gap:6px}.fh h2{margin:0;font-size:18px}
+.work.fcol .fh{padding:16px 9px 10px;justify-content:center}.work.fcol .fh h2{display:none}.work.fcol .fh .ib svg{transform:scaleX(-1)}
+#foldNav{display:grid;gap:2px;padding:4px 8px}
+.fi{display:flex;align-items:center;gap:10px;min-height:42px;padding:8px 10px;border-radius:10px;color:var(--ink);font-weight:500;text-align:left;width:100%;position:relative}
+.fi svg{width:19px;height:19px;flex:none;color:var(--mute)}.fi:hover{background:var(--panel)}
+.fi.on{background:var(--mint);color:var(--mintInk)}.fi.on svg{color:var(--mintInk)}
+.fi .fl{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fi .fn{font-size:12px;color:var(--mute)}.fi.on .fn{color:var(--mintInk)}
+.fi .fu{font:600 11px/1 Inter;background:var(--bad);color:#fff;padding:3px 6px;border-radius:9px}
+.work.fcol .fi{justify-content:center;padding:8px 0}.work.fcol .fi .fl,.work.fcol .fi .fn{display:none}.work.fcol .fi .fu{position:absolute;top:3px;right:3px}
+.srow{display:flex;gap:6px;align-items:center;margin-bottom:10px}
+.sbox{flex:1;display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:0 10px;min-height:42px}
+.sbox svg{width:17px;height:17px;color:var(--mute);flex:none}.sbox input{border:0;padding:8px 0;background:none;outline:none}
+.sbox:focus-within{outline:2px solid var(--ink);outline-offset:1px}
+.fb{border:1px solid var(--line);background:var(--bg);width:42px;height:42px;border-radius:10px;position:relative;color:var(--ink)}.fb svg{width:18px;height:18px}
+.fb.act{border-color:var(--ink)}
+.fcnt{position:absolute;top:-6px;right:-6px;background:var(--ink);color:var(--bg);font:600 11px/1 Inter;padding:3px 6px;border-radius:9px}
+.foldsel{display:none;margin-bottom:10px}
+.lhd{font-size:12px;color:var(--mute);margin-top:2px}
+.list{position:relative}
+.fpop{position:absolute;top:62px;left:12px;right:12px;z-index:6;background:var(--bg);border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px #0003;padding:12px;max-height:70vh;overflow:auto}
+.fpop .f{margin-bottom:10px}.fhd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.fgrp>span{font-size:13px;color:var(--mute)}.fgrp .chk{margin:6px 0 12px}
+.mi2{display:block;width:100%;text-align:left;padding:10px 12px;border-radius:9px;font-size:14px;min-height:40px}.mi2:hover{background:var(--panel)}.mi2.on{font-weight:600}.mi2.on::after{content:' ✓'}
+.msep{font-size:12px;color:var(--mute);padding:8px 12px 4px;border-top:1px solid var(--line);margin-top:6px}.msep:empty{padding:0}
+.cid{font:500 11px ui-monospace,Menlo,monospace;color:var(--mute)}
+.cidb{font:500 12px ui-monospace,Menlo,monospace;color:var(--mute);background:var(--panel);border-radius:6px;padding:2px 6px;vertical-align:1px}.cidb:hover{color:var(--ink)}
+.ci.un .r1 b{font-weight:700}.ci.un .r2{color:var(--ink)}
+.r2{display:flex;gap:6px;align-items:center}.r2{white-space:nowrap}.ub{margin-left:auto;flex:none;background:var(--bad);color:#fff;font:600 11px/1 Inter;padding:3px 6px;border-radius:9px}
+.mi{width:13px;height:13px;color:var(--mute)}
+.ch .acts .ib svg{width:19px;height:19px}
+@media(max-width:1180px){.work{grid-template-columns:200px 300px minmax(0,1fr)}.work.fcol{grid-template-columns:62px 300px minmax(0,1fr)}}
+@media(max-width:900px){.work,.work.fcol{grid-template-columns:300px minmax(0,1fr)}.fold{display:none}.foldsel{display:block}}
+@media(max-width:760px){.work,.work.fcol{grid-template-columns:1fr}}
+.ch .who{min-width:140px}.ch .who b,.ch .who span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:1440px){.work{grid-template-columns:200px 320px minmax(0,1fr)}.work.fcol{grid-template-columns:62px 320px minmax(0,1fr)}.info{display:none}}
+@media(max-width:1100px){.work,.work.fcol{grid-template-columns:300px minmax(0,1fr)}.fold{display:none}.foldsel{display:block}}
+@media(max-width:760px){.work,.work.fcol{grid-template-columns:1fr}}
+.infob{display:none}@media(max-width:1440px){.infob{display:grid}}
+@media(max-width:760px){.ch{gap:8px;padding:10px 12px}.ch .acts .btn{min-height:36px;padding:6px 10px;font-size:13px}.ch .acts{width:100%}}
+.stb{margin-top:auto;width:42px;height:30px;border-radius:15px;background:#1c1d21;display:grid;place-items:center;margin-bottom:6px}
+.stb i{width:12px;height:12px;border-radius:50%;background:#1fbf6a;box-shadow:0 0 0 3px #1fbf6a33}
+.stb.pz i{background:#f2b705;box-shadow:0 0 0 3px #f2b70533}
+.stb:not([hidden])+.meb{margin-top:0}
+.dot.pz{background:#f2b705}
+@media(max-width:760px){.stb{margin:0}}
+.nb.lgo{width:42px;height:42px;margin-top:6px}.nb.lgo:hover{color:#fff;background:#3a1512}
+.nb.lgo svg{width:20px;height:20px}
+@media(max-width:760px){.nb.lgo{margin:0}}
+</style>
+</head>
+<body>
+<div id="warn" hidden></div>
+<div id="login" hidden></div>
+<div id="app" hidden></div>
+<div id="site" hidden></div>
+<div id="modal" hidden></div>
+<div id="toast" hidden></div>
+<script>
+{
+const ROWS=[["(você)", "(you)", "(bạn)", "(aap)", "（您）"], ["1 atendente online", "1 agent online", "1 nhân viên trực tuyến", "1 agent online", "1 位客服在线"], ["Aberto em", "Opened", "Mở lúc", "Khula", "开启时间"], ["Abrir chat", "Open chat", "Mở chat", "Chat kholen", "开启会话"], ["Abrir site {l}", "Open site {l}", "Mở trang {l}", "Site {l} kholen", "打开网站 {l}"], ["Abrir suporte", "Open support", "Mở hỗ trợ", "Support kholen", "打开客服"], ["Acesso atualizado.", "Access updated.", "Đã cập nhật tài khoản.", "Access update ho gaya.", "账号已更新。"], ["Acesso excluído.", "Access deleted.", "Đã xóa tài khoản.", "Access delete ho gaya.", "账号已删除。"], ["Acesso total", "Full access", "Toàn quyền", "Full access", "最高权限"], ["Admin", "Admin", "Quản trị viên", "Admin", "管理员"], ["Agente", "Agent", "Nhân viên", "Agent", "客服"], ["Agentes online na linha {l}.", "Agents online on line {l}.", "Nhân viên trực tuyến ở line {l}.", "Line {l} par online agents.", "线路 {l} 的在线客服。"], ["Aguardando um atendente…", "Waiting for an agent…", "Đang chờ nhân viên…", "Agent ka intezar…", "正在等待客服…"], ["Alterar senha", "Change password", "Đổi mật khẩu", "Password badlen", "修改密码"], ["Anexar", "Attach", "Đính kèm", "Attach karen", "附件"], ["Anexo: {f}", "Attachment: {f}", "Tệp đính kèm: {f}", "Attachment: {f}", "附件：{f}"], ["Arcade", "Arcade", "Arcade", "Arcade", "街机"], ["Armazenamento cheio. Anexos grandes ocupam espaço.", "Storage full. Large attachments take up space.", "Bộ nhớ đã đầy. Tệp đính kèm lớn chiếm nhiều dung lượng.", "Storage bhar gaya. Bari attachments jagah leti hain.", "存储空间已满。大附件会占用空间。"], ["Arquivo acima de 1,5 MB. Neste protótipo os anexos ficam no navegador.", "File over 1.5 MB. In this prototype attachments are stored in the browser.", "Tệp lớn hơn 1,5 MB. Trong bản thử này, tệp đính kèm được lưu trong trình duyệt.", "File 1.5 MB se bari hai. Is prototype mein attachments browser mein rehti hain.", "文件超过 1.5 MB。在此原型中，附件保存在浏览器内。"], ["As senhas não conferem.", "Passwords do not match.", "Mật khẩu không khớp.", "Passwords match nahin karte.", "两次密码不一致。"], ["Assumido por {a}.", "Taken over by {a}.", "{a} đã nhận chat.", "{a} ne chat le liya.", "由 {a} 接手。"], ["Assumir", "Take over", "Nhận chat", "Le len", "接手"], ["Atendido por", "Handled by", "Được xử lý bởi", "Kis ne attend kiya", "接待人员"], ["Atendimento", "Inbox", "Hộp chat", "Inbox", "会话"], ["Atendimento encerrado. Obrigado pelo contato!", "Chat ended. Thank you for contacting us!", "Cuộc trò chuyện đã kết thúc. Cảm ơn bạn đã liên hệ!", "Chat khatam ho gayi. Rabta karne ka shukriya!", "会话已结束，感谢您的联系！"], ["Atribuído a {b}.", "Assigned to {b}.", "Đã giao cho {b}.", "{b} ko assign kiya gaya.", "已分配给 {b}。"], ["Aventura", "Adventure", "Phiêu lưu", "Adventure", "冒险"], ["Ações", "Actions", "Thao tác", "Actions", "操作"], ["Boa tarde, preciso de ajuda com a minha fatura.", "Good afternoon, I need help with my bill.", "Chào buổi chiều, tôi cần hỗ trợ về hóa đơn.", "Assalam o alaikum, mujhe apne bill mein madad chahiye.", "下午好，我的账单需要帮助。"], ["Buscar nome, telefone ou ID", "Search name, phone or ID", "Tìm tên, số điện thoại hoặc ID", "Naam, phone ya ID talash karen", "搜索姓名、电话或 ID"], ["Cada aba deste navegador guarda um login próprio. Abra este mesmo link em outras abas (normais, não anônimas) e entre com o agente, o supervisor e o admin. Todos veem os mesmos dados ao vivo.", "Each tab in this browser keeps its own login. Open this same link in other tabs (normal, not incognito) and sign in as the agent, the supervisor and the admin. Everyone sees the same live data.", "Mỗi tab trong trình duyệt này giữ một lần đăng nhập riêng. Mở cùng liên kết này ở các tab khác (tab thường, không ẩn danh) và đăng nhập bằng nhân viên, giám sát viên và quản trị viên. Mọi người đều thấy cùng dữ liệu theo thời gian thực.", "Is browser ka har tab apna alag login rakhta hai. Yehi link doosre tabs mein kholen (normal, incognito nahin) aur agent, supervisor aur admin se login karen. Sab ko live wahi data nazar aata hai.", "此浏览器的每个标签页各自保存登录状态。在其他标签页（普通模式，非无痕）打开同一链接，分别以客服、主管和管理员身份登录，所有人都能实时看到相同的数据。"], ["Cancelar", "Cancel", "Hủy", "Cancel", "取消"], ["Cartas", "Cards", "Bài", "Cards", "卡牌"], ["Central de atendimento", "Help desk", "Trung tâm chăm sóc khách hàng", "Help desk", "客服中心"], ["Chat aberto e atribuído a {n}.", "Chat opened and assigned to {n}.", "Đã mở chat và giao cho {n}.", "Chat khul gayi aur {n} ko assign hui.", "会话已开启并分配给 {n}。"], ["Chat aberto. Sem agente disponível na linha {l}: ficou na fila.", "Chat opened. No agent available on line {l}: it is in the queue.", "Đã mở chat. Không có nhân viên sẵn sàng ở line {l}: chat đang trong hàng chờ.", "Chat khul gayi. Line {l} par koi agent dastiyab nahin: chat queue mein hai.", "会话已开启。线路 {l} 暂无空闲客服，已进入排队。"], ["Chat assumido.", "Chat taken over.", "Đã nhận chat.", "Chat le li gayi.", "已接手会话。"], ["Chat encerrado.", "Chat ended.", "Đã kết thúc chat.", "Chat khatam ho gayi.", "会话已结束。"], ["Chat transferido.", "Chat transferred.", "Đã chuyển chat.", "Chat transfer ho gayi.", "会话已转接。"], ["Chats abertos", "Open chats", "Chat đang mở", "Khuli chats", "进行中会话"], ["Cliente entrou pela linha {l}.", "Customer came in on line {l}.", "Khách hàng vào từ line {l}.", "Customer line {l} se aaya.", "客户从线路 {l} 进入。"], ["Cliente entrou pelo site, linha {l}.", "Customer came in from the site, line {l}.", "Khách hàng vào từ trang web, line {l}.", "Customer site se aaya, line {l}.", "客户从网站进入，线路 {l}。"], ["Cliente responde", "Customer replies", "Khách hàng trả lời", "Customer jawab deta hai", "客户回复"], ["Com {n}", "With {n}", "Đang với {n}", "{n} ke paas", "由 {n} 接待"], ["Conectado como {n}.", "Signed in as {n}.", "Đang đăng nhập với tên {n}.", "{n} ke tor par login.", "当前登录：{n}。"], ["Configurações", "Settings", "Cài đặt", "Settings", "设置"], ["Conversa aberta", "Open conversation", "Cuộc trò chuyện đang mở", "Khuli guftagu", "进行中的会话"], ["Conversas", "Conversations", "Cuộc trò chuyện", "Guftagu", "会话列表"], ["Corrida", "Racing", "Đua xe", "Racing", "竞速"], ["Corrida Turbo", "Turbo Race", "Đua Tốc Độ", "Turbo Race", "极速赛车"], ["Criar acesso", "Create access", "Tạo tài khoản", "Access banayen", "创建账号"], ["Criar script", "Create script", "Tạo script", "Script banayen", "创建话术"], ["Deixe sua mensagem, respondemos em breve", "Leave a message, we will reply soon", "Hãy để lại tin nhắn, chúng tôi sẽ trả lời sớm", "Apna message chhoren, hum jald jawab denge", "请留言，我们会尽快回复"], ["Depois desse tempo sem resposta, o chat vai para outro agente online da mesma linha. Padrão: 240 s (4 min). Para testar rápido, use 30.", "After this time without a reply, the chat goes to another online agent on the same line. Default: 240 s (4 min). To test quickly, use 30.", "Sau khoảng thời gian không trả lời này, chat sẽ chuyển cho nhân viên trực tuyến khác cùng line. Mặc định: 240 giây (4 phút). Để thử nhanh, dùng 30.", "Itni der jawab na milne par chat usi line ke kisi aur online agent ke paas chali jati hai. Default: 240 s (4 min). Jaldi test karne ke liye 30 rakhen.", "超过此时间未回复，会话将转给同一线路的其他在线客服。默认：240 秒（4 分钟）。快速测试可设为 30。"], ["Desconectar", "Disconnect", "Ngắt kết nối", "Disconnect karen", "强制下线"], ["Duas linhas, uma equipe. Entre com seu acesso para atender, supervisionar ou administrar.", "Two lines, one team. Sign in to handle chats, supervise or manage.", "Hai line, một đội. Đăng nhập để hỗ trợ khách, giám sát hoặc quản trị.", "Do lines, ek team. Chat attend karne, supervise karne ya manage karne ke liye login karen.", "两条线路，一个团队。登录后即可接待、监督或管理。"], ["E-mail", "Email", "Email", "Email", "邮箱"], ["E-mail ou senha incorretos.", "Incorrect email or password.", "Email hoặc mật khẩu không đúng.", "Email ya password ghalat hai.", "邮箱或密码错误。"], ["Editar", "Edit", "Sửa", "Edit", "编辑"], ["Editar acesso", "Edit access", "Sửa tài khoản", "Access edit karen", "编辑账号"], ["Editar script", "Edit script", "Sửa script", "Script edit karen", "编辑话术"], ["Em aberto", "Open", "Đang mở", "Khuli", "进行中"], ["Em atendimento", "In progress", "Đang xử lý", "Jari hai", "接待中"], ["Encerrado", "Ended", "Đã kết thúc", "Khatam", "已结束"], ["Encerrado por", "Ended by", "Kết thúc bởi", "Kis ne khatam ki", "结束人"], ["Encerrado por {a}.", "Ended by {a}.", "{a} đã kết thúc.", "{a} ne khatam ki.", "由 {a} 结束。"], ["Encerrado por {n} em {d}.", "Ended by {n} on {d}.", "{n} đã kết thúc lúc {d}.", "{n} ne {d} ko khatam ki.", "由 {n} 于 {d} 结束。"], ["Encerrados", "Ended", "Đã kết thúc", "Khatam", "已结束"], ["Encerrar", "End chat", "Kết thúc", "Khatam karen", "结束"], ["Encerrar chat", "End chat", "Kết thúc chat", "Chat khatam karen", "结束会话"], ["Enquanto nenhum canal real está ligado, use esta tela para fazer clientes chegarem nas linhas e responderem.", "While no real channel is connected, use this screen to bring customers into the lines and have them reply.", "Khi chưa kết nối kênh thật, dùng màn hình này để tạo khách hàng vào các line và trả lời.", "Jab tak koi asli channel connect nahin, is screen se customers ko lines mein layen aur un se jawab dilwayen.", "在接入真实渠道之前，可在此页面模拟客户进入线路并回复。"], ["Entrar", "Sign in", "Đăng nhập", "Login", "登录"], ["Enviar", "Send", "Gửi", "Bhejen", "发送"], ["Enviar como cliente", "Send as customer", "Gửi với tư cách khách hàng", "Customer ban kar bhejen", "以客户身份发送"], ["Equipe online", "Team online", "Đội ngũ trực tuyến", "Online team", "在线团队"], ["Escolha ao menos uma linha.", "Choose at least one line.", "Chọn ít nhất một line.", "Kam az kam ek line chunen.", "请至少选择一条线路。"], ["Escolha uma conversa na lista", "Pick a conversation from the list", "Chọn một cuộc trò chuyện trong danh sách", "List se koi guftagu chunen", "从列表中选择会话"], ["Escreva a justificativa (mínimo 5 caracteres).", "Write the reason (at least 5 characters).", "Ghi lý do (ít nhất 5 ký tự).", "Wajah likhen (kam az kam 5 huroof).", "请填写理由（至少 5 个字符）。"], ["Escreva sua mensagem", "Write your message", "Nhập tin nhắn", "Apna message likhen", "输入消息"], ["Escreva uma mensagem. Enter envia, Shift+Enter quebra linha.", "Write a message. Enter sends, Shift+Enter adds a line.", "Nhập tin nhắn. Enter để gửi, Shift+Enter để xuống dòng.", "Message likhen. Enter se send, Shift+Enter se nayi line.", "输入消息。Enter 发送，Shift+Enter 换行。"], ["Esportes", "Sports", "Thể thao", "Sports", "体育"], ["Esse agente ficou offline.", "That agent went offline.", "Nhân viên này đã ngoại tuyến.", "Yeh agent offline ho gaya.", "该客服已离线。"], ["Esse chat já foi encerrado.", "This chat has already ended.", "Chat này đã kết thúc.", "Yeh chat pehle hi khatam ho chuki hai.", "该会话已结束。"], ["Esse e-mail já está em uso.", "This email is already in use.", "Email này đã được sử dụng.", "Yeh email pehle se istemal mein hai.", "该邮箱已被使用。"], ["Estrela Cadente", "Shooting Star", "Sao Băng", "Shooting Star", "流星"], ["Excluir", "Delete", "Xóa", "Delete karen", "删除"], ["Excluir acesso?", "Delete access?", "Xóa tài khoản?", "Access delete karen?", "删除账号？"], ["Falando com {n}", "Talking to {n}", "Đang trò chuyện với {n}", "{n} se baat ho rahi hai", "正在与 {n} 对话"], ["Fechar", "Close", "Đóng", "Band karen", "关闭"], ["Fila", "Queue", "Hàng chờ", "Queue", "排队"], ["Fila vazia.", "Queue is empty.", "Hàng chờ trống.", "Queue khali hai.", "暂无排队。"], ["Função", "Role", "Vai trò", "Role", "角色"], ["ID do jogador", "Player ID", "ID người chơi", "Player ID", "玩家 ID"], ["ID do jogador: {id}", "Player ID: {id}", "ID người chơi: {id}", "Player ID: {id}", "玩家 ID：{id}"], ["Idioma", "Language", "Ngôn ngữ", "Zaban", "语言"], ["Idioma alterado.", "Language changed.", "Đã đổi ngôn ngữ.", "Zaban badal di gayi.", "语言已切换。"], ["Iniciar conversa", "Start chat", "Bắt đầu trò chuyện", "Chat shuru karen", "开始对话"], ["Integração", "Integration", "Tích hợp", "Integration", "接入"], ["Início", "Home", "Trang chủ", "Home", "首页"], ["Jogos", "Games", "Trò chơi", "Games", "游戏"], ["Jogos em destaque", "Featured games", "Trò chơi nổi bật", "Numayan games", "精选游戏"], ["Justificativa", "Reason", "Lý do", "Wajah", "理由"], ["Justificativa (obrigatória)", "Reason (required)", "Lý do (bắt buộc)", "Wajah (zaroori)", "理由（必填）"], ["Justificativa: {r}", "Reason: {r}", "Lý do: {r}", "Wajah: {r}", "理由：{r}"], ["Liga dos Pênaltis", "Penalty League", "Giải Đá Phạt", "Penalty League", "点球联赛"], ["Linha", "Line", "Line", "Line", "线路"], ["Linha de chat", "Chat line", "Line chat", "Chat line", "聊天线路"], ["Linhas", "Lines", "Các line", "Lines", "线路"], ["Mensagem", "Message", "Tin nhắn", "Message", "消息"], ["Mensagem do cliente", "Customer message", "Tin nhắn của khách hàng", "Customer ka message", "客户消息"], ["Mensagem do cliente enviada.", "Customer message sent.", "Đã gửi tin nhắn của khách hàng.", "Customer ka message bhej diya gaya.", "客户消息已发送。"], ["Meu perfil", "My profile", "Hồ sơ của tôi", "Mera profile", "我的资料"], ["Meus", "Mine", "Của tôi", "Meri", "我的"], ["Meus scripts", "My scripts", "Script của tôi", "Meri scripts", "我的话术"], ["Minha conta", "My account", "Tài khoản của tôi", "Mera account", "我的账户"], ["Minha senha", "My password", "Mật khẩu của tôi", "Mera password", "我的密码"], ["Missão Lunar", "Moon Mission", "Sứ Mệnh Mặt Trăng", "Moon Mission", "登月任务"], ["Modo temporário: este navegador não permite salvar dados. Tudo some ao recarregar.", "Temporary mode: this browser does not allow saving data. Everything is lost on reload.", "Chế độ tạm thời: trình duyệt này không cho phép lưu dữ liệu. Mọi thứ sẽ mất khi tải lại.", "Temporary mode: yeh browser data save nahin karne deta. Reload par sab mit jayega.", "临时模式：此浏览器不允许保存数据，刷新后将全部丢失。"], ["Mínimo 6 caracteres.", "At least 6 characters.", "Tối thiểu 6 ký tự.", "Kam az kam 6 huroof.", "至少 6 个字符。"], ["Na fila", "In queue", "Đang chờ", "Queue mein", "排队中"], ["Nada por aqui.", "Nothing here.", "Không có gì ở đây.", "Yahan kuch nahin.", "暂无内容。"], ["Nenhum chat aberto", "No open chats", "Không có chat đang mở", "Koi khuli chat nahin", "没有进行中的会话"], ["Nenhum chat com você agora. Novos clientes chegam aqui automaticamente.", "No chats with you right now. New customers arrive here automatically.", "Hiện bạn không có chat nào. Khách hàng mới sẽ tự động đến đây.", "Abhi aap ke paas koi chat nahin. Naye customers khud yahan aa jayenge.", "您当前没有会话。新客户会自动分配到这里。"], ["Nenhum outro agente online na linha {l} agora.", "No other agent online on line {l} right now.", "Hiện không có nhân viên nào khác trực tuyến ở line {l}.", "Abhi line {l} par koi aur agent online nahin.", "线路 {l} 目前没有其他在线客服。"], ["Nenhum script ainda. Crie respostas prontas para usar com um clique.", "No scripts yet. Create ready replies to use with one click.", "Chưa có script. Tạo câu trả lời mẫu để dùng chỉ với một cú nhấp.", "Abhi koi script nahin. Tayyar jawab banayen jo ek click mein istemal hon.", "还没有话术。创建快捷回复，一键使用。"], ["Nenhuma conversa aberta", "No conversation open", "Chưa mở cuộc trò chuyện nào", "Koi guftagu khuli nahin", "未打开会话"], ["Ninguém cadastrado ainda.", "No one registered yet.", "Chưa có ai được đăng ký.", "Abhi koi register nahin.", "暂无用户。"], ["Nome", "Name", "Tên", "Naam", "姓名"], ["Nome do cliente", "Customer name", "Tên khách hàng", "Customer ka naam", "客户姓名"], ["Nova conversa", "New chat", "Cuộc trò chuyện mới", "Nayi chat", "新对话"], ["Nova senha", "New password", "Mật khẩu mới", "Naya password", "新密码"], ["Novo chat: {n} (linha {l})", "New chat: {n} (line {l})", "Chat mới: {n} (line {l})", "Nayi chat: {n} (line {l})", "新会话：{n}（线路 {l}）"], ["Novo cliente chega", "New customer arrives", "Khách hàng mới đến", "Naya customer aata hai", "新客户进入"], ["Novo script", "New script", "Script mới", "Nayi script", "新话术"], ["Não consigo acessar minha conta.", "I can't access my account.", "Tôi không đăng nhập được tài khoản.", "Main apne account mein login nahin kar pa raha.", "我无法登录我的账户。"], ["Observação (opcional)", "Note (optional)", "Ghi chú (tùy chọn)", "Note (optional)", "备注（可选）"], ["Offline", "Offline", "Ngoại tuyến", "Offline", "离线"], ["Oi! Quero trocar um produto.", "Hi! I want to exchange a product.", "Xin chào! Tôi muốn đổi sản phẩm.", "Hi! Mujhe ek product tabdeel karna hai.", "你好！我想换一个商品。"], ["Olá! Conte o que aconteceu e um atendente responde por aqui.", "Hi! Tell us what happened and an agent will reply here.", "Xin chào! Hãy cho chúng tôi biết chuyện gì đã xảy ra, nhân viên sẽ trả lời tại đây.", "Assalam o alaikum! Batayen kya hua, agent yahin jawab dega.", "您好！请描述您遇到的问题，客服会在这里回复。"], ["Olá, meu pedido ainda não chegou.", "Hello, my order hasn't arrived yet.", "Xin chào, đơn hàng của tôi vẫn chưa đến.", "Assalam o alaikum, mera order abhi tak nahin aaya.", "你好，我的订单还没到。"], ["Online", "Online", "Trực tuyến", "Online", "在线"], ["Opcional", "Optional", "Tùy chọn", "Optional", "可选"], ["Os dados do cliente aparecem aqui.", "Customer details appear here.", "Thông tin khách hàng hiển thị tại đây.", "Customer ki maloomat yahan nazar aayegi.", "客户资料显示在这里。"], ["Os dados ficam só neste navegador. Para uso real com várias pessoas, o próximo passo é um servidor.", "Data stays only in this browser. For real use with several people, the next step is a server.", "Dữ liệu chỉ lưu trong trình duyệt này. Để dùng thật với nhiều người, bước tiếp theo là máy chủ.", "Data sirf isi browser mein rehta hai. Kai logon ke sath asli istemal ke liye agla qadam server hai.", "数据仅保存在此浏览器中。要多人正式使用，下一步需要服务器。"], ["Perfil salvo.", "Profile saved.", "Đã lưu hồ sơ.", "Profile save ho gaya.", "资料已保存。"], ["Pesca Profunda", "Deep Fishing", "Câu Cá Biển Sâu", "Deep Fishing", "深海垂钓"], ["Preencha nome e e-mail válidos.", "Enter a valid name and email.", "Nhập tên và email hợp lệ.", "Durust naam aur email likhen.", "请填写有效的姓名和邮箱。"], ["Preencha título e texto.", "Fill in title and text.", "Nhập tiêu đề và nội dung.", "Title aur text likhen.", "请填写标题和内容。"], ["Preencher exemplo", "Fill example", "Điền mẫu", "Misal bharen", "填入示例"], ["Preferências da sua conta e do atendimento.", "Preferences for your account and the help desk.", "Tùy chọn cho tài khoản và hệ thống CSKH.", "Aap ke account aur help desk ki settings.", "您的账号和客服系统偏好设置。"], ["Primeira mensagem", "First message", "Tin nhắn đầu tiên", "Pehla message", "第一条消息"], ["Protegido", "Protected", "Được bảo vệ", "Mehfooz", "受保护"], ["Puzzle", "Puzzle", "Giải đố", "Puzzle", "益智"], ["Qual o prazo de entrega para o meu CEP?", "What is the delivery time to my postal code?", "Thời gian giao hàng đến mã bưu chính của tôi là bao lâu?", "Mere postal code par delivery mein kitna waqt lagega?", "送到我的邮编需要多久？"], ["Quem está conectado agora, por linha.", "Who is connected now, by line.", "Ai đang trực tuyến, theo từng line.", "Abhi kaun connected hai, line ke hisab se.", "当前在线人员（按线路）。"], ["Ranking", "Ranking", "Bảng xếp hạng", "Ranking", "排行榜"], ["Reino das Cartas", "Card Kingdom", "Vương Quốc Bài", "Card Kingdom", "卡牌王国"], ["Remover anexo", "Remove attachment", "Gỡ tệp đính kèm", "Attachment hatayen", "移除附件"], ["Repita a nova senha", "Repeat the new password", "Nhập lại mật khẩu mới", "Naya password dobara likhen", "再次输入新密码"], ["Sair", "Sign out", "Đăng xuất", "Logout", "退出登录"], ["Salvar", "Save", "Lưu", "Save karen", "保存"], ["Salvar perfil", "Save profile", "Lưu hồ sơ", "Profile save karen", "保存资料"], ["Salvar senha", "Save password", "Lưu mật khẩu", "Password save karen", "保存密码"], ["Script", "Script", "Script", "Script", "话术"], ["Script salvo.", "Script saved.", "Đã lưu script.", "Script save ho gayi.", "话术已保存。"], ["Segundos", "Seconds", "Giây", "Seconds", "秒"], ["Selecione uma conversa para ver as mensagens.", "Select a conversation to see the messages.", "Chọn một cuộc trò chuyện để xem tin nhắn.", "Messages dekhne ke liye koi guftagu chunen.", "选择会话以查看消息。"], ["Sem resposta de {a} em {t}. Transferido automaticamente para {b}.", "No reply from {a} in {t}. Automatically transferred to {b}.", "{a} không trả lời trong {t}. Đã tự động chuyển cho {b}.", "{a} ne {t} mein jawab nahin diya. Khud ba khud {b} ko transfer ho gayi.", "{a} 在 {t} 内未回复，已自动转接给 {b}。"], ["Senha", "Password", "Mật khẩu", "Password", "密码"], ["Senha alterada.", "Password changed.", "Đã đổi mật khẩu.", "Password badal diya gaya.", "密码已修改。"], ["Senha atual", "Current password", "Mật khẩu hiện tại", "Maujooda password", "当前密码"], ["Senha atual incorreta.", "Current password is incorrect.", "Mật khẩu hiện tại không đúng.", "Maujooda password ghalat hai.", "当前密码错误。"], ["Senha provisória", "Temporary password", "Mật khẩu tạm thời", "Aarzi password", "临时密码"], ["Sessão", "Session", "Phiên đăng nhập", "Session", "会话登录"], ["Seu acesso foi removido.", "Your access was removed.", "Tài khoản của bạn đã bị xóa.", "Aap ka access hata diya gaya.", "您的账号已被删除。"], ["Seu nome", "Your name", "Tên của bạn", "Aap ka naam", "您的姓名"], ["Simulador de cliente", "Customer simulator", "Mô phỏng khách hàng", "Customer simulator", "客户模拟器"], ["Simulação: site de jogos fictício na linha {l}. O chat chega no SAC em tempo real.", "Simulation: fictional gaming site on line {l}. The chat reaches the help desk in real time.", "Mô phỏng: trang game giả lập ở line {l}. Chat đến hệ thống CSKH theo thời gian thực.", "Simulation: line {l} par farzi gaming site. Chat foran help desk tak pohanchti hai.", "模拟：线路 {l} 的虚构游戏网站，聊天实时进入客服系统。"], ["Site de demonstração. Clique no balão no canto da tela para falar com o suporte.", "Demo site. Click the bubble in the corner of the screen to talk to support.", "Trang demo. Nhấn vào bong bóng ở góc màn hình để trò chuyện với hỗ trợ.", "Demo site. Support se baat karne ke liye screen ke kone mein bubble par click karen.", "演示网站。点击屏幕角落的气泡即可联系客服。"], ["Site de jogos de demonstração", "Demo gaming site", "Trang game demo", "Demo gaming site", "演示游戏网站"], ["Somente leitura. Só o agente responsável responde a este cliente.", "Read only. Only the assigned agent replies to this customer.", "Chỉ xem. Chỉ nhân viên phụ trách mới trả lời khách hàng này.", "Sirf parhne ke liye. Is customer ko sirf zimmedar agent jawab deta hai.", "只读。仅负责的客服可回复该客户。"], ["Status", "Status", "Trạng thái", "Status", "状态"], ["Sua senha foi alterada.", "Your password was changed.", "Mật khẩu của bạn đã được đổi.", "Aap ka password badal diya gaya.", "您的密码已修改。"], ["Supervisor", "Supervisor", "Giám sát viên", "Supervisor", "主管"], ["Suporte", "Support", "Hỗ trợ", "Support", "客服"], ["Tabuleiro", "Board", "Cờ bàn", "Board game", "棋盘"], ["Telefone", "Phone", "Số điện thoại", "Phone", "电话"], ["Tempo sem resposta", "Reply time limit", "Thời gian chờ trả lời", "Jawab ka waqt", "回复时限"], ["Tempo sem resposta: {t}.", "Reply time limit: {t}.", "Thời gian chờ trả lời: {t}.", "Jawab ka waqt: {t}.", "回复时限：{t}。"], ["Testar vários usuários", "Test several users", "Thử nhiều người dùng", "Kai users test karen", "测试多个用户"], ["Texto", "Text", "Nội dung", "Text", "内容"], ["Torneio de fim de semana", "Weekend tournament", "Giải đấu cuối tuần", "Weekend tournament", "周末锦标赛"], ["Torneios", "Tournaments", "Giải đấu", "Tournaments", "锦标赛"], ["Torre de Blocos", "Block Tower", "Tháp Khối", "Block Tower", "积木塔"], ["Transferido por {a} para {b}.", "Transferred by {a} to {b}.", "{a} đã chuyển cho {b}.", "{a} ne {b} ko transfer kiya.", "由 {a} 转接给 {b}。"], ["Transferir", "Transfer", "Chuyển", "Transfer karen", "转接"], ["Transferir chat", "Transfer chat", "Chuyển chat", "Chat transfer karen", "转接会话"], ["Transferências automáticas", "Automatic transfers", "Lượt chuyển tự động", "Automatic transfers", "自动转接次数"], ["Um site fictício com o balão de chat, como vai ficar no 7987.com e no 8557.com. Abra numa nova aba, escreva como jogador e responda aqui no SAC.", "A fictional site with the chat bubble, as it will look on 7987.com and 8557.com. Open it in a new tab, write as a player and reply here in the help desk.", "Một trang giả lập có bong bóng chat, giống như trên 7987.com và 8557.com. Mở trong tab mới, nhắn tin như người chơi và trả lời tại đây.", "Chat bubble ke sath ek farzi site, jaisi 7987.com aur 8557.com par hogi. Naye tab mein kholen, player ban kar likhen aur yahan help desk mein jawab den.", "一个带聊天气泡的虚构网站，效果与 7987.com 和 8557.com 上一致。在新标签页打开，以玩家身份发消息，然后在这里回复。"], ["Usuários", "Users", "Người dùng", "Users", "用户"], ["Vale para todo o sistema, inclusive o site de demonstração, e fica salvo no seu acesso.", "Applies to the whole system, including the demo site, and is saved to your account.", "Áp dụng cho toàn hệ thống, kể cả trang demo, và được lưu vào tài khoản của bạn.", "Poore system par lagu hota hai, demo site samait, aur aap ke account mein save rehta hai.", "适用于整个系统（包括演示网站），并保存在您的账号中。"], ["Veio pelo site", "Came from the site", "Đến từ trang web", "Site se aaya", "来自网站"], ["Via site", "Via site", "Qua trang web", "Site ke zariye", "通过网站"], ["Você está na fila. Um atendente vai falar com você em instantes.", "You are in the queue. An agent will be with you shortly.", "Bạn đang trong hàng chờ. Nhân viên sẽ liên hệ với bạn ngay.", "Aap queue mein hain. Agent thori der mein aap se baat karega.", "您正在排队，客服马上为您服务。"], ["Você foi desconectado por um supervisor.", "You were disconnected by a supervisor.", "Bạn đã bị giám sát viên ngắt kết nối.", "Supervisor ne aap ko disconnect kar diya.", "您已被主管强制下线。"], ["Você pode alterar a senha dos agentes das suas linhas.", "You can change the passwords of agents on your lines.", "Bạn có thể đổi mật khẩu của nhân viên thuộc line của bạn.", "Aap apni lines ke agents ka password badal sakte hain.", "您可以修改自己线路下客服的密码。"], ["Você pode criar e alterar acessos, exceto o acesso total.", "You can create and change access, except full access.", "Bạn có thể tạo và sửa tài khoản, trừ tài khoản toàn quyền.", "Aap access bana aur badal sakte hain, siwaye full access ke.", "您可以创建和修改账号，最高权限账号除外。"], ["Você pode criar e alterar qualquer acesso.", "You can create and change any access.", "Bạn có thể tạo và sửa mọi tài khoản.", "Aap koi bhi access bana aur badal sakte hain.", "您可以创建和修改任何账号。"], ["Você pode encerrar sem justificativa.", "You can end without a reason.", "Bạn có thể kết thúc mà không cần lý do.", "Aap baghair wajah ke khatam kar sakte hain.", "您可以不填理由直接结束。"], ["Voltar", "Back", "Quay lại", "Wapas", "返回"], ["Voltar ao SAC", "Back to help desk", "Quay lại CSKH", "Help desk par wapas", "返回客服系统"], ["Xadrez Relâmpago", "Blitz Chess", "Cờ Vua Chớp Nhoáng", "Blitz Chess", "闪电象棋"], ["agentes online na {l}", "agents online on {l}", "nhân viên trực tuyến ở {l}", "{l} par online agents", "{l} 在线客服"], ["chats na fila", "chats in queue", "chat trong hàng chờ", "queue mein chats", "排队中的会话"], ["título", "title", "tiêu đề", "title", "标题"], ["{a} assumiu o chat de {b}.", "{a} took over {b}'s chat.", "{a} đã nhận chat của {b}.", "{a} ne {b} ki chat le li.", "{a} 接手了 {b} 的会话。"], ["{a} ficou offline. Chat transferido para {b}.", "{a} went offline. Chat transferred to {b}.", "{a} đã ngoại tuyến. Chat được chuyển cho {b}.", "{a} offline ho gaya. Chat {b} ko transfer ho gayi.", "{a} 已离线，会话已转接给 {b}。"], ["{a} ficou offline. Chat voltou para a fila da linha {l}.", "{a} went offline. Chat went back to the line {l} queue.", "{a} đã ngoại tuyến. Chat quay lại hàng chờ của line {l}.", "{a} offline ho gaya. Chat line {l} ki queue mein wapas chali gayi.", "{a} 已离线，会话已退回线路 {l} 的排队。"], ["{n} ({e}) perde o acesso. Os chats abertos dele voltam para a fila.", "{n} ({e}) loses access. Their open chats go back to the queue.", "{n} ({e}) sẽ mất quyền truy cập. Các chat đang mở sẽ quay lại hàng chờ.", "{n} ({e}) ka access khatam ho jayega. Un ki khuli chats queue mein wapas chali jayengi.", "{n}（{e}）将失去访问权限，其进行中的会话将退回排队。"], ["{n} atendentes online", "{n} agents online", "{n} nhân viên trực tuyến", "{n} agents online", "{n} 位客服在线"], ["{n} chats abertos", "{n} open chats", "{n} chat đang mở", "{n} khuli chats", "{n} 个进行中会话"], ["{n} foi desconectado.", "{n} was disconnected.", "{n} đã bị ngắt kết nối.", "{n} ko disconnect kar diya gaya.", "{n} 已被强制下线。"], ["{r} criado: {e}", "{r} created: {e}", "Đã tạo {r}: {e}", "{r} ban gaya: {e}", "已创建{r}：{e}"], ["+{n} linhas", "+{n} lines", "+{n} line", "+{n} lines", "另有 {n} 条线路"], ["Crie uma linha em Configurações primeiro.", "Create a line in Settings first.", "Hãy tạo một line trong Cài đặt trước.", "Pehle Settings mein ek line banayen.", "请先在“设置”中创建线路。"], ["Linhas de empresas", "Company lines", "Line của các công ty", "Companies ki lines", "公司线路"], ["Cada linha é uma empresa ou site. Os chats chegam pela linha e vão para os agentes dela.", "Each line is a company or site. Chats arrive through the line and go to its agents.", "Mỗi line là một công ty hoặc trang web. Chat đến qua line và được chuyển cho nhân viên của line đó.", "Har line ek company ya site hai. Chats line ke zariye aati hain aur usi line ke agents ke paas jati hain.", "每条线路对应一家公司或一个网站。会话从线路进入，并分配给该线路的客服。"], ["Código da linha", "Line code", "Mã line", "Line code", "线路代码"], ["Nome da empresa ou site", "Company or site name", "Tên công ty hoặc trang web", "Company ya site ka naam", "公司或网站名称"], ["Cor", "Color", "Màu", "Rang", "颜色"], ["Adicionar linha", "Add line", "Thêm line", "Line add karen", "添加线路"], ["Código", "Code", "Mã", "Code", "代码"], ["Empresa", "Company", "Công ty", "Company", "公司"], ["Agentes", "Agents", "Nhân viên", "Agents", "客服"], ["Nenhuma linha. Crie a primeira para começar a receber chats.", "No lines. Create the first one to start receiving chats.", "Chưa có line nào. Hãy tạo line đầu tiên để bắt đầu nhận chat.", "Koi line nahin. Chats lena shuru karne ke liye pehli line banayen.", "暂无线路。创建第一条线路即可开始接收会话。"], ["Editar linha", "Edit line", "Sửa line", "Line edit karen", "编辑线路"], ["Linha atualizada.", "Line updated.", "Đã cập nhật line.", "Line update ho gayi.", "线路已更新。"], ["Feche os chats abertos da linha {l} antes de excluir.", "Close the open chats on line {l} before deleting.", "Hãy kết thúc các chat đang mở của line {l} trước khi xóa.", "Delete karne se pehle line {l} ki khuli chats khatam karen.", "删除前请先结束线路 {l} 的进行中会话。"], ["Excluir linha {l}?", "Delete line {l}?", "Xóa line {l}?", "Line {l} delete karen?", "删除线路 {l}？"], ["Os agentes deixam de atender esta linha. Os chats encerrados continuam no histórico.", "Agents stop handling this line. Ended chats stay in the history.", "Nhân viên sẽ ngừng xử lý line này. Các chat đã kết thúc vẫn còn trong lịch sử.", "Agents is line ko attend karna band kar denge. Khatam chats history mein rahengi.", "客服将不再接待此线路。已结束的会话仍保留在记录中。"], ["Linha excluída.", "Line deleted.", "Đã xóa line.", "Line delete ho gayi.", "线路已删除。"], ["Use de 2 a 20 letras, números ou hífen.", "Use 2 to 20 letters, numbers or hyphens.", "Dùng 2 đến 20 chữ cái, chữ số hoặc dấu gạch ngang.", "2 se 20 huroof, numbers ya hyphen istemal karen.", "请使用 2 到 20 个字母、数字或连字符。"], ["Esse código já existe.", "This code already exists.", "Mã này đã tồn tại.", "Yeh code pehle se mojood hai.", "该代码已存在。"], ["Linha {l} criada.", "Line {l} created.", "Đã tạo line {l}.", "Line {l} ban gayi.", "线路 {l} 已创建。"], ["Linha não encontrada.", "Line not found.", "Không tìm thấy line.", "Line nahin mili.", "未找到线路。"], ["Enviar imagem ou arquivo", "Send image or file", "Gửi ảnh hoặc tệp", "Tasveer ya file bhejen", "发送图片或文件"], ["Idioma do cliente", "Customer language", "Ngôn ngữ của khách hàng", "Customer ki zaban", "客户语言"], ["Encerrar conversa", "End chat", "Kết thúc cuộc trò chuyện", "Chat khatam karen", "结束对话"], ["Encerrar esta conversa?", "End this chat?", "Kết thúc cuộc trò chuyện này?", "Yeh chat khatam karen?", "结束此对话？"], ["Você pode abrir uma nova conversa quando quiser.", "You can start a new chat whenever you want.", "Bạn có thể bắt đầu cuộc trò chuyện mới bất cứ lúc nào.", "Aap jab chahen nayi chat shuru kar sakte hain.", "您可以随时开始新的对话。"], ["Você encerrou a conversa.", "You ended the chat.", "Bạn đã kết thúc cuộc trò chuyện.", "Aap ne chat khatam kar di.", "您已结束对话。"], ["Encerrado pelo cliente.", "Ended by the customer.", "Khách hàng đã kết thúc.", "Customer ne khatam ki.", "客户已结束会话。"], ["Encerrado pelo cliente em {d}.", "Ended by the customer on {d}.", "Khách hàng đã kết thúc lúc {d}.", "Customer ne {d} ko khatam ki.", "客户于 {d} 结束会话。"], ["Cliente", "Customer", "Khách hàng", "Customer", "客户"], ["{n} encerrou o chat.", "{n} ended the chat.", "{n} đã kết thúc chat.", "{n} ne chat khatam kar di.", "{n} 结束了会话。"], ["Alertas", "Alerts", "Cảnh báo", "Alerts", "警报"], ["Alertas de chats", "Chat alerts", "Cảnh báo chat", "Chat alerts", "会话警报"], ["Clientes esperando resposta há mais de {t}.", "Customers waiting for a reply for more than {t}.", "Khách hàng chờ trả lời hơn {t}.", "Customers {t} se zyada jawab ka intezar kar rahe hain.", "等待回复超过 {t} 的客户。"], ["O som toca quando surge um alerta e repete a cada minuto até você marcar Ciente.", "The sound plays when an alert appears and repeats every minute until you mark Got it.", "Âm thanh phát khi có cảnh báo và lặp lại mỗi phút cho đến khi bạn bấm Đã biết.", "Alert aane par awaz bajti hai aur har minute dohrayi jati hai jab tak aap Theek hai na dabayen.", "出现警报时会响铃，并每分钟重复，直到您点击“知道了”。"], ["Alerta de demora", "Delay alert", "Cảnh báo chậm trả lời", "Der ka alert", "延迟警报"], ["Avisa o supervisor quando um cliente espera resposta por esse tempo. Padrão: 300 s (5 min).", "Alerts the supervisor when a customer waits this long for a reply. Default: 300 s (5 min).", "Báo cho giám sát viên khi khách hàng chờ trả lời quá thời gian này. Mặc định: 300 giây (5 phút).", "Jab customer itni der jawab ka intezar kare to supervisor ko alert milta hai. Default: 300 s (5 min).", "客户等待回复达到此时长时提醒主管。默认：300 秒（5 分钟）。"], ["Alerta de demora: {t}.", "Delay alert: {t}.", "Cảnh báo chậm trả lời: {t}.", "Der ka alert: {t}.", "延迟警报：{t}。"], ["Alerta: {n} esperando há {t}.", "Alert: {n} waiting for {t}.", "Cảnh báo: {n} đang chờ {t}.", "Alert: {n} {t} se intezar mein.", "警报：{n} 已等待 {t}。"], ["Som ativado", "Sound on", "Đã bật âm thanh", "Awaz on", "声音已开启"], ["Som desativado", "Sound off", "Đã tắt âm thanh", "Awaz off", "声音已关闭"], ["Ativar som", "Turn on sound", "Bật âm thanh", "Awaz on karen", "开启声音"], ["Desativar som", "Turn off sound", "Tắt âm thanh", "Awaz off karen", "关闭声音"], ["Testar som", "Test sound", "Thử âm thanh", "Awaz test karen", "测试声音"], ["Clique em qualquer lugar para reativar o som.", "Click anywhere to re-enable the sound.", "Nhấp vào bất kỳ đâu để bật lại âm thanh.", "Awaz dobara on karne ke liye kahin bhi click karen.", "点击任意位置以重新启用声音。"], ["Esperando", "Waiting", "Đang chờ", "Intezar", "等待中"], ["Abrir conversa", "Open chat", "Mở cuộc trò chuyện", "Guftagu kholen", "打开会话"], ["Ciente", "Got it", "Đã biết", "Theek hai", "知道了"], ["Silenciado", "Muted", "Đã tắt tiếng", "Khamosh", "已静音"], ["Nenhum alerta agora. Tudo em dia.", "No alerts right now. All caught up.", "Hiện không có cảnh báo. Mọi thứ đều ổn.", "Abhi koi alert nahin. Sab theek hai.", "当前没有警报，一切正常。"], ["Chats", "Chats", "Chat", "Chats", "会话"], ["Meus", "Mine", "Của tôi", "Meri", "我的"], ["Não atribuídos", "Unassigned", "Chưa phân công", "Ghair assigned", "未分配"], ["Equipe", "Team", "Đội ngũ", "Team", "团队"], ["Silenciados", "Muted", "Đã tắt tiếng", "Khamosh", "已静音"], ["Todos", "All", "Tất cả", "Sab", "全部"], ["Não lidas", "Unread", "Chưa đọc", "Unread", "未读"], ["Aguardando resposta", "Pending reply", "Chờ trả lời", "Jawab baqi", "待回复"], ["Recolher painel de pastas", "Collapse folders panel", "Thu gọn bảng thư mục", "Folders panel band karen", "收起文件夹面板"], ["Mostrar painel de pastas", "Show folders panel", "Hiện bảng thư mục", "Folders panel dikhayen", "显示文件夹面板"], ["ID do chat, nome, telefone…", "Chat ID, name, phone…", "ID chat, tên, số điện thoại…", "Chat ID, naam, phone…", "会话 ID、姓名、电话…"], ["Buscar chats", "Search chats", "Tìm chat", "Chats talash karen", "搜索会话"], ["Filtros", "Filters", "Bộ lọc", "Filters", "筛选"], ["Mais opções", "More options", "Tùy chọn khác", "Mazeed options", "更多选项"], ["Pasta", "Folder", "Thư mục", "Folder", "文件夹"], ["Resultados da busca", "Search results", "Kết quả tìm kiếm", "Talash ke nataij", "搜索结果"], ["Nenhum chat encontrado para “{q}”.", "No chats found for “{q}”.", "Không tìm thấy chat cho “{q}”.", "“{q}” ke liye koi chat nahin mili.", "未找到与“{q}”相关的会话。"], ["Nenhuma mensagem não lida.", "No unread messages.", "Không có tin nhắn chưa đọc.", "Koi unread message nahin.", "没有未读消息。"], ["Nenhum cliente aguardando resposta.", "No customers waiting for a reply.", "Không có khách hàng nào đang chờ trả lời.", "Koi customer jawab ka intezar nahin kar raha.", "没有等待回复的客户。"], ["Nenhum chat silenciado.", "No muted chats.", "Không có chat bị tắt tiếng.", "Koi khamosh chat nahin.", "没有已静音的会话。"], ["Marcar todas como lidas", "Mark all as read", "Đánh dấu tất cả đã đọc", "Sab ko parha hua mark karen", "全部标为已读"], ["Ordenar", "Sort", "Sắp xếp", "Tarteeb", "排序"], ["Mais recentes", "Newest first", "Mới nhất", "Naye pehle", "最新优先"], ["Mais antigas", "Oldest first", "Cũ nhất", "Purane pehle", "最早优先"], ["Maior espera", "Longest wait", "Chờ lâu nhất", "Sab se lamba intezar", "等待最久"], ["Limpar filtros", "Clear filters", "Xóa bộ lọc", "Filters saaf karen", "清除筛选"], ["Período", "Period", "Khoảng thời gian", "Muddat", "时间范围"], ["Hoje", "Today", "Hôm nay", "Aaj", "今天"], ["Últimos 7 dias", "Last 7 days", "7 ngày qua", "Pichle 7 din", "最近 7 天"], ["Todas marcadas como lidas.", "All marked as read.", "Đã đánh dấu tất cả là đã đọc.", "Sab parha hua mark ho gaya.", "已全部标为已读。"], ["Chat silenciado.", "Chat muted.", "Đã tắt tiếng chat.", "Chat khamosh kar di gayi.", "会话已静音。"], ["Som do chat reativado.", "Chat sound back on.", "Đã bật lại âm thanh chat.", "Chat ki awaz wapas on.", "会话声音已恢复。"], ["ID copiado: {v}", "ID copied: {v}", "Đã sao chép ID: {v}", "ID copy ho gaya: {v}", "已复制 ID：{v}"], ["Copiar ID", "Copy ID", "Sao chép ID", "ID copy karen", "复制 ID"], ["Silenciar chat", "Mute chat", "Tắt tiếng chat", "Chat khamosh karen", "静音会话"], ["Reativar som do chat", "Unmute chat", "Bật lại âm thanh chat", "Chat ki awaz on karen", "取消静音"], ["ID do chat", "Chat ID", "ID chat", "Chat ID", "会话 ID"], ["Detalhes do cliente", "Customer details", "Thông tin khách hàng", "Customer ki tafseel", "客户详情"], ["Disponível", "Available", "Sẵn sàng", "Dastiyab", "空闲"], ["Em pausa", "On break", "Đang tạm nghỉ", "Break par", "暂停中"], ["Alterar status", "Change status", "Đổi trạng thái", "Status badlen", "切换状态"], ["Você está em pausa: não recebe chats novos.", "You are on break: you won't receive new chats.", "Bạn đang tạm nghỉ: sẽ không nhận chat mới.", "Aap break par hain: nayi chats nahin milengi.", "您已暂停：不会收到新会话。"], ["Você está disponível para novos chats.", "You are available for new chats.", "Bạn đã sẵn sàng nhận chat mới.", "Aap nayi chats ke liye dastiyab hain.", "您已可以接收新会话。"], ["Notificações", "Notifications", "Thông báo", "Notifications", "通知"], ["Tocar som quando chega um chat novo ou uma mensagem nos seus chats.", "Play a sound when a new chat or a message arrives in your chats.", "Phát âm thanh khi có chat mới hoặc tin nhắn mới trong chat của bạn.", "Jab aap ki chats mein nayi chat ya message aaye to awaz bajayen.", "您的会话有新会话或新消息时播放提示音。"], ["Limite de chats por agente", "Chat limit per agent", "Giới hạn chat mỗi nhân viên", "Har agent ki chat limit", "每位客服会话上限"], ["Quantos chats abertos cada agente pode ter ao mesmo tempo. Novos chats esperam na fila quando todos estão no limite. 0 = sem limite.", "How many open chats each agent can have at the same time. New chats wait in the queue when everyone is at the limit. 0 = no limit.", "Số chat đang mở tối đa mỗi nhân viên có thể xử lý cùng lúc. Chat mới sẽ chờ trong hàng khi mọi người đều đạt giới hạn. 0 = không giới hạn.", "Har agent ek waqt mein kitni khuli chats rakh sakta hai. Jab sab limit par hon to nayi chats queue mein intezar karti hain. 0 = koi limit nahin.", "每位客服可同时处理的进行中会话数。所有人都达到上限时，新会话进入排队。0 = 不限。"], ["Limite de chats: {n}.", "Chat limit: {n}.", "Giới hạn chat: {n}.", "Chat limit: {n}.", "会话上限：{n}。"], ["Sem limite", "No limit", "Không giới hạn", "Koi limit nahin", "不限"], ["Nova mensagem de {n}", "New message from {n}", "Tin nhắn mới từ {n}", "{n} ka naya message", "来自 {n} 的新消息"], ["Sair do SAC?", "Sign out of the help desk?", "Đăng xuất khỏi CSKH?", "Help desk se logout karen?", "退出客服系统？"], ["Seus chats abertos ficam com você por alguns segundos e depois vão para outro agente disponível.", "Your open chats stay with you for a few seconds and then go to another available agent.", "Các chat đang mở sẽ ở lại với bạn vài giây rồi chuyển cho nhân viên sẵn sàng khác.", "Aap ki khuli chats kuch second aap ke paas rahengi phir kisi aur dastiyab agent ke paas chali jayengi.", "您的进行中会话会保留几秒，然后转给其他空闲客服。"]];
+const GUIDE={
+ pt:{title:'Ligar o SAC a um site de jogos',intro:'Como um jogador do 7987.com ou do 8557.com chega até um agente aqui, e o que cada parte precisa fazer.',
+  flow:['Jogador no 7987.com','Widget de chat','Servidor do SAC','Agente da linha 7987'],step:'Passo',who:'Quem faz',opt:'opcional',
+  steps:[
+   ['Colocar o SAC num servidor de verdade','Hoje ele roda só dentro do navegador. Para receber jogadores de um site, precisa estar hospedado num servidor com banco de dados e conexão em tempo real, num endereço próprio, como sac.example.com.','nós escrevemos o código do servidor; você contrata a hospedagem (VPS, Railway, Render…) e o domínio.'],
+   ['Colocar o widget de chat no site','É o balão de atendimento no canto da tela. Um pequeno código vai no site; o data-linha diz de qual linha o jogador veio: 7987.com usa 7987, 8557.com usa 8557.','nós criamos o widget.'],
+   ['Instalar o código no back office da plataforma','Plataformas de jogos costumam ter no painel administrativo um campo como “código de chat ao vivo”, “script personalizado” ou “integração de suporte”, o mesmo lugar onde se instala um LiveChat ou um Tawk.to. Cole o código ali.','você, se tiver acesso ao back office; senão, o operador ou a equipe técnica da plataforma.'],
+   ['Identificar o jogador','Para o agente ver o ID, o nome ou o login do jogador, o site precisa enviar esses dados ao widget. Para consultar saldo, depósitos ou saques dentro do SAC, a plataforma precisa ter uma API e liberar o acesso.','a equipe técnica da plataforma.']],
+  code:'Código de exemplo para cada site',copy:'Copiar',copied:'Copiado',codeNote:'sac.example.com é só um exemplo. O endereço real vem depois do passo 1.',
+  st:'Onde estamos',ready:'Pronto',readyL:['Protótipo do SAC: logins, perfis, linhas 7987 e 8557','Distribuição automática, transferências, scripts, anexos'],
+  we:'Nós fazemos a seguir',weL:['Servidor com banco de dados e chat em tempo real','Widget de chat para os dois sites'],
+  you:'Depende de você',youL:['Hospedagem e domínio','Acesso ao back office do 7987.com e do 8557.com, ou contato com a equipe técnica deles'],
+  simT:'Testar a simulação',simD:'Um site de jogos fictício com o balão de chat. Abra numa nova aba, escreva como jogador e responda no SAC.',simB:'Abrir site',
+  ask:'Para continuar: veja se o painel administrativo do 7987.com e do 8557.com tem um campo para colar código de chat ao vivo ou script personalizado.'},
+ vi:{tab:'Tiếng Việt',lang:'vi',title:'Kết nối hệ thống CSKH với trang game',intro:'Cách người chơi trên 7987.com hoặc 8557.com liên hệ với nhân viên tại đây, và việc mỗi bên cần làm.',
+  flow:['Người chơi trên 7987.com','Widget chat','Máy chủ CSKH','Nhân viên line 7987'],step:'Bước',who:'Ai làm',opt:'tùy chọn',
+  steps:[
+   ['Đưa hệ thống CSKH lên máy chủ thật','Hiện tại hệ thống chỉ chạy trong trình duyệt. Để nhận người chơi từ một trang web, hệ thống cần được lưu trữ trên máy chủ có cơ sở dữ liệu và kết nối thời gian thực, với địa chỉ riêng như sac.example.com.','chúng tôi viết mã máy chủ; bạn thuê hosting (VPS, Railway, Render…) và tên miền.'],
+   ['Thêm widget chat vào trang web','Đây là bong bóng chat ở góc màn hình. Một đoạn mã nhỏ được đặt vào trang; data-linha cho biết người chơi đến từ line nào: 7987.com dùng 7987, 8557.com dùng 8557.','chúng tôi tạo widget.'],
+   ['Cài mã vào trang quản trị (back office) của nền tảng','Các nền tảng game thường có mục như “mã live chat”, “script tùy chỉnh” hoặc “tích hợp hỗ trợ” trong trang quản trị — cùng chỗ dùng để cài LiveChat hoặc Tawk.to. Dán mã vào đó.','bạn, nếu có quyền truy cập back office; nếu không, nhà vận hành hoặc đội kỹ thuật của nền tảng.'],
+   ['Nhận diện người chơi','Để nhân viên thấy ID, tên hoặc tên đăng nhập của người chơi, trang web phải gửi dữ liệu đó cho widget. Để xem số dư, nạp hoặc rút tiền ngay trong hệ thống CSKH, nền tảng cần có API và cấp quyền truy cập.','đội kỹ thuật của nền tảng.']],
+  code:'Mã mẫu cho từng trang',copy:'Sao chép',copied:'Đã sao chép',codeNote:'sac.example.com chỉ là ví dụ. Địa chỉ thật sẽ có sau bước 1.',
+  st:'Tình trạng hiện tại',ready:'Đã xong',readyL:['Bản thử hệ thống CSKH: đăng nhập, phân quyền, line 7987 và 8557','Phân chat tự động, chuyển chat, script, tệp đính kèm'],
+  we:'Chúng tôi làm tiếp',weL:['Máy chủ có cơ sở dữ liệu và chat thời gian thực','Widget chat cho hai trang web'],
+  you:'Phụ thuộc vào bạn',youL:['Hosting và tên miền','Quyền vào back office của 7987.com và 8557.com, hoặc liên hệ đội kỹ thuật của họ'],
+  simT:'Thử mô phỏng',simD:'Một trang game giả lập có bong bóng chat. Mở trong tab mới, nhắn tin như người chơi và trả lời trong CSKH.',simB:'Mở trang',ask:'Để tiếp tục: kiểm tra xem trang quản trị của 7987.com và 8557.com có mục để dán mã live chat hoặc script tùy chỉnh không.'},
+ ur:{tab:'Roman Urdu',lang:'ur-Latn',title:'Help desk ko gaming site se jorna',intro:'7987.com ya 8557.com par player yahan agent tak kaise pohanchta hai, aur har party ko kya karna hai.',
+  flow:['7987.com par player','Chat widget','Help desk server','Line 7987 ka agent'],step:'Qadam',who:'Kaun karega',opt:'optional',
+  steps:[
+   ['Help desk ko asli server par lagayen','Abhi yeh sirf browser ke andar chalta hai. Website se players lene ke liye isay database aur real-time connection wale server par host karna zaroori hai, apne address par jaise sac.example.com.','server ka code hum likhenge; hosting (VPS, Railway, Render…) aur domain aap lenge.'],
+   ['Site par chat widget lagayen','Yeh screen ke kone mein chat ka bubble hai. Site par ek chhota sa code lagaya jata hai; data-linha batata hai ke player kis line se aaya: 7987.com ke liye 7987, 8557.com ke liye 8557.','widget hum banayenge.'],
+   ['Platform ke back office mein code install karen','Gaming platforms ke admin panel mein aam tor par “live chat code”, “custom script” ya “support integration” jaisa field hota hai — wahi jagah jahan LiveChat ya Tawk.to lagaya jata hai. Code wahan paste karen.','aap, agar aap ke paas back office access hai; warna platform ka operator ya tech team.'],
+   ['Player ki pehchan','Agent ko player ki ID, naam ya login dikhane ke liye site ko yeh data widget ko bhejna hoga. Help desk ke andar balance, deposit ya withdrawal dekhne ke liye platform ke paas API honi chahiye aur us ka access dena hoga.','platform ki tech team.']],
+  code:'Har site ke liye misali code',copy:'Copy karen',copied:'Copy ho gaya',codeNote:'sac.example.com sirf misal hai. Asli address qadam 1 ke baad milega.',
+  st:'Abhi hum kahan hain',ready:'Tayyar',readyL:['Help desk ka prototype: login, roles, line 7987 aur 8557','Automatic routing, transfer, scripts, attachments'],
+  we:'Agla kaam hamara',weL:['Database aur real-time chat wala server','Dono sites ke liye chat widget'],
+  you:'Aap par munhasir',youL:['Hosting aur domain','7987.com aur 8557.com ke back office ka access, ya un ki tech team se rabta'],
+  simT:'Simulation azmaen',simD:'Chat bubble ke sath ek farzi gaming site. Naye tab mein kholen, player ban kar message karen aur help desk mein jawab den.',simB:'Site kholen',ask:'Aage barhne ke liye: check karen ke 7987.com aur 8557.com ke admin panel mein chat code ya custom script paste karne ka field hai ya nahin.'},
+ en:{tab:'English',lang:'en',title:'Connect the help desk to a gaming site',intro:'How a player on 7987.com or 8557.com reaches an agent here, and what each party has to do.',
+  flow:['Player on 7987.com','Chat widget','Help desk server','Agent on line 7987'],step:'Step',who:'Who does it',opt:'optional',
+  steps:[
+   ['Put the help desk on a real server','Today it runs only inside the browser. To receive players from a website, it must be hosted on a server with a database and a real-time connection, at its own address such as sac.example.com.','we write the server code; you get the hosting (VPS, Railway, Render…) and the domain.'],
+   ['Add the chat widget to the site','This is the chat bubble in the corner of the screen. A small piece of code goes on the site; data-linha tells which line the player came from: 7987.com uses 7987, 8557.com uses 8557.','we build the widget.'],
+   ['Install the code in the platform’s back office','Gaming platforms usually have a field such as “live chat code”, “custom script” or “support integration” in the admin panel — the same place used to install LiveChat or Tawk.to. Paste the code there.','you, if you have back-office access; otherwise the platform operator or its tech team.'],
+   ['Identify the player','For agents to see the player’s ID, name or login, the site must send that data to the widget. To check balance, deposits or withdrawals inside the help desk, the platform needs an API and must grant access to it.','the platform’s tech team.']],
+  code:'Example code for each site',copy:'Copy',copied:'Copied',codeNote:'sac.example.com is only an example. The real address comes after step 1.',
+  st:'Where we are',ready:'Ready',readyL:['Help desk prototype: logins, roles, lines 7987 and 8557','Automatic routing, transfers, scripts, attachments'],
+  we:'We build next',weL:['Server with database and real-time chat','Chat widget for both sites'],
+  you:'Depends on you',youL:['Hosting and domain','Back-office access to 7987.com and 8557.com, or contact with their tech team'],
+  simT:'Try the simulation',simD:'A fictional gaming site with the chat bubble. Open it in a new tab, write as a player and reply in the help desk.',simB:'Open site',ask:'To continue: check whether the admin panel of 7987.com and 8557.com has a field to paste live chat code or a custom script.'},
+ zh:{tab:'中文',lang:'zh-Hans',title:'将客服系统接入游戏网站',intro:'7987.com 或 8557.com 的玩家如何联系到这里的客服，以及各方需要做什么。',
+  flow:['7987.com 的玩家','聊天组件','客服服务器','7987 线路客服'],step:'步骤',who:'负责方',opt:'可选',
+  steps:[
+   ['将客服系统部署到正式服务器','目前系统只在浏览器中运行。要接收来自网站的玩家，系统必须部署在带有数据库和实时连接的服务器上，并使用独立地址，例如 sac.example.com。','服务器代码由我们编写；主机（VPS、Railway、Render 等）和域名由您购买。'],
+   ['在网站上添加聊天组件','即网页角落的聊天气泡。在网站中放入一小段代码；data-linha 表示玩家来自哪条线路：7987.com 使用 7987，8557.com 使用 8557。','组件由我们开发。'],
+   ['在平台后台安装代码','游戏平台的管理后台通常有“在线客服代码”、“自定义脚本”或“客服集成”之类的字段——也就是安装 LiveChat 或 Tawk.to 的地方。把代码粘贴到那里。','如果您有后台权限，由您操作；否则由平台运营方或其技术团队操作。'],
+   ['识别玩家','要让客服看到玩家的 ID、姓名或登录名，网站需要把这些数据发送给聊天组件。要在客服系统中查询余额、充值或提现，平台需要提供 API 并开放权限。','平台技术团队。']],
+  code:'各网站的示例代码',copy:'复制',copied:'已复制',codeNote:'sac.example.com 只是示例，正式地址在完成步骤 1 后确定。',
+  st:'当前进度',ready:'已完成',readyL:['客服系统原型：登录、权限、7987 和 8557 线路','自动分配、转接、快捷话术、文件上传'],
+  we:'我们接下来做',weL:['带数据库和实时聊天的服务器','两个网站的聊天组件'],
+  you:'需要您提供',youL:['主机和域名','7987.com 和 8557.com 的后台权限，或联系其技术团队'],
+  simT:'体验模拟',simD:'一个带聊天气泡的虚构游戏网站。在新标签页打开，以玩家身份发消息，然后在客服系统中回复。',simB:'打开网站',ask:'下一步：请确认 7987.com 和 8557.com 的管理后台是否有可粘贴在线客服代码或自定义脚本的字段。'}
+};
+/* generic integration texts (no fixed line numbers) */
+{const G={
+ pt:{intro:'Como um jogador de qualquer um dos seus sites chega até um agente aqui, e o que cada parte precisa fazer.',flow:['Jogador no site','Widget de chat','Servidor do SAC','Agente da linha'],
+  s2:'É o balão de atendimento no canto da tela. Um pequeno código vai em cada site; o data-linha diz de qual linha o jogador veio. Use o código da linha cadastrada em Configurações → Linhas de empresas.',
+  you:'Acesso ao back office de cada site, ou contato com a equipe técnica deles',ask:'Para continuar: veja se o painel administrativo de cada site tem um campo para colar código de chat ao vivo ou script personalizado.',
+  ready:'Protótipo do SAC: logins, perfis, linhas ilimitadas, pastas, filtros e IDs de chat'},
+ en:{intro:'How a player on any of your sites reaches an agent here, and what each party has to do.',flow:['Player on the site','Chat widget','Help desk server','Line agent'],
+  s2:'This is the chat bubble in the corner of the screen. A small piece of code goes on each site; data-linha tells which line the player came from. Use the line code registered in Settings → Company lines.',
+  you:'Back-office access to each site, or contact with their tech team',ask:'To continue: check whether each site’s admin panel has a field to paste live chat code or a custom script.',
+  ready:'Help desk prototype: logins, roles, unlimited lines, folders, filters and chat IDs'},
+ vi:{intro:'Cách người chơi trên bất kỳ trang nào của bạn liên hệ với nhân viên tại đây, và việc mỗi bên cần làm.',flow:['Người chơi trên trang web','Widget chat','Máy chủ CSKH','Nhân viên của line'],
+  s2:'Đây là bong bóng chat ở góc màn hình. Một đoạn mã nhỏ được đặt vào mỗi trang; data-linha cho biết người chơi đến từ line nào. Dùng mã line đã đăng ký trong Cài đặt → Line của các công ty.',
+  you:'Quyền vào back office của từng trang, hoặc liên hệ đội kỹ thuật của họ',ask:'Để tiếp tục: kiểm tra xem trang quản trị của từng trang có mục để dán mã live chat hoặc script tùy chỉnh không.',
+  ready:'Bản thử CSKH: đăng nhập, phân quyền, không giới hạn line, thư mục, bộ lọc và ID chat'},
+ ur:{intro:'Aap ki kisi bhi site par player yahan agent tak kaise pohanchta hai, aur har party ko kya karna hai.',flow:['Site par player','Chat widget','Help desk server','Line ka agent'],
+  s2:'Yeh screen ke kone mein chat ka bubble hai. Har site par ek chhota sa code lagaya jata hai; data-linha batata hai ke player kis line se aaya. Settings → Companies ki lines mein darj line code istemal karen.',
+  you:'Har site ke back office ka access, ya un ki tech team se rabta',ask:'Aage barhne ke liye: check karen ke har site ke admin panel mein live chat code ya custom script paste karne ka field hai ya nahin.',
+  ready:'Help desk prototype: login, roles, be-hisab lines, folders, filters aur chat IDs'},
+ zh:{intro:'玩家如何从您的任一网站联系到这里的客服，以及各方需要做什么。',flow:['网站上的玩家','聊天组件','客服服务器','线路客服'],
+  s2:'即网页角落的聊天气泡。在每个网站中放入一小段代码；data-linha 表示玩家来自哪条线路。请使用在“设置 → 公司线路”中登记的线路代码。',
+  you:'各网站的后台权限，或联系其技术团队',ask:'下一步：请确认各网站的管理后台是否有可粘贴在线客服代码或自定义脚本的字段。',
+  ready:'客服系统原型：登录、权限、不限数量的线路、文件夹、筛选和会话 ID'}};
+ for(const k in G){const g=GUIDE[k],x=G[k];g.intro=x.intro;g.flow=x.flow;g.steps[1][1]=x.s2;g.youL[1]=x.you;g.ask=x.ask;g.readyL[0]=x.ready}}
+
+const K='sac_db_v1',$=s=>document.querySelector(s),now=()=>Date.now();
+const LANGS=[['pt','Português','pt-BR'],['en','English','en-US'],['vi','Tiếng Việt','vi-VN'],['ur','Roman Urdu','en-GB'],['zh','中文','zh-CN']];
+const D={};LANGS.slice(1).forEach(([k],i)=>{D[k]={};for(const r of ROWS)if(r[i+1])D[k][r[0]]=r[i+1]});
+let lang=(()=>{try{const v=localStorage.getItem('sac_lang');return LANGS.some(l=>l[0]===v)?v:'pt'}catch(e){return 'pt'}})();
+const t=(k,p,L=lang)=>{let s=(L!=='pt'&&D[L]&&D[L][k])||k;if(p)for(const x in p)s=s.split('{'+x+'}').join(p[x]);return s};
+const loc=()=>LANGS.find(l=>l[0]===lang)[2];
+const RL={god:'Acesso total',admin:'Admin',supervisor:'Supervisor',agent:'Agente'};
+const rl=r=>t(RL[r]);
+const DEFLINES=[{id:'7987',name:'7987.com',color:'mint'},{id:'8557',name:'8557.com',color:'ink'}];
+const COL={mint:['#b8f5d0','#0b3d24','#1f6b5a'],ink:['var(--ink)','var(--bg)','#26307a'],lilac:['#d9ccff','#2a1a66','#4b2a8a'],peach:['#ffd6b8','#5a2a0b','#7a2f26'],sky:['#c7e4ff','#0b2f5a','#1b4f8a'],sun:['#fff0a8','#4a3c00','#7a5a12'],rose:['#ffc9dc','#5a0b2a','#7a1f4a'],stone:['#e3e3df','#0b0b0c','#3a3b40']};
+const LS=()=>(db&&db.lines)||DEFLINES;
+const LINES=()=>LS().map(l=>l.id);
+const LN=id=>LS().find(l=>l.id===id);
+let mem=null,db=null,me=null,view='atendimento',tab=null,sel=null,pend=null,editSc=null,known=new Set();
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const hm=x=>new Date(x).toLocaleTimeString(loc(),{hour:'2-digit',minute:'2-digit'});
+const dt=x=>new Date(x).toLocaleString(loc(),{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+const ini=n=>String(n||'?').trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+const uid=()=>Math.random().toString(36).slice(2,9)+now().toString(36).slice(-4);
+const fmtT=s=>s>=60&&s%60===0?`${s/60} min`:`${s} s`;
+const tagL=l=>{const x=LN(l),c=COL[x?.color]||COL.stone;return `<span class="tag" style="background:${c[0]};color:${c[1]}" title="${esc(x?.name||l)}">${esc(l)}</span>`};
+const csub=c=>c.customer.phone||(c.customer.pid?t('ID do jogador: {id}',{id:c.customer.pid}):t('Via site'));
+const X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+let lsOK=true;
+function load(){try{const s=localStorage.getItem(K);if(s)return JSON.parse(s)}catch(e){lsOK=false}return mem?JSON.parse(JSON.stringify(mem)):null}
+function save(d){mem=d;try{localStorage.setItem(K,JSON.stringify(d))}catch(e){if(e&&e.name==='QuotaExceededError')toast(t('Armazenamento cheio. Anexos grandes ocupam espaço.'));else lsOK=false}}
+let sidMem=null;
+function getSid(){try{return sessionStorage.getItem('sac_uid')}catch(e){return sidMem}}
+function setSid(v){sidMem=v;try{v?sessionStorage.setItem('sac_uid',v):sessionStorage.removeItem('sac_uid')}catch(e){}}
+async function hash(p){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('sac|'+p));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){let h=5381;for(const c of 'sac|'+p)h=((h*33)^c.charCodeAt(0))>>>0;return 'x'+h.toString(16)}}
+const U=(d,id)=>d.users.find(u=>u.id===id);
+const ME=()=>U(db,me);
+function online(d,u){const s=u&&d.sessions[u.id];return !!(s&&s.on&&!s.kick&&now()-s.lastSeen<20000)}
+const openOf=(d,id)=>d.chats.filter(c=>c.status==='open'&&c.agentId===id).length;
+const onAgents=(d,line,ex)=>d.users.filter(u=>u.role==='agent'&&u.lines.includes(line)&&u.id!==ex&&online(d,u));
+const pick=(d,line,ex)=>freeAgents(d,line,ex).filter(u=>!(d.cfg.maxChats>0&&openOf(d,u.id)>=d.cfg.maxChats)).sort((a,b)=>openOf(d,a.id)-openOf(d,b.id))[0];
+function sys(c,k,p){c.msgs.push({id:uid(),from:'system',k,p:p||{},at:now()})}
+const sysText=m=>m.k?t(m.k,m.p):m.text;
+function assign(c,u,k,p){c.agentId=u?u.id:null;if(u){c.assignedAt=now();if(!c.handled.includes(u.id))c.handled.push(u.id)}if(c.waiting)c.waiting=now();sys(c,k,p)}
+function maintain(d){let ch=false;const T=(d.cfg.timeout||240)*1000;
+ for(const c of d.chats){if(c.status!=='open')continue;
+  if(c.agentId&&!online(d,U(d,c.agentId))){const u=U(d,c.agentId),n=pick(d,c.line,c.agentId),a=u?u.name:'—';
+   n?assign(c,n,'{a} ficou offline. Chat transferido para {b}.',{a,b:n.name}):assign(c,null,'{a} ficou offline. Chat voltou para a fila da linha {l}.',{a,l:c.line});ch=true;continue}
+  if(c.agentId&&c.waiting&&now()-c.waiting>=T){const n=pick(d,c.line,c.agentId);if(n){const u=U(d,c.agentId);assign(c,n,'Sem resposta de {a} em {t}. Transferido automaticamente para {b}.',{a:u?u.name:'—',t:fmtT(d.cfg.timeout),b:n.name});c.transfers=(c.transfers||0)+1;ch=true}}
+  if(!c.agentId){const n=pick(d,c.line);if(n){assign(c,n,'Atribuído a {b}.',{b:n.name});ch=true}}
+ }return ch}
+function nextNo(d){d.chatSeq=(d.chatSeq??-1)+1;return d.chatSeq}
+function tx(fn){const d=load()||db;const r=fn(d);save(d);db=d;render();return r}
+
+/* permissions */
+const role=()=>ME()?.role;
+const isBoss=()=>['god','admin','supervisor'].includes(role());
+const isTop=()=>['god','admin'].includes(role());
+function canEdit(x){const r=role();return r==='god'||(r==='admin'&&x.role!=='god')}
+function canPass(x){const r=role();return canEdit(x)||(r==='supervisor'&&x.role==='agent')}
+function canKick(x){if(x.id===me||!online(db,x))return false;const r=role();return r==='god'||(r==='admin'&&x.role!=='god')||(r==='supervisor'&&x.role==='agent')}
+function canAct(c){if(c.status!=='open')return false;const u=ME();if(u.role==='agent')return c.agentId===me;return u.role!=='supervisor'||u.lines.includes(c.line)}
+function canReply(c){return c.status==='open'&&(c.agentId===me||(isBoss()&&canAct(c)))}
+function visible(c){const u=ME();if(u.role==='agent')return c.agentId===me||c.handled.includes(me);if(u.role==='supervisor')return u.lines.includes(c.line);return true}
+
+/* ui helpers */
+let tt;function toast(m){const x=$('#toast');x.textContent=m;x.hidden=false;clearTimeout(tt);tt=setTimeout(()=>x.hidden=true,3200)}
+function modal(h){$('#modal').innerHTML=`<div class="mbox" role="dialog" aria-modal="true">${h}</div>`;$('#modal').hidden=false;const f=$('#modal input,#modal textarea,#modal select');f&&f.focus()}
+const mclose=()=>{$('#modal').hidden=true;$('#modal').innerHTML=''};
+function setLang(l,persist){lang=l;document.documentElement.lang=loc();try{localStorage.setItem('sac_lang',l)}catch(e){}
+ if(persist&&me){const d=load()||db;const u=U(d,me);if(u){u.lang=l;save(d);db=d}}}
+
+/* ---------- shells ---------- */
+const IC={
+ chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
+ team:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14.2a5 5 0 0 1 5 5"/>',
+ users:'<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="11" r="2.5"/><path d="M5.5 17a3.5 3.5 0 0 1 7 0M15 10h3M15 14h3"/>',
+ sim:'<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18h3"/>',
+ plug:'<path d="M9 7V3M15 7V3M7 7h10v4a5 5 0 0 1-10 0zM12 16v5"/>',
+ bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'};
+const svg=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${IC[k]}</svg>`;
+const langOpts=()=>LANGS.map(l=>`<option value="${l[0]}" ${l[0]===lang?'selected':''}>${l[1]}</option>`).join('');
+
+function buildLogin(){const em=$('#lEmail')?.value||'';
+ $('#login').innerHTML=`<div class="side"><div><div class="logo" style="margin-bottom:28px">SAC</div><h1>${t('Central de atendimento')}</h1><p style="color:#9b9ba3;max-width:420px">${t('Duas linhas, uma equipe. Entre com seu acesso para atender, supervisionar ou administrar.')}</p></div>
+ <div class="board">${LS().slice(0,4).map(l=>`<div class="jack"><b>${esc(l.id)}</b><span>${esc(l.name)}</span><i></i></div>`).join('')}${LS().length>4?`<div class="mute" style="color:#9b9ba3">${t('+{n} linhas',{n:LS().length-4})}</div>`:''}</div></div>
+ <form id="fLogin" autocomplete="on"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px"><h2 style="font-size:26px;margin:0">${t('Entrar')}</h2><select id="lLang" aria-label="${t('Idioma')}" style="width:auto;min-height:40px;padding:6px 10px">${langOpts()}</select></div>
+ <label class="f">${t('E-mail')}<input id="lEmail" type="email" autocomplete="username" required value="${esc(em)}"></label>
+ <label class="f">${t('Senha')}<input id="lPass" type="password" autocomplete="current-password" required></label>
+ <div class="err" id="lErr"></div><button class="btn pri" style="width:100%;min-height:46px">${t('Entrar')}</button></form>`}
+
+function buildApp(){const u=ME();const nb=(v,ic,l,extra='')=>`<button class="nb" data-act="nav" data-v="${v}" title="${l}" aria-label="${l}" id="nav-${v}">${svg(ic)}${extra}</button>`;
+ $('#app').innerHTML=`<nav class="rail"><div class="logo">SAC</div>
+ ${nb('atendimento','chat',t('Atendimento'),'<span class="cnt" id="cntOpen" hidden></span>')}${nb('equipe','team',t('Equipe online'))}${nb('usuarios','users',t('Usuários'))}${nb('simulador','sim',t('Simulador de cliente'))}${nb('alertas','bell',t('Alertas'),'<span class="cnt al" id="cntAl" hidden></span>')}${nb('integracao','plug',t('Integração'))}${nb('config','gear',t('Configurações'))}
+ <button class="stb" id="stBtn" data-act="pauseToggle" hidden><i></i></button>
+ <button class="meb" data-act="nav" data-v="config" id="meBtn" title="${t('Configurações')}" aria-label="${t('Configurações')}"></button>
+ <button class="nb lgo" data-act="askLogout" title="${t('Sair')}" aria-label="${t('Sair')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg></button></nav>
+
+ <section class="view" id="v-atendimento"><div class="work" id="work">
+  <aside class="fold" id="fold"><div class="fh"><h2>${t('Chats')}</h2><button class="ib" data-act="foldToggle" aria-label="${t('Recolher painel de pastas')}" title="${t('Recolher painel de pastas')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 10l-2 2 2 2"/></svg></button></div><nav id="foldNav"></nav></aside>
+  <aside class="list"><div class="lh"><div class="srow"><label class="sbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="${t('ID do chat, nome, telefone…')}" aria-label="${t('Buscar chats')}"></label>
+   <button class="ib fb" id="fBtn" data-act="filters" aria-label="${t('Filtros')}" title="${t('Filtros')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span class="fcnt" id="fCnt" hidden></span></button>
+   <button class="ib fb" data-act="more" aria-label="${t('Mais opções')}" title="${t('Mais opções')}"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button></div>
+   <select id="foldSel" class="foldsel" aria-label="${t('Pasta')}"></select><div class="tabs" id="tabs"></div><div class="lhd" id="listHead" hidden></div></div><div id="chatList"></div><div id="fpop" class="fpop" hidden></div></aside>
+  <main class="chat"><div class="ch" id="chatHead"></div><div id="msgs"></div>
+   <div class="comp" id="comp"><div id="att"></div>
+    <div class="tools"><button class="tb" data-act="scripts" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5zM9 9h6M9 13h6M9 17h3"/></svg>${t('Script')}</button>
+    <label class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11.5 12.3 19a5 5 0 0 1-7-7l8-8a3.3 3.3 0 0 1 4.7 4.7l-8 8a1.7 1.7 0 0 1-2.4-2.4l7.3-7.3"/></svg>${t('Anexar')}<input type="file" id="file" hidden></label></div>
+    <div class="crow"><textarea id="txt" rows="2" placeholder="${t('Escreva uma mensagem. Enter envia, Shift+Enter quebra linha.')}"></textarea><button class="btn pri" data-act="send" type="button">${t('Enviar')}</button></div>
+    <div id="pop" hidden></div></div>
+   <div class="note" id="compNote" hidden></div></main>
+  <aside class="info" id="info"></aside></div></section>
+
+ <section class="view pad" id="v-equipe" hidden><h1>${t('Equipe online')}</h1><p class="mute" style="margin:0">${t('Quem está conectado agora, por linha.')}</p><div class="stats" id="teamStats"></div>
+  <div class="tw"><table class="stack"><thead><tr><th>${t('Nome')}</th><th>${t('Função')}</th><th>${t('Linhas')}</th><th>${t('Status')}</th><th style="text-align:right">${t('Chats abertos')}</th><th style="text-align:right">${t('Ações')}</th></tr></thead><tbody id="teamBody"></tbody></table></div></section>
+
+ <section class="view pad" id="v-usuarios" hidden><h1>${t('Usuários')}</h1><p class="mute" style="margin:0" id="usersSub"></p>
+  <div class="grid2" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))">
+   <form class="card" id="fNewUser"><h2>${t('Criar acesso')}</h2>
+    <label class="f">${t('Nome')}<input id="nuName" required></label><label class="f">${t('E-mail')}<input id="nuEmail" type="email" required></label>
+    <label class="f">${t('Senha provisória')}<input id="nuPass" type="text" minlength="6" required></label>
+    <label class="f">${t('Função')}<select id="nuRole">${['admin','supervisor','agent'].map(r=>`<option value="${r}" ${r==='agent'?'selected':''}>${rl(r)}</option>`).join('')}</select></label>
+    <div style="font-size:13px;color:var(--mute)">${t('Linhas')}</div><div class="chk" id="nuLines"></div>
+    <button class="btn pri" style="width:100%">${t('Criar acesso')}</button></form>
+   <div style="grid-column:span 2;min-width:min(100%,520px)"><div class="tw" style="margin-top:0"><table class="stack"><thead><tr><th>${t('Nome')}</th><th>${t('E-mail')}</th><th>${t('Função')}</th><th>${t('Linhas')}</th><th style="text-align:right">${t('Ações')}</th></tr></thead><tbody id="usersBody"></tbody></table></div></div>
+  </div></section>
+
+ <section class="view pad" id="v-simulador" hidden><h1>${t('Simulador de cliente')}</h1>
+  <p class="mute" style="max-width:68ch;margin:0">${t('Enquanto nenhum canal real está ligado, use esta tela para fazer clientes chegarem nas linhas e responderem.')}</p>
+  <div class="grid2">
+   <div class="card" style="background:var(--mint);color:var(--mintInk);border-color:var(--mint)"><h2>${t('Site de jogos de demonstração')}</h2>
+    <p style="margin:0 0 12px;font-size:14px">${t('Um site fictício com o balão de chat, como vai ficar no 7987.com e no 8557.com. Abra numa nova aba, escreva como jogador e responda aqui no SAC.')}</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap" id="simSites"></div></div>
+   <form class="card" id="fSimNew"><h2>${t('Novo cliente chega')}</h2>
+    <label class="f">${t('Nome do cliente')}<input id="snName" required></label><label class="f">${t('Telefone')}<input id="snPhone" required></label>
+    <label class="f">${t('Linha')}<select id="snLine"></select></label>
+    <label class="f">${t('Primeira mensagem')}<textarea id="snMsg" rows="2" required></textarea></label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" data-act="simFill">${t('Preencher exemplo')}</button><button class="btn pri" style="flex:1">${t('Abrir chat')}</button></div></form>
+   <form class="card" id="fSimMsg"><h2>${t('Cliente responde')}</h2>
+    <label class="f">${t('Conversa aberta')}<select id="smChat"></select></label><label class="f">${t('Mensagem do cliente')}<textarea id="smMsg" rows="3" required></textarea></label>
+    <button class="btn pri" style="width:100%">${t('Enviar como cliente')}</button></form>
+   <div class="card"><h2>${t('Testar vários usuários')}</h2>
+    <p style="margin:0 0 8px;font-size:14px">${t('Cada aba deste navegador guarda um login próprio. Abra este mesmo link em outras abas (normais, não anônimas) e entre com o agente, o supervisor e o admin. Todos veem os mesmos dados ao vivo.')}</p>
+    <p class="mute" style="margin:0;font-size:13px">${t('Os dados ficam só neste navegador. Para uso real com várias pessoas, o próximo passo é um servidor.')}</p></div>
+  </div></section>
+
+ <section class="view pad" id="v-integracao" hidden><div id="guide"></div></section>
+
+ <section class="view pad" id="v-alertas" hidden><div class="hdr"><div><h1>${t('Alertas de chats')}</h1><p class="mute" style="margin:0" id="alSub"></p></div><div class="sndbar" id="alSound"></div></div>
+  <p class="mute" style="font-size:13px;margin:10px 0 0">${t('O som toca quando surge um alerta e repete a cada minuto até você marcar Ciente.')}</p><div id="alList" class="allist"></div></section>
+
+ <section class="view pad" id="v-config" hidden><h1>${t('Configurações')}</h1><p class="mute" style="margin:0">${t('Preferências da sua conta e do atendimento.')}</p>
+  <div class="set">
+   <div class="card"><h2>${t('Idioma')}</h2><p class="mute" style="margin:-4px 0 14px;font-size:14px">${t('Vale para todo o sistema, inclusive o site de demonstração, e fica salvo no seu acesso.')}</p>
+    <div class="langs">${LANGS.map(l=>`<button class="lc ${l[0]===lang?'on':''}" data-act="setLang" data-l="${l[0]}" aria-pressed="${l[0]===lang}" lang="${l[2]}">${l[1]}</button>`).join('')}</div></div>
+   <div class="card" id="linesCard" style="grid-column:1/-1"><h2>${t('Linhas de empresas')}</h2><p class="mute" style="margin:-4px 0 14px;font-size:14px">${t('Cada linha é uma empresa ou site. Os chats chegam pela linha e vão para os agentes dela.')}</p>
+    <form id="fLine" class="lineform"><label class="f">${t('Código da linha')}<input id="lnId" required maxlength="20" placeholder="9123"></label><label class="f">${t('Nome da empresa ou site')}<input id="lnName" required placeholder="9123.com"></label>
+     <div class="f">${t('Cor')}<div class="sw">${Object.keys(COL).map((c,i)=>`<label title="${c}"><input type="radio" name="lnC" value="${c}" ${i===2?'checked':''}><span style="background:${COL[c][0]}"></span></label>`).join('')}</div></div>
+     <button class="btn pri">${t('Adicionar linha')}</button></form>
+    <div class="tw"><table class="stack"><thead><tr><th>${t('Código')}</th><th>${t('Empresa')}</th><th style="text-align:right">${t('Agentes')}</th><th style="text-align:right">${t('Chats abertos')}</th><th style="text-align:right">${t('Ações')}</th></tr></thead><tbody id="linesBody"></tbody></table></div></div>
+   <form class="card" id="fProfile"><h2>${t('Meu perfil')}</h2>
+    <label class="f">${t('Nome')}<input id="pfName" required value="${esc(u.name)}"></label>
+    <label class="f">${t('E-mail')}<input value="${esc(u.email)}" disabled></label>
+    <p class="mute" style="font-size:14px;margin:0 0 12px">${rl(u.role)} · ${t('Linhas')}: ${u.lines.map(tagL).join(' ')}</p>
+    <button class="btn pri">${t('Salvar perfil')}</button></form>
+   <form class="card" id="fOwnPass"><h2>${t('Minha senha')}</h2>
+    <label class="f">${t('Senha atual')}<input id="op" type="password" autocomplete="current-password" required></label>
+    <label class="f">${t('Nova senha')}<input id="op1" type="password" autocomplete="new-password" minlength="6" required></label>
+    <label class="f">${t('Repita a nova senha')}<input id="op2" type="password" autocomplete="new-password" required></label>
+    <div class="err" id="oErr"></div><button class="btn pri">${t('Alterar senha')}</button></form>
+   <div class="card"><h2>${t('Notificações')}</h2><p class="mute" style="margin:-4px 0 14px;font-size:14px">${t('Tocar som quando chega um chat novo ou uma mensagem nos seus chats.')}</p><div class="sndbar" id="nsBox"></div></div>
+   <form class="card" id="fMax"><h2>${t('Limite de chats por agente')}</h2>
+    <p class="mute" style="margin-top:-4px;font-size:14px">${t('Quantos chats abertos cada agente pode ter ao mesmo tempo. Novos chats esperam na fila quando todos estão no limite. 0 = sem limite.')}</p>
+    <label class="f">${t('Chats abertos')}<input id="cfgM" type="number" min="0" max="50" required></label><button class="btn pri">${t('Salvar')}</button></form>
+   <form class="card" id="fAlert"><h2>${t('Alerta de demora')}</h2>
+    <p class="mute" style="margin-top:-4px;font-size:14px">${t('Avisa o supervisor quando um cliente espera resposta por esse tempo. Padrão: 300 s (5 min).')}</p>
+    <label class="f">${t('Segundos')}<input id="cfgA" type="number" min="30" max="7200" required></label><button class="btn pri">${t('Salvar')}</button></form>
+   <form class="card" id="fCfg"><h2>${t('Tempo sem resposta')}</h2>
+    <p class="mute" style="margin-top:-4px;font-size:14px">${t('Depois desse tempo sem resposta, o chat vai para outro agente online da mesma linha. Padrão: 240 s (4 min). Para testar rápido, use 30.')}</p>
+    <label class="f">${t('Segundos')}<input id="cfgT" type="number" min="10" max="3600" required></label><button class="btn pri">${t('Salvar')}</button></form>
+   <div class="card"><h2>${t('Sessão')}</h2><p style="margin:0 0 14px">${t('Conectado como {n}.',{n:esc(u.name)})}</p><button class="btn bad" data-act="logout">${t('Sair')}</button></div>
+  </div></section>`}
+
+/* ---------- login / session ---------- */
+function showLogin(msg){$('#app').hidden=true;$('#site').hidden=true;buildLogin();$('#login').hidden=false;$('#lErr').textContent=msg||''}
+async function doLogin(){const em=$('#lEmail').value.trim().toLowerCase(),h=await hash($('#lPass').value);const d=load()||db;const u=d.users.find(x=>x.email===em);
+ if(!u||u.pass!==h){$('#lErr').textContent=t('E-mail ou senha incorretos.');return}
+ me=u.id;setSid(me);d.sessions[me]={on:true,lastSeen:now(),kick:false};
+ if(u.lang)setLang(u.lang);else u.lang=lang;
+ maintain(d);save(d);db=d;known=new Set(d.chats.filter(c=>c.agentId===me).map(c=>c.id));enter()}
+function enter(){const u=ME();if(u.lang&&u.lang!==lang)setLang(u.lang);document.documentElement.lang=loc();$('#login').hidden=true;$('#site').hidden=true;IN.folder=u.role==='agent'?'mine':'team';IN.qtab='all';view='atendimento';sel=null;buildApp();$('#app').hidden=false;render()}
+function logout(msg){document.title='SAC';if(typeof AL!=='undefined'){AL.seen.clear();AL.ack.clear()}const d=load();if(d&&me&&d.sessions[me]){d.sessions[me].on=false;d.sessions[me].kick=false;maintain(d);save(d);db=d}me=null;setSid(null);sel=null;pend=null;mclose();showLogin(msg)}
+
+/* ---------- render ---------- */
+function render(){if(!me)return;db=db||load();const u=ME();if(!u)return logout(t('Seu acesso foi removido.'));
+ $('#warn').hidden=lsOK;$('#warn').textContent=t('Modo temporário: este navegador não permite salvar dados. Tudo some ao recarregar.');
+ $('#meBtn').textContent=ini(u.name);renderStatus();
+ $('#nav-usuarios').hidden=!isBoss();$('#nav-integracao').hidden=!isTop();$('#nav-alertas').hidden=!isSup();
+ if((view==='alertas'&&!isSup())||(view==='integracao'&&!isTop())||(view==='usuarios'&&!isBoss()))view='atendimento';
+ document.querySelectorAll('.nb').forEach(b=>b.classList.toggle('on',b.dataset.v===view));
+ document.querySelectorAll('#app .view').forEach(v=>v.hidden=v.id!=='v-'+view);
+ const mine=db.chats.filter(c=>c.status==='open'&&(u.role==='agent'?c.agentId===me:visible(c))).length;
+ $('#cntOpen').hidden=!mine;$('#cntOpen').textContent=mine;
+ for(const c of db.chats)if(c.status==='closed'&&c.closedBy==='customer'&&c.agentId===me&&known.has(c.id)){known.delete(c.id);toast(t('{n} encerrou o chat.',{n:c.customer.name}))}
+ for(const c of db.chats)if(c.status==='open'&&c.agentId===me&&!known.has(c.id)){known.add(c.id);if(!mutedSet().has(c.id))toast(t('Novo chat: {n} (linha {l})',{n:c.customer.name,l:c.line}))}
+ if(view==='atendimento'){renderList();renderChat();renderInfo()}
+ if(view==='equipe')renderTeam();
+ if(view==='usuarios')renderUsers();
+ if(view==='simulador')renderSim();
+ if(view==='integracao'){const k=lang+JSON.stringify(LS());if($('#guide').dataset.k!==k){$('#guide').dataset.k=k;renderGuide()}}
+ if(view==='alertas')renderAlerts();
+ if(view==='config'){renderNs();$('#fMax').hidden=!isTop();if(document.activeElement!==$('#cfgM'))$('#cfgM').value=db.cfg.maxChats||0;$('#fCfg').hidden=!isTop();$('#fAlert').hidden=!isTop();if(document.activeElement!==$('#cfgA'))$('#cfgA').value=db.cfg.alert||300;$('#linesCard').hidden=!isTop();if(isTop())renderLines();if(document.activeElement!==$('#cfgT'))$('#cfgT').value=db.cfg.timeout}}
+
+const last=c=>c.msgs.filter(m=>m.from!=='system').slice(-1)[0]||c.msgs.slice(-1)[0]||{at:c.createdAt,text:''};
+function waitPill(c){if(c.status!=='open')return '';if(!c.agentId)return `<span class="wait">${t('Na fila')}</span>`;if(!c.waiting)return '';
+ const r=Math.max(0,(db.cfg.timeout*1000)-(now()-c.waiting)),s=Math.ceil(r/1000);return `<span class="wait ${s<=60?'hot':''}">${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}</span>`}
+function renderChat(){const c=db.chats.find(x=>x.id===sel);$('#work').classList.toggle('mc',!!c);
+ if(!c||!visible(c)){sel=null;$('#chatHead').innerHTML=`<div class="who"><b>${t('Nenhuma conversa aberta')}</b><span>${t('Escolha uma conversa na lista')}</span></div>`;$('#msgs').innerHTML=`<div class="empty" style="margin:auto">${t('Selecione uma conversa para ver as mensagens.')}</div>`;$('#msgs').dataset.k='';$('#comp').hidden=true;$('#compNote').hidden=true;return}
+ const a=c.agentId&&U(db,c.agentId),act=canAct(c);
+ $('#chatHead').innerHTML=`<button class="ib back" data-act="back" aria-label="${t('Voltar')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg></button><span class="av">${esc(ini(c.customer.name))}</span><div class="who"><b>${esc(c.customer.name)} ${tagL(c.line)} <button class="cidb" data-act="copyId" data-v="${cid(c)}" title="${t('Copiar ID')}">${cid(c)}</button></b><span>${esc(csub(c))}${c.customer.lang?' · '+esc(LANGS.find(l=>l[0]===c.customer.lang)?.[1]||''):''} · ${c.status==='closed'?t('Encerrado'):a?esc(t('Com {n}',{n:a.name})):t('Na fila')}</span></div>
+ <div class="acts"><button class="ib infob" data-act="info" aria-label="${t('Detalhes do cliente')}" title="${t('Detalhes do cliente')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></svg></button><button class="ib" data-act="mute" aria-label="${mutedSet().has(c.id)?t('Reativar som do chat'):t('Silenciar chat')}" title="${mutedSet().has(c.id)?t('Reativar som do chat'):t('Silenciar chat')}" style="color:${mutedSet().has(c.id)?'var(--bad)':'inherit'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">${mutedSet().has(c.id)?FI_.muted:IC.bell}</svg></button>${act&&isBoss()&&c.agentId!==me?`<button class="btn" data-act="take">${t('Assumir')}</button>`:''}${act?`<button class="btn" data-act="transfer">${t('Transferir')}</button><button class="btn bad" data-act="close">${t('Encerrar')}</button>`:''}</div>`;
+ const box=$('#msgs'),atEnd=box.scrollHeight-box.scrollTop-box.clientHeight<80,k=lang+':'+c.id+':'+c.msgs.length;
+ if(box.dataset.k!==k){const same=box.dataset.n===c.id;box.innerHTML=c.msgs.map(msgHtml).join('');box.dataset.k=k;if(atEnd||!same)box.scrollTop=box.scrollHeight;box.dataset.n=c.id}
+ if(document.visibilityState!=='hidden'&&markRead(c))renderList();
+ const can=canReply(c);$('#comp').hidden=!can;$('#compNote').hidden=can;
+ if(!can){const cb=c.closedBy&&U(db,c.closedBy);$('#compNote').innerHTML=c.status==='closed'?(c.closedBy==='customer'?esc(t('Encerrado pelo cliente em {d}.',{d:dt(c.closedAt)})):esc(t('Encerrado por {n} em {d}.',{n:cb?cb.name:'—',d:dt(c.closedAt)})))+(c.closeReason?' '+esc(t('Justificativa: {r}',{r:c.closeReason})):''):t('Somente leitura. Só o agente responsável responde a este cliente.')}}
+function fileHtml(f,cls){return f.type.startsWith('image/')?`<img src="${f.data}" alt="${esc(f.name)}">`:`<a class="${cls}" href="${f.data}" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/></svg>${esc(f.name)} · ${(f.size/1024).toFixed(0)} KB</a>`}
+function msgHtml(m){if(m.from==='system')return `<div class="sys">${esc(sysText(m))} · ${hm(m.at)}</div>`;
+ const by=m.by&&U(db,m.by);return `<div class="m ${m.from==='agent'?'me':''}">${m.file?fileHtml(m.file,'fc'):''}${esc(m.text)}<small>${m.from==='agent'?esc(by?by.name:t('Agente'))+' · ':''}${hm(m.at)}</small></div>`}
+function renderInfo(){const c=db.chats.find(x=>x.id===sel);$('#info').innerHTML=c?infoHtml(c):`<div class="empty">${t('Os dados do cliente aparecem aqui.')}</div>`}
+function infoHtml(c){const a=c.agentId&&U(db,c.agentId),cb=c.closedBy&&U(db,c.closedBy);
+ return `<span class="av big">${esc(ini(c.customer.name))}</span><h2 style="margin:0">${esc(c.customer.name)}</h2><div class="mute">${esc(csub(c))}</div>${c.source==='site'?`<div style="margin-top:6px"><span class="tag" style="background:var(--panel2);color:var(--ink)">${t('Veio pelo site')}</span></div>`:''}
+ <dl><div><dt>${t('ID do chat')}</dt><dd>${cid(c)}</dd></div><div><dt>${t('Linha')}</dt><dd>${tagL(c.line)}</dd></div><div><dt>${t('Status')}</dt><dd>${c.status==='open'?t('Em atendimento'):t('Encerrado')}</dd></div><div><dt>${t('Agente')}</dt><dd>${a?esc(a.name):c.status==='open'?t('Na fila'):'—'}</dd></div>
+ ${c.customer.lang?`<div><dt>${t('Idioma do cliente')}</dt><dd>${esc(LANGS.find(l=>l[0]===c.customer.lang)?.[1]||c.customer.lang)}</dd></div>`:''}<div><dt>${t('Aberto em')}</dt><dd>${dt(c.createdAt)}</dd></div><div><dt>${t('Transferências automáticas')}</dt><dd>${c.transfers||0}</dd></div><div><dt>${t('Atendido por')}</dt><dd>${c.handled.map(i=>esc(U(db,i)?.name||'—')).join(', ')||'—'}</dd></div>
+ ${c.status==='closed'?`<div><dt>${t('Encerrado por')}</dt><dd>${c.closedBy==='customer'?t('Cliente'):esc(cb?.name||'—')} · ${dt(c.closedAt)}</dd></div>${c.closeReason?`<div><dt>${t('Justificativa')}</dt><dd>${esc(c.closeReason)}</dd></div>`:''}`:''}</dl>`}
+
+function renderTeam(){const u=ME();let L=db.users;
+ if(u.role==='agent')L=L.filter(x=>x.role==='agent');if(u.role==='supervisor')L=L.filter(x=>x.role==='agent'&&x.lines.some(l=>u.lines.includes(l)));
+ L=[...L].sort((a,b)=>online(db,b)-online(db,a)||a.name.localeCompare(b.name));
+ $('#teamStats').innerHTML=LINES().map((l,i)=>`<div class="stat ${i===0?'mint':''}"><b>${onAgents(db,l).length}</b><span>${t('agentes online na {l}',{l})}</span></div>`).join('')+`<div class="stat"><b>${db.chats.filter(c=>c.status==='open'&&!c.agentId).length}</b><span>${t('chats na fila')}</span></div>`;
+ $('#teamBody').innerHTML=L.map(x=>{const on=online(db,x);return `<tr><td><b>${esc(x.name)}</b>${x.id===me?` <span class="mute">${t('(você)')}</span>`:''}</td><td>${rl(x.role)}</td><td>${x.lines.map(tagL).join(' ')}</td><td><span class="dot ${on?(paused(db,x)?'pz':'on'):''}"></span>${on?(paused(db,x)?t('Em pausa'):t('Online')):t('Offline')}</td><td class="n">${openOf(db,x.id)}</td>
+ <td><div class="ta">${canKick(x)?`<button class="btn bad" data-act="kick" data-id="${x.id}">${t('Desconectar')}</button>`:''}${canPass(x)&&x.id!==me?`<button class="btn" data-act="pass" data-id="${x.id}">${t('Alterar senha')}</button>`:''}</div></td></tr>`}).join('')||`<tr><td colspan="6" class="empty">${t('Ninguém cadastrado ainda.')}</td></tr>`}
+
+function renderUsers(){const u=ME(),full=isTop();
+ $('#fNewUser').hidden=!full;$('#usersSub').textContent=full?(u.role==='god'?t('Você pode criar e alterar qualquer acesso.'):t('Você pode criar e alterar acessos, exceto o acesso total.')):t('Você pode alterar a senha dos agentes das suas linhas.');
+ const nl=$('#nuLines'),was=new Set([...nl.querySelectorAll('input:checked')].map(x=>x.value)),fresh=!nl.dataset.k;nl.dataset.k='1';
+ nl.innerHTML=LINES().map(l=>`<label><input type="checkbox" name="nuL" value="${esc(l)}" ${fresh||was.has(l)?'checked':''}> ${tagL(l)} ${esc(LN(l).name)}</label>`).join('')||`<span class="mute">${t('Crie uma linha em Configurações primeiro.')}</span>`;
+ let L=db.users;if(!full)L=L.filter(x=>x.role==='agent'&&x.lines.some(l=>u.lines.includes(l)));
+ const ord={god:0,admin:1,supervisor:2,agent:3};L=[...L].sort((a,b)=>ord[a.role]-ord[b.role]||a.name.localeCompare(b.name));
+ $('#usersBody').innerHTML=L.map(x=>`<tr><td><b>${esc(x.name)}</b>${x.id===me?` <span class="mute">${t('(você)')}</span>`:''}</td><td>${esc(x.email)}</td><td>${rl(x.role)}</td><td>${x.lines.map(tagL).join(' ')}</td>
+ <td><div class="ta">${canEdit(x)?`<button class="btn" data-act="edit" data-id="${x.id}">${t('Editar')}</button>`:''}${canPass(x)?`<button class="btn" data-act="pass" data-id="${x.id}">${t('Senha')}</button>`:''}${canEdit(x)&&x.id!==me&&x.role!=='god'?`<button class="btn bad" data-act="del" data-id="${x.id}">${t('Excluir')}</button>`:''}${!canPass(x)?`<span class="mute" style="font-size:13px">${t('Protegido')}</span>`:''}</div></td></tr>`).join('')}
+
+function renderSim(){const sl=$('#snLine'),sv=sl.value;sl.innerHTML=LS().map(l=>`<option value="${esc(l.id)}">${esc(l.id)} · ${esc(l.name)}</option>`).join('');if(LINES().includes(sv))sl.value=sv;
+ $('#simSites').innerHTML=LS().map(l=>`<a class="btn pri" href="#site-${esc(l.id)}" target="_blank" rel="opener" style="text-decoration:none">${t('Abrir site {l}',{l:esc(l.id)})}</a>`).join('');
+ const s=$('#smChat'),v=s.value,O=db.chats.filter(c=>c.status==='open');
+ s.innerHTML=O.length?O.map(c=>`<option value="${c.id}">${esc(c.customer.name)} · ${c.line}</option>`).join(''):`<option value="">${t('Nenhum chat aberto')}</option>`;if(O.some(c=>c.id===v))s.value=v}
+
+function renderLines(){$('#linesBody').innerHTML=LS().map(l=>`<tr><td>${tagL(l.id)}</td><td>${esc(l.name)}</td><td class="n">${db.users.filter(u=>u.role==='agent'&&u.lines.includes(l.id)).length}</td><td class="n">${db.chats.filter(c=>c.status==='open'&&c.line===l.id).length}</td>
+ <td><div class="ta"><button class="btn" data-act="editLine" data-id="${esc(l.id)}">${t('Editar')}</button><button class="btn bad" data-act="delLine" data-id="${esc(l.id)}">${t('Excluir')}</button></div></td></tr>`).join('')||`<tr><td colspan="5" class="empty">${t('Nenhuma linha. Crie a primeira para começar a receber chats.')}</td></tr>`}
+const swatches=(sel)=>`<div class="sw">${Object.keys(COL).map(c=>`<label title="${c}"><input type="radio" name="elC" value="${c}" ${c===sel?'checked':''}><span style="background:${COL[c][0]}"></span></label>`).join('')}</div>`;
+
+/* scripts popover */
+function renderPop(){const S=db.scripts.filter(s=>s.owner===me),e=editSc&&S.find(s=>s.id===editSc);
+ $('#pop').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h2 style="margin:0;font-size:16px">${t('Meus scripts')}</h2><button class="ib" data-act="popClose" aria-label="${t('Fechar')}">${X}</button></div>
+ ${S.map(s=>`<div class="sc"><button data-act="useSc" data-id="${s.id}"><b>${esc(s.title)}</b><span>${esc(s.text)}</span></button><button class="ib" data-act="editSc" data-id="${s.id}" aria-label="${t('Editar')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></button><button class="ib" data-act="delSc" data-id="${s.id}" aria-label="${t('Excluir')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg></button></div>`).join('')||`<p class="mute" style="font-size:14px;margin:0 0 8px">${t('Nenhum script ainda. Crie respostas prontas para usar com um clique.')}</p>`}
+ <div style="border-top:1px solid var(--line);margin-top:10px;padding-top:12px"><label class="f">${e?t('Editar script'):t('Novo script')}: ${t('título')}<input id="scT" value="${esc(e?.title||'')}"></label><label class="f">${t('Texto')}<textarea id="scX" rows="3">${esc(e?.text||'')}</textarea></label>
+ <div class="mact" style="margin:0">${e?`<button class="btn" data-act="cancelSc">${t('Cancelar')}</button>`:''}<button class="btn pri" data-act="saveSc">${e?t('Salvar'):t('Criar script')}</button></div></div>`}
+
+/* ---------- actions ---------- */
+function send(){const c=db.chats.find(x=>x.id===sel),m=$('#txt').value.trim();if(!c||!canReply(c)||(!m&&!pend))return;const nm=ME().name;
+ tx(d=>{const x=d.chats.find(y=>y.id===sel);if(!x||x.status!=='open')return;if(!x.agentId){x.agentId=me;x.assignedAt=now();sys(x,'Assumido por {a}.',{a:nm})}if(!x.handled.includes(me))x.handled.push(me);x.msgs.push({id:uid(),from:'agent',by:me,text:m,file:pend||undefined,at:now()});x.waiting=null;x.custWait=null});
+ $('#txt').value='';pend=null;$('#att').innerHTML=''}
+
+const A={
+ nav:b=>{view=b.dataset.v;const p=$('#pop');if(p)p.hidden=true;render()},
+ open:b=>{sel=b.dataset.id;pend=null;$('#att').innerHTML='';$('#pop').hidden=true;render()},
+ back:()=>{sel=null;render()},
+ send,
+ take:()=>{const nm=ME().name;tx(d=>{const x=d.chats.find(y=>y.id===sel);if(!x||x.status!=='open')return;const old=x.agentId&&U(d,x.agentId);x.agentId=me;x.assignedAt=now();if(x.waiting)x.waiting=now();if(!x.handled.includes(me))x.handled.push(me);old?sys(x,'{a} assumiu o chat de {b}.',{a:nm,b:old.name}):sys(x,'Assumido por {a}.',{a:nm})});toast(t('Chat assumido.'))},
+ scripts:()=>{const p=$('#pop');p.hidden=!p.hidden;if(!p.hidden){editSc=null;renderPop()}},
+ popClose:()=>$('#pop').hidden=true,
+ useSc:b=>{const s=db.scripts.find(x=>x.id===b.dataset.id);if(!s)return;const x=$('#txt');x.value=(x.value?x.value+'\n':'')+s.text;$('#pop').hidden=true;x.focus()},
+ editSc:b=>{editSc=b.dataset.id;renderPop()},cancelSc:()=>{editSc=null;renderPop()},
+ delSc:b=>{tx(d=>{d.scripts=d.scripts.filter(s=>!(s.id===b.dataset.id&&s.owner===me))});renderPop()},
+ saveSc:()=>{const ti=$('#scT').value.trim(),te=$('#scX').value.trim();if(!ti||!te)return toast(t('Preencha título e texto.'));
+  tx(d=>{const s=editSc&&d.scripts.find(x=>x.id===editSc&&x.owner===me);if(s){s.title=ti;s.text=te}else d.scripts.push({id:uid(),owner:me,title:ti,text:te})});editSc=null;renderPop();toast(t('Script salvo.'))},
+ rmAtt:()=>{pend=null;$('#att').innerHTML=''},
+ transfer:()=>{const c=db.chats.find(x=>x.id===sel);if(!c||!canAct(c))return;const L=freeAgents(db,c.line,c.agentId);
+  modal(`<h2>${t('Transferir chat')}</h2><p class="mute" style="margin-top:0">${t('Agentes online na linha {l}.',{l:c.line})}</p>${L.map(u=>`<button class="pick" data-act="doTransfer" data-to="${u.id}"><span class="av">${esc(ini(u.name))}</span><span style="flex:1"><b>${esc(u.name)}</b><br><span class="mute" style="font-size:13px">${t('{n} chats abertos',{n:openOf(db,u.id)})}</span></span><span class="dot on"></span></button>`).join('')||`<p>${t('Nenhum outro agente online na linha {l} agora.',{l:c.line})}</p>`}<div class="mact"><button class="btn" data-act="mclose">${t('Cancelar')}</button></div>`)},
+ doTransfer:b=>{const by=ME().name;let ok=true;tx(d=>{const c=d.chats.find(x=>x.id===sel),to=U(d,b.dataset.to);if(!c||!to||!online(d,to)||paused(d,to)){ok=false;return}assign(c,to,'Transferido por {a} para {b}.',{a:by,b:to.name})});mclose();if(!ok)return toast(t('Esse agente ficou offline.'));if(role()==='agent')sel=null;render();toast(t('Chat transferido.'))},
+ close:()=>{const ag=role()==='agent';modal(`<h2>${t('Encerrar chat')}</h2>${ag?`<label class="f">${t('Justificativa (obrigatória)')}<textarea id="reason" rows="3"></textarea></label>`:`<p class="mute" style="margin-top:0">${t('Você pode encerrar sem justificativa.')}</p><label class="f">${t('Observação (opcional)')}<textarea id="reason" rows="2"></textarea></label>`}<div class="err" id="rErr"></div><div class="mact"><button class="btn" data-act="mclose">${t('Cancelar')}</button><button class="btn pri" data-act="doClose">${t('Encerrar')}</button></div>`)},
+ doClose:()=>{const r=$('#reason').value.trim();if(role()==='agent'&&r.length<5){$('#rErr').textContent=t('Escreva a justificativa (mínimo 5 caracteres).');return}
+  const by=ME().name;tx(d=>{const c=d.chats.find(x=>x.id===sel);if(!c)return;c.status='closed';c.closedAt=now();c.closedBy=me;c.closeReason=r;c.waiting=null;c.custWait=null;sys(c,'Encerrado por {a}.',{a:by})});mclose();toast(t('Chat encerrado.'))},
+ kick:b=>{const x=U(db,b.dataset.id);if(!x||!canKick(x))return;tx(d=>{const s=d.sessions[x.id];if(s){s.kick=true;s.on=false}maintain(d)});toast(t('{n} foi desconectado.',{n:x.name}))},
+ pass:b=>{const x=U(db,b.dataset.id);if(!x||!canPass(x))return;modal(`<h2>${t('Nova senha')}</h2><p class="mute" style="margin-top:0">${esc(x.name)} · ${rl(x.role)}</p><label class="f">${t('Nova senha')}<input id="np1" type="text" minlength="6"></label><label class="f">${t('Repita a nova senha')}<input id="np2" type="text"></label><div class="err" id="pErr"></div><div class="mact"><button class="btn" data-act="mclose">${t('Cancelar')}</button><button class="btn pri" data-act="doPass" data-id="${x.id}">${t('Salvar senha')}</button></div>`)},
+ doPass:async b=>{const a=$('#np1').value,c=$('#np2').value;if(a.length<6)return $('#pErr').textContent=t('Mínimo 6 caracteres.');if(a!==c)return $('#pErr').textContent=t('As senhas não conferem.');
+  const h=await hash(a);tx(d=>{const x=U(d,b.dataset.id);if(x&&canPass(x))x.pass=h});mclose();toast(t('Senha alterada.'))},
+ edit:b=>{const x=U(db,b.dataset.id);if(!x||!canEdit(x))return;const lock=x.role==='god';
+  modal(`<h2>${t('Editar acesso')}</h2><label class="f">${t('Nome')}<input id="eName" value="${esc(x.name)}"></label><label class="f">${t('E-mail')}<input id="eEmail" type="email" value="${esc(x.email)}"></label>
+  <label class="f">${t('Função')}<select id="eRole" ${lock?'disabled':''}>${(lock?['god']:['admin','supervisor','agent']).map(r=>`<option value="${r}" ${r===x.role?'selected':''}>${rl(r)}</option>`).join('')}</select></label>
+  <div class="chk">${LINES().map(l=>`<label><input type="checkbox" name="eL" value="${esc(l)}" ${x.lines.includes(l)?'checked':''}> ${tagL(l)} ${esc(LN(l).name)}</label>`).join('')}</div><div class="err" id="eErr"></div>
+  <div class="mact"><button class="btn" data-act="mclose">${t('Cancelar')}</button><button class="btn pri" data-act="doEdit" data-id="${x.id}">${t('Salvar')}</button></div>`)},
+ doEdit:b=>{const n=$('#eName').value.trim(),em=$('#eEmail').value.trim().toLowerCase(),r=$('#eRole').value,ls=[...document.querySelectorAll('[name=eL]:checked')].map(x=>x.value);
+  if(!n||!em.includes('@'))return $('#eErr').textContent=t('Preencha nome e e-mail válidos.');if(!ls.length)return $('#eErr').textContent=t('Escolha ao menos uma linha.');
+  if(db.users.some(u=>u.email===em&&u.id!==b.dataset.id))return $('#eErr').textContent=t('Esse e-mail já está em uso.');
+  tx(d=>{const x=U(d,b.dataset.id);if(!x||!canEdit(x))return;x.name=n;x.email=em;x.lines=ls;if(x.role!=='god')x.role=r;maintain(d)});mclose();toast(t('Acesso atualizado.'))},
+ del:b=>{const x=U(db,b.dataset.id);if(!x)return;modal(`<h2>${t('Excluir acesso?')}</h2><p>${esc(t('{n} ({e}) perde o acesso. Os chats abertos dele voltam para a fila.',{n:x.name,e:x.email}))}</p><div class="mact"><button class="btn" data-act="mclose">${t('Cancelar')}</button><button class="btn pri" data-act="doDel" data-id="${x.id}" style="background:var(--bad);border-color:var(--bad)">${t('Excluir')}</button></div>`)},
+ doDel:b=>{tx(d=>{const x=U(d,b.dataset.id);if(!x||!canEdit(x)||x.id===me||x.role==='god')return;d.users=d.users.filter(u=>u.id!==x.id);delete d.sessions[x.id];maintain(d)});mclose();toast(t('Acesso excluído.'))},
+ setLang:b=>{setLang(b.dataset.l,true);const v=view,s=sel;buildApp();view=v;sel=s;render();toast(t('Idioma alterado.'))},
+ logout:()=>logout(),
+ mclose,
+ simFill:()=>{const N=['Mariana Souza','Carlos Pereira','Ana Ribeiro','João Martins','Fernanda Lima','Nguyen Van An','Ahmed Raza','Li Wei'],M=['Olá, meu pedido ainda não chegou.','Boa tarde, preciso de ajuda com a minha fatura.','Oi! Quero trocar um produto.','Não consigo acessar minha conta.','Qual o prazo de entrega para o meu CEP?'],r=a=>a[Math.floor(Math.random()*a.length)];
+  $('#snName').value=r(N);$('#snPhone').value='(11) 9'+String(Math.floor(1e7+Math.random()*9e7)).slice(0,4)+'-'+String(Math.floor(1e3+Math.random()*9e3));$('#snLine').value=r(LINES());$('#snMsg').value=t(r(M))}
+};
+
+/* ---------- forms (delegated) ---------- */
+const F={
+ fLogin:doLogin,
+ fNewUser:async f=>{if(!isTop())return;const n=$('#nuName').value.trim(),em=$('#nuEmail').value.trim().toLowerCase(),p=$('#nuPass').value,r=$('#nuRole').value,ls=[...document.querySelectorAll('[name=nuL]:checked')].map(x=>x.value);
+  if(!ls.length)return toast(t('Escolha ao menos uma linha.'));if(p.length<6)return toast(t('Mínimo 6 caracteres.'));if(db.users.some(u=>u.email===em))return toast(t('Esse e-mail já está em uso.'));
+  const h=await hash(p);tx(d=>{d.users.push({id:uid(),name:n,email:em,pass:h,role:r,lines:ls,createdAt:now()})});f.reset();document.querySelectorAll('[name=nuL]').forEach(x=>x.checked=true);$('#nuRole').value='agent';toast(t('{r} criado: {e}',{r:rl(r),e:em}))},
+ fSimNew:f=>{const id=uid();
+  tx(d=>{const c={id,no:nextNo(d),line:$('#snLine').value,customer:{name:$('#snName').value.trim(),phone:$('#snPhone').value.trim()},status:'open',agentId:null,handled:[],createdAt:now(),waiting:now(),custWait:now(),transfers:0,msgs:[]};
+   c.msgs.push({id:uid(),from:'customer',text:$('#snMsg').value.trim(),at:now()});sys(c,'Cliente entrou pela linha {l}.',{l:c.line});d.chats.push(c);maintain(d);
+   const a=c.agentId&&U(d,c.agentId);toast(a?t('Chat aberto e atribuído a {n}.',{n:a.name}):t('Chat aberto. Sem agente disponível na linha {l}: ficou na fila.',{l:c.line}))});
+  f.reset();$('#smChat').value=id},
+ fSimMsg:()=>{const id=$('#smChat').value,m=$('#smMsg').value.trim();if(!id||!m)return;
+  tx(d=>{const c=d.chats.find(x=>x.id===id);if(!c||c.status!=='open')return toast(t('Esse chat já foi encerrado.'));c.msgs.push({id:uid(),from:'customer',text:m,at:now()});if(!c.waiting)c.waiting=now();if(!c.custWait)c.custWait=now()});$('#smMsg').value='';toast(t('Mensagem do cliente enviada.'))},
+ fCfg:()=>{if(!isTop())return;const v=Math.max(10,Math.min(3600,parseInt($('#cfgT').value)||240));tx(d=>{d.cfg.timeout=v});$('#cfgT').blur();toast(t('Tempo sem resposta: {t}.',{t:fmtT(v)}))},
+ fProfile:()=>{const n=$('#pfName').value.trim();if(!n)return;tx(d=>{U(d,me).name=n});toast(t('Perfil salvo.'))},
+ fOwnPass:async()=>{const u=ME(),o=await hash($('#op').value),n=$('#op1').value;if(o!==u.pass)return $('#oErr').textContent=t('Senha atual incorreta.');if(n.length<6)return $('#oErr').textContent=t('Mínimo 6 caracteres.');if(n!==$('#op2').value)return $('#oErr').textContent=t('As senhas não conferem.');
+  const h=await hash(n);tx(d=>{U(d,me).pass=h});$('#fOwnPass').reset();$('#oErr').textContent='';toast(t('Sua senha foi alterada.'))},
+ wStart:()=>wStart()
+};
+document.addEventListener('submit',e=>{const f=e.target;if(F[f.id]){e.preventDefault();F[f.id](f)}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b&&A[b.dataset.act]){e.preventDefault();A[b.dataset.act](b);return}if(e.target.id==='modal')mclose()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){mclose();const p=$('#pop');if(p)p.hidden=true}
+ if(e.key==='Enter'&&!e.shiftKey&&(e.target.id==='txt'||e.target.id==='wTxt')){e.preventDefault();e.target.id==='txt'?send():wSend()}});
+document.addEventListener('input',e=>{if(e.target.id==='q')renderList()});
+document.addEventListener('change',e=>{
+ if(e.target.id==='lLang'){setLang(e.target.value);buildLogin();return}
+ if(e.target.id==='file'){const f=e.target.files[0];e.target.value='';if(!f)return;if(f.size>1.5*1024*1024)return toast(t('Arquivo acima de 1,5 MB. Neste protótipo os anexos ficam no navegador.'));
+  const r=new FileReader();r.onload=()=>{pend={name:f.name,type:f.type||'application/octet-stream',size:f.size,data:r.result};$('#att').innerHTML=`<span class="chip">${esc(f.name)} · ${(f.size/1024).toFixed(0)} KB <button class="ib" style="width:26px;height:26px" data-act="rmAtt" aria-label="${t('Remover anexo')}">${X}</button></span>`;$('#txt').focus()};r.readAsDataURL(f)}});
+
+/* line management (god/admin) */
+Object.assign(A,{
+ editLine:b=>{const l=LN(b.dataset.id);if(!l||!isTop())return;
+  modal(`<h2>${t('Editar linha')} ${tagL(l.id)}</h2><label class="f">${t('Nome da empresa ou site')}<input id="elName" value="${esc(l.name)}"></label><div class="f">${t('Cor')}${swatches(l.color)}</div><div class="mact"><button class="btn" data-act="mclose">${t('Cancelar')}</button><button class="btn pri" data-act="doEditLine" data-id="${esc(l.id)}">${t('Salvar')}</button></div>`)},
+ doEditLine:b=>{const n=$('#elName').value.trim(),c=document.querySelector('[name=elC]:checked')?.value;if(!n||!isTop())return;
+  tx(d=>{const l=d.lines.find(x=>x.id===b.dataset.id);if(l){l.name=n;if(c)l.color=c}});mclose();toast(t('Linha atualizada.'))},
+ delLine:b=>{const id=b.dataset.id;if(!isTop())return;if(db.chats.some(c=>c.status==='open'&&c.line===id))return toast(t('Feche os chats abertos da linha {l} antes de excluir.',{l:id}));
+  modal(`<h2>${t('Excluir linha {l}?',{l:esc(id)})}</h2><p>${t('Os agentes deixam de atender esta linha. Os chats encerrados continuam no histórico.')}</p><div class="mact"><button class="btn" data-act="mclose">${t('Cancelar')}</button><button class="btn pri" data-act="doDelLine" data-id="${esc(id)}" style="background:var(--bad);border-color:var(--bad)">${t('Excluir')}</button></div>`)},
+ doDelLine:b=>{const id=b.dataset.id;if(!isTop())return;tx(d=>{if(d.chats.some(c=>c.status==='open'&&c.line===id))return;d.lines=d.lines.filter(l=>l.id!==id);d.users.forEach(u=>u.lines=u.lines.filter(x=>x!==id))});mclose();toast(t('Linha excluída.'))}
+});
+F.fLine=f=>{if(!isTop())return;const id=$('#lnId').value.trim(),n=$('#lnName').value.trim(),c=document.querySelector('[name=lnC]:checked')?.value||'stone';
+ if(!/^[A-Za-z0-9-]{2,20}$/.test(id))return toast(t('Use de 2 a 20 letras, números ou hífen.'));
+ if(LINES().some(x=>x.toLowerCase()===id.toLowerCase()))return toast(t('Esse código já existe.'));if(!n)return;
+ tx(d=>{d.lines.push({id,name:n,color:c});d.users.forEach(u=>{if((u.role==='god'||u.role==='admin')&&!u.lines.includes(id))u.lines.push(id)})});
+ f.reset();const r=document.querySelector('[name=lnC][value=lilac]');if(r)r.checked=true;toast(t('Linha {l} criada.',{l:id}))};
+
+/* ---------- supervisor alerts ---------- */
+const AL={ac:null,seen:new Set(),ack:new Set(),lastBeep:0};
+const isSup=()=>['supervisor','god'].includes(role());
+const waitStart=c=>c.custWait??c.waiting;
+const fmtDur=ms=>{const s=Math.max(0,Math.floor(ms/1000));return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`};
+const soundPref=()=>{try{return localStorage.getItem('sac_sound')==='1'}catch(e){return false}};
+function alertsOf(d){if(!me)return[];const u=U(d,me);if(!u||!['supervisor','god'].includes(u.role))return[];const T=(d.cfg.alert||300)*1000;
+ return d.chats.filter(c=>c.status==='open'&&(u.role==='god'||u.lines.includes(c.line))&&waitStart(c)&&now()-waitStart(c)>=T).sort((a,b)=>waitStart(a)-waitStart(b))}
+function audioOn(){try{if(!AL.ac)AL.ac=new (window.AudioContext||window.webkitAudioContext)();if(AL.ac.state==='suspended')AL.ac.resume();return true}catch(e){return false}}
+function beep(times=3){if(!AL.ac||AL.ac.state!=='running')return;const ac=AL.ac;let t0=ac.currentTime+.02;
+ for(let i=0;i<times;i++){for(const [f,dl] of [[880,0],[660,.16]]){const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=f;
+  g.gain.setValueAtTime(0,t0+dl);g.gain.linearRampToValueAtTime(.35,t0+dl+.02);g.gain.exponentialRampToValueAtTime(.001,t0+dl+.15);o.connect(g).connect(ac.destination);o.start(t0+dl);o.stop(t0+dl+.16)}t0+=.45}}
+document.addEventListener('pointerdown',()=>{if(soundPref()&&isSup()&&(!AL.ac||AL.ac.state!=='running')){audioOn();setTimeout(renderAlerts,50)}},true);
+function alertTick(d){if(!me||!isSup())return 0;const L=alertsOf(d),ids=new Set(L.map(c=>c.id));
+ const Mu=mutedSet(),fresh=L.filter(c=>!AL.seen.has(c.id)&&!Mu.has(c.id));for(const c of L)if(Mu.has(c.id))AL.seen.add(c.id);for(const c of fresh)AL.seen.add(c.id);
+ for(const id of [...AL.seen])if(!ids.has(id)){AL.seen.delete(id);AL.ack.delete(id)}
+ const on=soundPref();
+ if(fresh.length){if(on)beep(3);AL.lastBeep=now();const c=fresh[0];toast(t('Alerta: {n} esperando há {t}.',{n:c.customer.name,t:fmtDur(now()-waitStart(c))}))}
+ else if(on&&L.some(c=>!AL.ack.has(c.id)&&!Mu.has(c.id))&&now()-AL.lastBeep>=60000){beep(2);AL.lastBeep=now()}
+ const n=L.filter(c=>!AL.ack.has(c.id)&&!Mu.has(c.id)).length;
+ const b=$('#cntAl');if(b){b.hidden=!L.length;b.textContent=L.length}return n}
+function renderAlerts(){if(view!=='alertas'||!$('#alList'))return;const L=alertsOf(db),on=soundPref(),live=AL.ac&&AL.ac.state==='running';
+ $('#alSub').textContent=t('Clientes esperando resposta há mais de {t}.',{t:fmtT(db.cfg.alert||300)});
+ $('#alSound').innerHTML=on?`<span class="snd on">${t('Som ativado')}</span>${live?'':`<span class="mute" style="font-size:13px">${t('Clique em qualquer lugar para reativar o som.')}</span>`}<button class="btn" data-act="sndTest">${t('Testar som')}</button><button class="btn" data-act="sndToggle">${t('Desativar som')}</button>`
+  :`<span class="snd">${t('Som desativado')}</span><button class="btn pri" data-act="sndToggle">${t('Ativar som')}</button>`;
+ $('#alList').innerHTML=L.length?L.map(c=>{const a=c.agentId&&U(db,c.agentId),lm=c.msgs.filter(m=>m.from==='customer').slice(-1)[0],ack=AL.ack.has(c.id);
+  return `<div class="alc ${ack?'ack':''}"><div class="alt"><b>${fmtDur(now()-waitStart(c))}</b><span>${t('Esperando')}</span></div>
+  <div class="alm"><div class="r1"><b>${esc(c.customer.name)}</b> ${tagL(c.line)}</div><div class="mute" style="font-size:14px">${a?esc(t('Com {n}',{n:a.name})):t('Na fila')}</div>
+  ${lm?`<div class="alq">${lm.file?esc(t('Anexo: {f}',{f:lm.file.name})):esc(lm.text)}</div>`:''}</div>
+  <div class="ta"><button class="btn pri" data-act="alOpen" data-id="${c.id}">${t('Abrir conversa')}</button>${ack?`<span class="mute" style="font-size:13px">${t('Silenciado')}</span>`:`<button class="btn" data-act="alAck" data-id="${c.id}">${t('Ciente')}</button>`}</div></div>`}).join('')
+  :`<div class="alok">${svg('bell')}<b>${t('Nenhum alerta agora. Tudo em dia.')}</b></div>`}
+Object.assign(A,{
+ sndToggle:()=>{const on=!soundPref();try{localStorage.setItem('sac_sound',on?'1':'0')}catch(e){}if(on){audioOn();setTimeout(()=>beep(1),80);toast(t('Som ativado'))}renderAlerts()},
+ sndTest:()=>{audioOn();setTimeout(()=>beep(2),80)},
+ alAck:b=>{AL.ack.add(b.dataset.id);alertTick(db);renderAlerts()},
+ alOpen:b=>{sel=b.dataset.id;view='atendimento';IN.folder='all';IN.qtab='all';render()}
+});
+F.fAlert=()=>{if(!isTop())return;const v=Math.max(30,Math.min(7200,parseInt($('#cfgA').value)||300));tx(d=>{d.cfg.alert=v});$('#cfgA').blur();toast(t('Alerta de demora: {t}.',{t:fmtT(v)}))};
+
+/* ---------- inbox: folders, quick tabs, filters, search, chat IDs ---------- */
+const cid=c=>'#'+String(c.no??0).padStart(6,'0');
+const FI_={mine:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',unassigned:'<circle cx="12" cy="12" r="9"/><path d="M8.5 14.5s1.3 1.5 3.5 1.5 3.5-1.5 3.5-1.5M9 9.5h.01M15 9.5h.01"/>',
+ team:IC.team,muted:'<path d="M6 8a6 6 0 0 1 9.3-5M18 8c0 7 3 9 3 9H9M3 3l18 18M10.3 21a1.94 1.94 0 0 0 3.4 0M6 8c0 3.3-.9 5.5-1.8 7"/>',all:'<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>'};
+const IN={folder:null,qtab:'all',sort:'recent',pop:null,filt:{lines:[],status:'any',agent:'',lang:'',period:'any'},
+ fc:(()=>{try{return localStorage.getItem('sac_fold')==='1'}catch(e){return false}})()};
+const myU=()=>ME()||{};
+const mutedSet=()=>new Set(myU().muted||[]);
+const readAt=c=>(myU().read||{})[c.id]||0;
+const unread=c=>c.msgs.filter(m=>m.from==='customer'&&m.at>readAt(c)).length;
+const pending=c=>c.status==='open'&&!!waitStart(c);
+function foldersDef(){return role()==='agent'?[['mine','Meus'],['muted','Silenciados'],['all','Todos']]:[['mine','Meus'],['unassigned','Não atribuídos'],['team','Equipe'],['muted','Silenciados'],['all','Todos']]}
+function inFolder(c,f){const M=mutedSet();return f==='mine'?c.status==='open'&&c.agentId===me:f==='unassigned'?c.status==='open'&&!c.agentId:f==='team'?c.status==='open'&&!!c.agentId&&c.agentId!==me:f==='muted'?M.has(c.id):true}
+function passFilters(c){const F=IN.filt;
+ if(F.lines.length&&!F.lines.includes(c.line))return false;
+ if(F.status!=='any'&&c.status!==F.status)return false;
+ if(F.agent&&!(c.agentId===F.agent||c.handled.includes(F.agent)))return false;
+ if(F.lang&&c.customer.lang!==F.lang)return false;
+ if(F.period==='today'&&new Date(c.createdAt).toDateString()!==new Date().toDateString())return false;
+ if(F.period==='7d'&&now()-c.createdAt>7*864e5)return false;return true}
+const filtCount=()=>{const F=IN.filt;return (F.lines.length?1:0)+(F.status!=='any'?1:0)+(F.agent?1:0)+(F.lang?1:0)+(F.period!=='any'?1:0)};
+function matchQ(c,q){if(!q)return true;const d=q.replace(/^#/,'');
+ if(q[0]==='#')return /^\d+$/.test(d)&&String(c.no??'').padStart(6,'0').includes(d);
+ if(/^\d+$/.test(d)&&(String(c.no??'').padStart(6,'0').includes(d)||String(c.no)===String(Number(d))))return true;
+ const s=q.toLowerCase();return c.customer.name.toLowerCase().includes(s)||(c.customer.phone||'').toLowerCase().includes(s)||(c.customer.pid||'').toLowerCase().includes(s)||c.msgs.some(m=>m.text&&m.from!=='system'&&m.text.toLowerCase().includes(s))}
+function sortL(L){const k=IN.sort;return L.sort(k==='oldest'?(a,b)=>last(a).at-last(b).at:k==='wait'?(a,b)=>(waitStart(a)||1e15)-(waitStart(b)||1e15):(a,b)=>last(b).at-last(a).at)}
+function listFor(f,qt,q){return db.chats.filter(c=>visible(c)&&(q?true:inFolder(c,f))&&passFilters(c)&&(qt==='unread'?unread(c)>0:qt==='pending'?pending(c):true)&&matchQ(c,q))}
+function renderList(){const FD=foldersDef();if(!FD.some(x=>x[0]===IN.folder))IN.folder=FD[0][0];
+ const q=$('#q').value.trim();
+ $('#work').classList.toggle('fcol',IN.fc);
+ $('#foldNav').innerHTML=FD.map(([k,l])=>{const n=db.chats.filter(c=>visible(c)&&inFolder(c,k)&&(k==='all'||k==='muted'?false:true)).length,u=db.chats.filter(c=>visible(c)&&inFolder(c,k)&&unread(c)>0).length;
+  return `<button class="fi ${k===IN.folder&&!q?'on':''}" data-act="folder" data-f="${k}" title="${t(l)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${FI_[k]}</svg><span class="fl">${t(l)}</span>${u?`<span class="fu">${u}</span>`:n?`<span class="fn">${n}</span>`:''}</button>`}).join('');
+ const fs=$('#foldSel');fs.innerHTML=FD.map(([k,l])=>`<option value="${k}" ${k===IN.folder?'selected':''}>${t(l)}</option>`).join('');
+ $('#tabs').innerHTML=[['all','Todos'],['unread','Não lidas'],['pending','Aguardando resposta']].map(([k,l])=>`<button data-act="qtab" data-t="${k}" class="${k===IN.qtab?'on':''}">${t(l)}<span>${listFor(IN.folder,k,q).length}</span></button>`).join('');
+ const fc=filtCount();$('#fCnt').hidden=!fc;$('#fCnt').textContent=fc;$('#fBtn').classList.toggle('act',!!fc);
+ const L=sortL(listFor(IN.folder,IN.qtab,q)),M=mutedSet();
+ $('#listHead').innerHTML=q?`${t('Resultados da busca')} · ${L.length}`:'';$('#listHead').hidden=!q;
+ $('#chatList').innerHTML=L.length?L.map(c=>{const m=last(c),a=c.agentId&&U(db,c.agentId),u=unread(c);
+  return `<button class="ci ${c.id===sel?'on':''} ${u?'un':''}" data-act="open" data-id="${c.id}"><span class="av">${esc(ini(c.customer.name))}</span><span class="cm"><span class="r1"><b>${esc(c.customer.name)}</b><time>${hm(m.at)}</time></span><span class="r2">${m.file?esc(t('Anexo: {f}',{f:m.file.name})):m.from==='system'?esc(sysText(m)):esc(m.text)}${u?`<span class="ub">${u}</span>`:''}</span><span class="r3"><span class="cid">${cid(c)}</span>${tagL(c.line)}${c.status==='closed'?`<span class="wait">${t('Encerrado')}</span>`:''}${isBoss()&&a?esc(a.name):''}${M.has(c.id)?`<svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${FI_.muted}</svg>`:''}${waitPill(c)}</span></span></button>`}).join('')
+  :`<div class="empty">${q?t('Nenhum chat encontrado para “{q}”.',{q:esc(q)}):IN.qtab==='unread'?t('Nenhuma mensagem não lida.'):IN.qtab==='pending'?t('Nenhum cliente aguardando resposta.'):IN.folder==='mine'?t('Nenhum chat com você agora. Novos clientes chegam aqui automaticamente.'):IN.folder==='unassigned'?t('Fila vazia.'):IN.folder==='muted'?t('Nenhum chat silenciado.'):t('Nada por aqui.')}</div>`;
+ if(IN.pop)renderPop2()}
+function renderPop2(){const p=$('#fpop');if(!IN.pop){p.hidden=true;return}p.hidden=false;
+ if(IN.pop==='more'){p.innerHTML=`<button class="mi2" data-act="readAll">${t('Marcar todas como lidas')}</button><div class="msep">${t('Ordenar')}</div>
+  ${[['recent','Mais recentes'],['oldest','Mais antigas'],['wait','Maior espera']].map(([k,l])=>`<button class="mi2 ${IN.sort===k?'on':''}" data-act="sortBy" data-k="${k}">${t(l)}</button>`).join('')}
+  <div class="msep"></div><button class="mi2" data-act="foldToggle">${IN.fc?t('Mostrar painel de pastas'):t('Recolher painel de pastas')}</button>`;return}
+ const F=IN.filt,boss=isBoss(),ags=db.users;
+ p.innerHTML=`<div class="fhd"><b>${t('Filtros')}</b><button class="btn" data-act="filtClear" style="min-height:32px;padding:4px 10px;font-size:13px">${t('Limpar filtros')}</button></div>
+ <div class="fgrp"><span>${t('Linhas')}</span><div class="chk">${LINES().map(l=>`<label><input type="checkbox" name="ffL" value="${esc(l)}" ${F.lines.includes(l)?'checked':''}> ${tagL(l)}</label>`).join('')}</div></div>
+ <label class="f">${t('Status')}<select id="ffS"><option value="any">${t('Todos')}</option><option value="open" ${F.status==='open'?'selected':''}>${t('Em aberto')}</option><option value="closed" ${F.status==='closed'?'selected':''}>${t('Encerrados')}</option></select></label>
+ ${boss?`<label class="f">${t('Agente')}<select id="ffA"><option value="">${t('Todos')}</option>${ags.map(u=>`<option value="${u.id}" ${F.agent===u.id?'selected':''}>${esc(u.name)}</option>`).join('')}</select></label>`:''}
+ <label class="f">${t('Idioma do cliente')}<select id="ffG"><option value="">${t('Todos')}</option>${WL.map(k=>`<option value="${k}" ${F.lang===k?'selected':''}>${LANGS.find(l=>l[0]===k)[1]}</option>`).join('')}</select></label>
+ <label class="f">${t('Período')}<select id="ffP"><option value="any">${t('Todos')}</option><option value="today" ${F.period==='today'?'selected':''}>${t('Hoje')}</option><option value="7d" ${F.period==='7d'?'selected':''}>${t('Últimos 7 dias')}</option></select></label>`}
+function markRead(c){if(!c||unread(c)===0)return false;const d=load()||db,u=U(d,me);if(!u)return;u.read=u.read||{};u.read[c.id]=now();save(d);db=d;return true}
+Object.assign(A,{
+ folder:b=>{IN.folder=b.dataset.f;IN.qtab='all';const q=$('#q');if(q.value){q.value=''}renderList()},
+ qtab:b=>{IN.qtab=b.dataset.t;renderList()},
+ filters:()=>{IN.pop=IN.pop==='filters'?null:'filters';renderPop2()},
+ more:()=>{IN.pop=IN.pop==='more'?null:'more';renderPop2()},
+ filtClear:()=>{IN.filt={lines:[],status:'any',agent:'',lang:'',period:'any'};renderList()},
+ sortBy:b=>{IN.sort=b.dataset.k;IN.pop=null;renderPop2();renderList()},
+ foldToggle:()=>{IN.fc=!IN.fc;try{localStorage.setItem('sac_fold',IN.fc?'1':'0')}catch(e){}IN.pop=null;renderPop2();renderList()},
+ readAll:()=>{const d=load()||db,u=U(d,me);u.read=u.read||{};for(const c of d.chats)if(visible(c))u.read[c.id]=now();save(d);db=d;IN.pop=null;renderPop2();renderList();toast(t('Todas marcadas como lidas.'))},
+ mute:()=>{const id=sel;tx(d=>{const u=U(d,me);u.muted=u.muted||[];u.muted=u.muted.includes(id)?u.muted.filter(x=>x!==id):[...u.muted,id]});toast(mutedSet().has(id)?t('Chat silenciado.'):t('Som do chat reativado.'))},
+ copyId:b=>{const v=b.dataset.v;try{navigator.clipboard.writeText(v).then(()=>toast(t('ID copiado: {v}',{v})),()=>toast(v))}catch(e){toast(v)}}
+});
+document.addEventListener('change',e=>{const id=e.target.id;
+ if(id==='foldSel'){IN.folder=e.target.value;IN.qtab='all';renderList();return}
+ if(e.target.name==='ffL'){IN.filt.lines=[...document.querySelectorAll('[name=ffL]:checked')].map(x=>x.value);renderList()}
+ if(id==='ffS'){IN.filt.status=e.target.value;renderList()}if(id==='ffA'){IN.filt.agent=e.target.value;renderList()}
+ if(id==='ffG'){IN.filt.lang=e.target.value;renderList()}if(id==='ffP'){IN.filt.period=e.target.value;renderList()}});
+document.addEventListener('click',e=>{if(IN.pop&&!e.target.closest('#fpop')&&!e.target.closest('[data-act=filters]')&&!e.target.closest('[data-act=more]')){IN.pop=null;renderPop2()}},true);
+
+
+A.info=()=>{const c=db.chats.find(x=>x.id===sel);if(c)modal(`<div class="info" style="display:block;border:0;padding:0">${infoHtml(c)}</div><div class="mact"><button class="btn" data-act="mclose">${t('Fechar')}</button></div>`)};
+
+/* ---------- agent availability, chat limit, notifications ---------- */
+const paused=(d,u)=>!!(u&&d.sessions[u.id]&&d.sessions[u.id].pause);
+const freeAgents=(d,line,ex)=>onAgents(d,line,ex).filter(u=>!paused(d,u));
+const NT={cnt:{},init:false};
+const nsoundPref=()=>{try{return localStorage.getItem('sac_nsound')!=='0'}catch(e){return true}};
+function notifyTick(d){if(!me)return 0;const u=U(d,me);if(!u)return 0;const M=new Set(u.muted||[]);let ring=false,um=0;
+ for(const c of d.chats){if(c.status!=='open'||c.agentId!==me)continue;const n=c.msgs.filter(m=>m.from==='customer').length,prev=NT.cnt[c.id];
+  const looking=sel===c.id&&view==='atendimento'&&document.visibilityState==='visible'&&document.hasFocus();
+  if(NT.init&&!M.has(c.id)&&!looking&&(prev===undefined||n>prev)){ring=true;if(prev!==undefined)toast(t('Nova mensagem de {n}',{n:c.customer.name}))}
+  NT.cnt[c.id]=n;if(!M.has(c.id))um+=unread(c)}
+ NT.init=true;if(ring&&nsoundPref())beep(1);return um}
+function renderStatus(){const b=$('#stBtn');if(!b)return;const u=ME();b.hidden=!u;if(b.hidden)return;const p=paused(db,u);
+ b.classList.toggle('pz',p);b.title=p?t('Em pausa'):t('Disponível');b.setAttribute('aria-label',t('Alterar status')+': '+b.title)}
+Object.assign(A,{
+ pauseToggle:()=>{let p;tx(d=>{const s=d.sessions[me];if(s){s.pause=!s.pause;p=s.pause}maintain(d)});toast(p?t('Você está em pausa: não recebe chats novos.'):t('Você está disponível para novos chats.'))},
+ nsToggle:()=>{const on=!nsoundPref();try{localStorage.setItem('sac_nsound',on?'1':'0')}catch(e){}if(on){audioOn();setTimeout(()=>beep(1),80)}renderNs()},
+ nsTest:()=>{audioOn();setTimeout(()=>beep(1),80)}
+});
+function renderNs(){const b=$('#nsBox');if(!b)return;const on=nsoundPref();
+ b.innerHTML=on?`<span class="snd on">${t('Som ativado')}</span><button class="btn" data-act="nsTest" type="button">${t('Testar som')}</button><button class="btn" data-act="nsToggle" type="button">${t('Desativar som')}</button>`
+ :`<span class="snd">${t('Som desativado')}</span><button class="btn pri" data-act="nsToggle" type="button">${t('Ativar som')}</button>`}
+F.fMax=()=>{if(!isTop())return;const v=Math.max(0,Math.min(50,parseInt($('#cfgM').value)||0));tx(d=>{d.cfg.maxChats=v;maintain(d)});$('#cfgM').blur();toast(v?t('Limite de chats: {n}.',{n:v}):t('Sem limite'))};
+document.addEventListener('pointerdown',()=>{if(me&&nsoundPref()&&(!AL.ac||AL.ac.state!=='running'))audioOn()},true);
+
+A.askLogout=()=>modal(`<h2>${t('Sair do SAC?')}</h2><p class="mute">${t('Seus chats abertos ficam com você por alguns segundos e depois vão para outro agente disponível.')}</p><div class="mact"><button class="btn" data-act="mclose">${t('Cancelar')}</button><button class="btn pri" data-act="logout">${t('Sair')}</button></div>`);
+
+/* ---------- integration guide (god/admin) ---------- */
+const SNIP=()=>LS().map(l=>`\x3C!-- ${l.name} -->\n\x3Cscript src="https://sac.example.com/widget.js" data-linha="${l.id}">\x3C/script>`).join('\n\n');
+const FI=['<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',IC.chat,'<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>','<path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13" width="4" height="6" rx="1.5"/><rect x="17.5" y="13" width="4" height="6" rx="1.5"/>'];
+function renderGuide(){const g=GUIDE[lang];
+ const code=esc(SNIP()).replace(/(&lt;!--.*?--&gt;)/g,'<span class="c">$1</span>').replace(/(data-linha=&quot;[^&]+&quot;)/g,'<span class="a">$1</span>');
+ $('#guide').innerHTML=`<h1>${g.title}</h1><p class="mute" style="margin:0;max-width:68ch">${g.intro}</p>
+ <div class="flow">${g.flow.map((x,i)=>`<div class="node ${i===2?'hl':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${FI[i]}</svg>${esc(x)}</div>`).join('')}</div>
+ <div class="steps">${g.steps.map((s,i)=>`<div class="step"><div class="no">${i+1}</div><div><h2>${esc(s[0])}${i===3?`<span class="opt">(${g.opt})</span>`:''}</h2><p>${esc(s[1]).replace('data-linha','<code>data-linha</code>')}</p><span class="whob"><b>${g.who}:</b> ${esc(s[2])}</span>
+ ${i===1?`<div style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap"><b style="font-size:14px">${g.code}</b><button class="btn" data-act="copySnip">${g.copy}</button></div><pre class="code">${code}</pre><p class="mute" style="font-size:13px;margin:8px 0 0">${g.codeNote}</p></div>`:''}</div></div>`).join('')}</div>
+ <h2 style="margin-top:30px;font-size:22px">${g.st}</h2>
+ <div class="cols"><div class="card"><h2><span class="dot on"></span>${g.ready}</h2><ul>${g.readyL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+ <div class="card"><h2><span class="dot" style="background:var(--ink)"></span>${g.we}</h2><ul>${g.weL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+ <div class="card"><h2><span class="dot" style="background:var(--bad)"></span>${g.you}</h2><ul>${g.youL.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div>
+ <div class="ask">${g.ask}</div>
+ <div class="card" style="margin-top:14px;display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap"><div><h2 style="margin:0 0 4px">${g.simT}</h2><p class="mute" style="margin:0;max-width:60ch">${g.simD}</p></div><div style="display:flex;gap:8px;flex-wrap:wrap">${LINES().map(l=>`<a class="btn pri" href="#site-${esc(l)}" target="_blank" rel="opener" style="text-decoration:none">${g.simB} ${esc(l)}</a>`).join('')}</div></div>`}
+A.copySnip=b=>{const g=GUIDE[lang];const done=()=>{b.textContent=g.copied;setTimeout(()=>b.textContent=g.copy,1600)};
+ const sel=()=>{const p=$('#guide pre.code');if(!p)return;const r=document.createRange();r.selectNodeContents(p);const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Ctrl+C')};
+ try{navigator.clipboard.writeText(SNIP()).then(done,sel)}catch(e){sel()}};
+
+/* ---------- demo game site + customer widget (mobile first) ---------- */
+const WL=['vi','ur','en','zh'];
+const wDetect=()=>{try{const v=localStorage.getItem('sac_wlang');if(WL.includes(v))return v}catch(e){}return null};
+const W={line:null,mem:{},seen:0,open:false,lang:wDetect(),pend:null,picking:false};
+const wl=()=>W.lang||'en';
+const wt=(k,p)=>t(k,p,wl());
+const wloc=()=>LANGS.find(l=>l[0]===wl())[2];
+const whm=x=>new Date(x).toLocaleTimeString(wloc(),{hour:'2-digit',minute:'2-digit'});
+const siteLine=()=>{const m=location.hash.match(/^#site-([A-Za-z0-9-]{2,20})$/);return m?m[1]:null};
+function wGet(){try{return sessionStorage.getItem('sac_w_'+W.line)}catch(e){return W.mem[W.line]}}
+function wSet(v){W.mem[W.line]=v;try{v?sessionStorage.setItem('sac_w_'+W.line,v):sessionStorage.removeItem('sac_w_'+W.line)}catch(e){}}
+const TILES=[['Corrida Turbo','Corrida','#3dd6c4','#1b6f8a','<path d="M4 15h16l-2-5H6zM7 18a1.5 1.5 0 1 0 0-3M17 18a1.5 1.5 0 1 0 0-3" stroke="#fff" stroke-width="2" fill="none"/>'],['Reino das Cartas','Cartas','#ffb35c','#a3402a','<rect x="5" y="4" width="10" height="14" rx="2" stroke="#fff" stroke-width="2" fill="none"/><rect x="9" y="7" width="10" height="14" rx="2" stroke="#fff" stroke-width="2" fill="#ffffff22"/>'],['Pesca Profunda','Arcade','#5c9dff','#2a2fa3','<path d="M3 12c4-5 10-5 14 0-4 5-10 5-14 0zM17 12l4-3v6z" stroke="#fff" stroke-width="2" fill="none"/>'],['Torre de Blocos','Puzzle','#c77dff','#4b2a8a','<path d="M6 18h12M8 18v-5h8v5M10 13V8h4v5" stroke="#fff" stroke-width="2" fill="none"/>'],['Liga dos Pênaltis','Esportes','#7be08a','#1f6b45','<circle cx="12" cy="12" r="7" stroke="#fff" stroke-width="2" fill="none"/><path d="M12 8l3 2-1 4h-4l-1-4z" fill="#fff"/>'],['Estrela Cadente','Arcade','#ff7aa8','#8a2a55','<path d="M12 3l2.5 6 6.5.5-5 4 1.5 6.5L12 16l-5.5 4 1.5-6.5-5-4 6.5-.5z" stroke="#fff" stroke-width="2" fill="none"/>'],['Xadrez Relâmpago','Tabuleiro','#e8e8e8','#45464d','<path d="M8 20h8M9 17h6l-1-6h-4zM10 11l-1-3 3-4 3 4-1 3" stroke="#fff" stroke-width="2" fill="none"/>'],['Missão Lunar','Aventura','#ffd25c','#8a5b1a','<circle cx="12" cy="12" r="6" stroke="#fff" stroke-width="2" fill="none"/><circle cx="10" cy="10" r="1.5" fill="#fff"/><circle cx="14" cy="14" r="1" fill="#fff"/>']];
+const WI={globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>',
+ down:'<path d="M6 9l6 6 6-6"/>',clip:'<path d="M20 11.5 12.3 19a5 5 0 0 1-7-7l8-8a3.3 3.3 0 0 1 4.7 4.7l-8 8a1.7 1.7 0 0 1-2.4-2.4l7.3-7.3"/>',send:'<path d="M4 12l16-8-6 16-2.5-6.5z"/>',end:'<path d="M12 3v8"/><path d="M6.3 6.3a8 8 0 1 0 11.4 0"/>'};
+const wsvg=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${WI[k]}</svg>`;
+const PICKT={vi:'Chọn ngôn ngữ',ur:'Zaban chunen',en:'Choose your language',zh:'选择语言'};
+
+function buildSite(){const l=W.line,L=LN(l),hc=(COL[L?.color]||COL.stone)[2];
+ const keep={n:$('#wName')?.value||'',p:$('#wPid')?.value||'',f:$('#wFirst')?.value||'',x:$('#wTxt')?.value||''};
+ document.documentElement.lang=wloc();
+ $('#site').className='';
+ $('#site').innerHTML=`<div class="simbar">${wt('Simulação: site de jogos fictício na linha {l}. O chat chega no SAC em tempo real.',{l:`<b>${esc(l)}</b>`})} <a href="#" data-act="backSac">${wt('Voltar ao SAC')}</a></div>
+ <header class="sh"><div class="brand"><i style="background:linear-gradient(135deg,${hc},#3dd6c4)"></i>${esc(L?L.name:l)}</div><nav><b>${wt('Início')}</b><span>${wt('Jogos')}</span><span>${wt('Torneios')}</span><span>${wt('Ranking')}</span><span>${wt('Minha conta')}</span></nav><div class="pl"><span>JD</span>jogador_demo</div></header>
+ <section class="hero" style="background:linear-gradient(120deg,${hc},#11163a 65%)"><span class="orb" style="width:260px;height:260px;right:-40px;top:-60px;background:#ffffff18"></span><span class="orb" style="width:140px;height:140px;right:180px;bottom:-50px;background:#ffffff10"></span><h2>${wt('Torneio de fim de semana')}</h2><p>${wt('Site de demonstração. Clique no balão no canto da tela para falar com o suporte.')}</p></section>
+ <div class="sect">${wt('Jogos em destaque')}</div>
+ <div class="tiles">${TILES.map(x=>`<div class="tile" style="background:linear-gradient(160deg,${x[2]},${x[3]})"><svg viewBox="0 0 24 24">${x[4]}</svg>${wt(x[0])}<small>${wt(x[1])}</small></div>`).join('')}</div>
+ <button class="wb" data-act="wToggle" aria-label="${wt('Abrir suporte')}" ${W.open?'hidden':''}>${svg('chat')}<span class="cnt" id="wCnt" hidden></span></button>
+ <div class="wp" id="wp" ${W.open?'':'hidden'} role="dialog" aria-modal="true" aria-label="${wt('Suporte')}">
+  <div class="wh"><span class="av" style="background:var(--mint);color:var(--mintInk)">S</span><div class="wt"><b>${wt('Suporte')}</b><span id="wStatus"></span></div>
+   <button class="wib" data-act="wPick" aria-label="${wt('Idioma')}" title="${wt('Idioma')}">${wsvg('globe')}<em>${wl().toUpperCase()}</em></button>
+   <button class="wib" id="wEndBtn" data-act="wAskEnd" aria-label="${wt('Encerrar conversa')}" title="${wt('Encerrar conversa')}" hidden>${wsvg('end')}</button>
+   <button class="wib" data-act="wToggle" aria-label="${wt('Fechar')}">${wsvg('down')}</button></div>
+  <div class="wconf" id="wConf" hidden><div><b>${wt('Encerrar esta conversa?')}</b><p>${wt('Você pode abrir uma nova conversa quando quiser.')}</p>
+   <div class="wconfb"><button class="wgo ghost" data-act="wNoEnd">${wt('Cancelar')}</button><button class="wgo bad" data-act="wDoEnd">${wt('Encerrar')}</button></div></div></div>
+  <div class="wlang" id="wLang" hidden><h3 lang="mul">${WL.map(k=>PICKT[k]).join(' · ')}</h3>
+   ${WL.map(k=>{const x=LANGS.find(y=>y[0]===k);return `<button class="wlb ${k===W.lang?'on':''}" data-act="wSetLang" data-l="${k}" lang="${x[2]}"><b>${x[1]}</b><span>${t('Iniciar conversa',null,k)}</span></button>`}).join('')}</div>
+  <form class="wstart" id="wStart"><p class="wlead">${wt('Olá! Conte o que aconteceu e um atendente responde por aqui.')}</p>
+   <label class="f">${wt('Seu nome')}<input id="wName" required autocomplete="name" enterkeyhint="next" value="${esc(keep.n)}"></label>
+   <label class="f">${wt('ID do jogador')}<input id="wPid" placeholder="${wt('Opcional')}" autocomplete="off" enterkeyhint="next" value="${esc(keep.p)}"></label>
+   <label class="f">${wt('Mensagem')}<textarea id="wFirst" rows="3" required enterkeyhint="send">${esc(keep.f)}</textarea></label>
+   <button class="wgo">${wt('Iniciar conversa')}</button></form>
+  <div class="wbody" id="wMsgs" hidden aria-live="polite"></div>
+  <div id="wAtt"></div>
+  <div class="wf" id="wComp" hidden><label class="wib dark" aria-label="${wt('Enviar imagem ou arquivo')}" title="${wt('Enviar imagem ou arquivo')}">${wsvg('clip')}<input type="file" id="wFile" hidden></label>
+   <textarea id="wTxt" rows="1" placeholder="${wt('Escreva sua mensagem')}" enterkeyhint="send">${esc(keep.x)}</textarea>
+   <button class="wsend" data-act="wSend" aria-label="${wt('Enviar')}">${wsvg('send')}</button></div>
+  <div class="wend" id="wEnd" hidden><span id="wEndTxt"></span><button class="wgo" data-act="wNew">${wt('Nova conversa')}</button></div>
+ </div>`;wLock()}
+function wLock(){document.body.classList.toggle('wlock',W.open&&innerWidth<=600)}
+function openSite(l){if(!LN(l)){$('#login').hidden=true;$('#app').hidden=true;$('#site').hidden=false;$('#site').innerHTML=`<div class="empty" style="padding:80px 20px;color:#fff">${wt('Linha não encontrada.')} <a href="#" data-act="backSac" style="color:var(--mint)">${wt('Voltar ao SAC')}</a></div>`;W.line=null;return}
+ W.line=l;$('#login').hidden=true;$('#app').hidden=true;document.title=(LN(l)?.name||l)+' demo';buildSite();$('#site').hidden=false;const c=curW();W.seen=c?c.msgs.filter(m=>m.from==='agent').length:0;renderW()}
+function closeSite(){W.line=null;W.open=false;wLock();$('#site').hidden=true;document.title='SAC';document.documentElement.lang=loc();const s=getSid(),d=load();if(d)db=d;if(s&&db&&U(db,s)){me=s;enter()}else showLogin()}
+function curW(){const id=wGet(),d=load()||db;return id&&d?d.chats.find(x=>x.id===id):null}
+function renderW(){if(!W.line||!$('#wp'))return;const d=load()||db;db=d;const c=curW(),n=freeAgents(d,W.line).length,pick=!W.lang||W.picking;
+ $('#wLang').hidden=!pick;$('#wStart').hidden=pick||!!c;$('#wMsgs').hidden=pick||!c;$('#wComp').hidden=pick||!(c&&c.status==='open');$('#wEnd').hidden=pick||!(c&&c.status==='closed');$('#wAtt').hidden=pick;
+ $('#wEndBtn').hidden=pick||!(c&&c.status==='open');if(!(c&&c.status==='open'))W.conf=false;$('#wConf').hidden=!W.conf;
+ if(c&&c.status==='closed')$('#wEndTxt').textContent=c.closedBy==='customer'?wt('Você encerrou a conversa.')+' '+wt('Você pode abrir uma nova conversa quando quiser.'):wt('Atendimento encerrado. Obrigado pelo contato!');
+ const a=c&&c.status==='open'&&c.agentId&&U(d,c.agentId);
+ $('#wStatus').textContent=a?wt('Falando com {n}',{n:a.name}):c&&c.status==='open'?wt('Aguardando um atendente…'):n>1?wt('{n} atendentes online',{n}):n===1?wt('1 atendente online'):wt('Deixe sua mensagem, respondemos em breve');
+ const ag=c?c.msgs.filter(m=>m.from==='agent').length:0;
+ if(W.open)W.seen=ag;$('#wCnt').hidden=W.open||ag<=W.seen;$('#wCnt').textContent=ag-W.seen;
+ if(!c)return;const box=$('#wMsgs'),k=wl()+':'+c.id+':'+c.msgs.length+':'+(c.agentId||'');if(box.dataset.k===k)return;box.dataset.k=k;
+ box.innerHTML=c.msgs.filter(m=>m.from!=='system').map(m=>{const by=m.from==='agent'&&U(d,m.by);
+  return `<div class="wm ${m.from==='customer'?'p':''}">${m.file?(m.file.type.startsWith('image/')?`<img src="${m.file.data}" alt="${esc(m.file.name)}">`:`<div class="wfile">${wsvg('clip')}${esc(m.file.name)}</div>`):''}${m.text?esc(m.text):''}<small>${by?esc(by.name)+' · ':''}${whm(m.at)}</small></div>`}).join('')
+  +(c.status==='open'&&!c.agentId?`<div class="wsys">${wt('Você está na fila. Um atendente vai falar com você em instantes.')}</div>`:'');
+ box.scrollTop=box.scrollHeight}
+function wGrow(){const x=$('#wTxt');if(!x)return;x.style.height='auto';x.style.height=Math.min(x.scrollHeight,120)+'px'}
+function wSend(){const m=$('#wTxt').value.trim(),c=curW();if((!m&&!W.pend)||!c||c.status!=='open')return;const d=load()||db;const x=d.chats.find(y=>y.id===c.id);
+ x.msgs.push({id:uid(),from:'customer',text:m,file:W.pend||undefined,at:now()});if(!x.waiting)x.waiting=now();if(!x.custWait)x.custWait=now();maintain(d);save(d);db=d;$('#wTxt').value='';W.pend=null;$('#wAtt').innerHTML='';wGrow();renderW();$('#wTxt').focus()}
+function wStart(){const d=load()||db,id=uid();
+ const c={id,no:nextNo(d),line:W.line,source:'site',customer:{name:$('#wName').value.trim(),phone:'',pid:$('#wPid').value.trim(),lang:wl()},status:'open',agentId:null,handled:[],createdAt:now(),waiting:now(),custWait:now(),transfers:0,msgs:[]};
+ c.msgs.push({id:uid(),from:'customer',text:$('#wFirst').value.trim(),at:now()});sys(c,'Cliente entrou pelo site, linha {l}.',{l:c.line});d.chats.push(c);maintain(d);save(d);db=d;wSet(id);$('#wFirst').value='';renderW();$('#wTxt').focus()}
+Object.assign(A,{
+ wToggle:()=>{W.open=!W.open;$('#wp').hidden=!W.open;document.querySelector('.wb').hidden=W.open;wLock();renderW();if(W.open&&innerWidth>600){const f=!$('#wStart').hidden?$('#wName'):!$('#wComp').hidden?$('#wTxt'):null;f&&f.focus()}},
+ wSend,
+ wNew:()=>{wSet(null);W.seen=0;W.pend=null;W.conf=false;$('#wMsgs').dataset.k='';$('#wMsgs').innerHTML='';['wName','wPid','wFirst','wTxt'].forEach(i=>{const x=$('#'+i);if(x)x.value=''});$('#wAtt').innerHTML='';renderW();if(innerWidth>600)$('#wName').focus()},
+ wAskEnd:()=>{W.conf=true;renderW()},
+ wNoEnd:()=>{W.conf=false;renderW()},
+ wDoEnd:()=>{const c=curW();W.conf=false;if(c){const d=load()||db,x=d.chats.find(y=>y.id===c.id);if(x&&x.status==='open'){x.status='closed';x.closedAt=now();x.closedBy='customer';x.closeReason='';x.waiting=null;x.custWait=null;sys(x,'Encerrado pelo cliente.');save(d);db=d}}W.pend=null;$('#wAtt').innerHTML='';renderW()},
+ wPick:()=>{W.picking=!W.picking||!W.lang;renderW()},
+ wSetLang:b=>{W.lang=b.dataset.l;W.picking=false;try{localStorage.setItem('sac_wlang',W.lang)}catch(e){}
+  const c=curW();if(c){const d=load()||db,x=d.chats.find(y=>y.id===c.id);if(x){x.customer.lang=W.lang;save(d);db=d}}
+  const box=$('#wMsgs');buildSite();if(box)$('#wMsgs').dataset.k='';renderW()},
+ wRmAtt:()=>{W.pend=null;$('#wAtt').innerHTML=''},
+ backSac:()=>{history.replaceState(null,'',location.pathname+location.search);closeSite()}
+});
+F.wStart=()=>wStart();
+document.addEventListener('input',e=>{if(e.target.id==='wTxt')wGrow()});
+document.addEventListener('change',e=>{if(e.target.id!=='wFile')return;const f=e.target.files[0];e.target.value='';if(!f)return;
+ if(f.size>1.5*1024*1024)return toast(wt('Arquivo acima de 1,5 MB. Neste protótipo os anexos ficam no navegador.'));
+ const r=new FileReader();r.onload=()=>{W.pend={name:f.name,type:f.type||'application/octet-stream',size:f.size,data:r.result};
+  $('#wAtt').innerHTML=`<div class="watt">${f.type.startsWith('image/')?`<img src="${r.result}" alt="">`:wsvg('clip')}<span>${esc(f.name)}</span><button class="wib dark" data-act="wRmAtt" aria-label="${wt('Remover anexo')}">${X}</button></div>`};r.readAsDataURL(f)});
+addEventListener('hashchange',()=>{const l=siteLine();if(l)openSite(l);else if(W.line)closeSite()});
+addEventListener('resize',()=>{if(W.line)wLock()});
+if(window.visualViewport){const vv=()=>{document.documentElement.style.setProperty('--wvh',visualViewport.height+'px');const b=$('#wMsgs');if(b&&W.open)b.scrollTop=b.scrollHeight};visualViewport.addEventListener('resize',vv);vv()}
+
+/* ---------- live sync ---------- */
+addEventListener('storage',e=>{
+ if(e.key===K){db=load();if(W.line)renderW();else render()}});
+setInterval(()=>{if(!me||W.line)return;const d=load();if(!d)return;const u=U(d,me),s=d.sessions[me];
+ if(!u){db=d;return logout(t('Seu acesso foi removido.'))}
+ if(s&&s.kick){s.kick=false;s.on=false;save(d);me=null;setSid(null);sel=null;mclose();return showLogin(t('Você foi desconectado por um supervisor.'))}
+ d.sessions[me]={...(d.sessions[me]||{}),on:true,lastSeen:now(),kick:false};maintain(d);save(d);db=d;render()},5000);
+setInterval(()=>{if(W.line){renderW();return}if(!me)return;const d=load();if(!d)return;if(maintain(d))save(d);db=d;const _n=alertTick(d)+notifyTick(d);document.title=_n?`(${_n}) SAC`:'SAC';if(view==='atendimento')renderList();if(view==='alertas')renderAlerts()},1000);
+
+(async()=>{db=load();if(!db){db={v:1,users:[{id:'god',name:'Acesso Total',email:'god@sac.local',pass:await hash('Sac@2026'),role:'god',lines:DEFLINES.map(l=>l.id),createdAt:now()}],sessions:{},chats:[],scripts:[],chatSeq:-1,cfg:{timeout:240,alert:300},lines:DEFLINES.map(l=>({...l}))};save(db)}
+ if(!db.lines){db.lines=DEFLINES.map(l=>({...l}));save(db)}
+ if(!db.cfg.alert){db.cfg.alert=300;save(db)}
+ if(db.chatSeq===undefined){[...db.chats].sort((x,y)=>x.createdAt-y.createdAt).forEach((c,i)=>c.no=i);db.chatSeq=db.chats.length-1;save(db)}
+ document.documentElement.lang=loc();
+ const sl=siteLine();if(sl)return openSite(sl);
+ const s=getSid();if(s&&U(db,s)){me=s;const d=load()||db;d.sessions[me]={...(d.sessions[me]||{}),on:true,lastSeen:now(),kick:false};save(d);db=d;known=new Set(d.chats.filter(c=>c.agentId===me).map(c=>c.id));enter()}else showLogin()})();
+const stackObs=new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}});
+stackObs.observe(document.body,{childList:true,subtree:true});
+
+}
+</script>
+</body>
+</html>
