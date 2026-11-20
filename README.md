@@ -58,7 +58,7 @@ Para abrir o site de demonstração de uma linha, acrescente `#site-<código da 
 
 **Integração**
 
-- Página **Integração**, para God e Admin, com o passo a passo e o código do widget para cada linha.
+- Página **Integração**, para God e Admin: guia completo do widget, com gerador de código (linha, idioma, posição e identificação do jogador), onde colar em cada tipo de site (back office, WordPress, Google Tag Manager, HTML/React), opções, comandos JavaScript e solução de problemas, nos 5 idiomas.
 
 ## Estrutura
 
