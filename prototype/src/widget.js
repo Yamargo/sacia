@@ -27,12 +27,13 @@
   var st = document.createElement('style'); st.textContent = css;
 
   var root = document.createElement('div'); root.className = 'sacw';
-  var btn = document.createElement('button'); btn.className = 'sacw-b'; btn.type = 'button'; btn.setAttribute('aria-label', 'Chat');
-  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg><span class="sacw-n"></span>';
+  var btn = document.createElement('button'); btn.className = 'sacw-b'; btn.type = 'button'; btn.setAttribute('aria-label', 'Customer service');
+  btn.title = 'Customer service';
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="2.5" y="14" width="4.5" height="6.5" rx="1.6"/><rect x="17" y="14" width="4.5" height="6.5" rx="1.6"/><path d="M19.2 20.5c0 1.4-1.3 2-3 2H13"/></svg><span class="sacw-n"></span>';
   var badge = btn.querySelector('.sacw-n');
   var panel = document.createElement('div'); panel.className = 'sacw-p'; panel.setAttribute('role', 'dialog');
   var frame = document.createElement('iframe');
-  frame.title = 'Chat';
+  frame.title = 'Customer service';
   frame.allow = 'clipboard-write';
   var page = new URL(s.getAttribute('data-frame') || FRAME_PAGE, s.src).href;
   frame.src = page + '?line=' + encodeURIComponent(line) + '&lang=' + encodeURIComponent(lang);

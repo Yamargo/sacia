@@ -13,7 +13,7 @@ const t=(k,p,L=wl())=>{let s=(L!=='pt'&&D[L]&&D[L][k])||k;if(p)for(const x in p)
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const hm=x=>new Date(x-W.skew).toLocaleTimeString(LANGS.find(l=>l[0]===wl())[2],{hour:'2-digit',minute:'2-digit'});
 const TOK='sac_tok_'+LINE;
-const I={globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>',down:'<path d="M6 9l6 6 6-6"/>',clip:'<path d="M20 11.5 12.3 19a5 5 0 0 1-7-7l8-8a3.3 3.3 0 0 1 4.7 4.7l-8 8a1.7 1.7 0 0 1-2.4-2.4l7.3-7.3"/>',send:'<path d="M4 12l16-8-6 16-2.5-6.5z"/>',end:'<path d="M12 3v8"/><path d="M6.3 6.3a8 8 0 1 0 11.4 0"/>',x:'<path d="M6 6l12 12M18 6 6 18"/>'};
+const I={headset:'<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="2.5" y="14" width="4.5" height="6.5" rx="1.6"/><rect x="17" y="14" width="4.5" height="6.5" rx="1.6"/><path d="M19.2 20.5c0 1.4-1.3 2-3 2H13"/>',globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>',down:'<path d="M6 9l6 6 6-6"/>',clip:'<path d="M20 11.5 12.3 19a5 5 0 0 1-7-7l8-8a3.3 3.3 0 0 1 4.7 4.7l-8 8a1.7 1.7 0 0 1-2.4-2.4l7.3-7.3"/>',send:'<path d="M4 12l16-8-6 16-2.5-6.5z"/>',end:'<path d="M12 3v8"/><path d="M6.3 6.3a8 8 0 1 0 11.4 0"/>',x:'<path d="M6 6l12 12M18 6 6 18"/>'};
 const ic=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${I[k]}</svg>`;
 const PICKT={vi:'Chọn ngôn ngữ',ur:'Zaban chunen',en:'Choose your language',zh:'选择语言'};
 const toParent=m=>{try{parent.postMessage({sac:1,...m},'*')}catch(e){}};
@@ -21,7 +21,7 @@ let tt;function toast(m){const x=$('#toast');x.textContent=m;x.hidden=false;clea
 
 function build(){const k={n:$('#wName')?.value||W.player?.nome||'',p:$('#wPid')?.value||W.player?.id||'',f:$('#wFirst')?.value||'',x:$('#wTxt')?.value||''};
  document.documentElement.lang=LANGS.find(l=>l[0]===wl())[2];
- $('#app').innerHTML=`<div class="wh"><span class="av">S</span><div class="wt"><b>${t('Suporte')}</b><span id="wStatus"></span></div>
+ $('#app').innerHTML=`<div class="wh"><span class="av">${ic('headset')}</span><div class="wt"><b>${t('Suporte')}</b><span id="wStatus"></span></div>
   ${FIXED?'':`<button class="wib" data-act="pick" aria-label="${t('Idioma')}" title="${t('Idioma')}">${ic('globe')}<em>${wl().toUpperCase()}</em></button>`}
   <button class="wib" id="wEndBtn" data-act="askEnd" aria-label="${t('Encerrar conversa')}" title="${t('Encerrar conversa')}" hidden>${ic('end')}</button>
   <button class="wib" data-act="close" aria-label="${t('Fechar')}">${ic('down')}</button></div>

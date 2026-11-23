@@ -8,7 +8,7 @@ textarea{resize:none}
 :focus-visible{outline:2px solid #0b0b0c;outline-offset:2px}
 #app{height:100%;display:flex;flex-direction:column;position:relative}
 .wh{background:#0b0b0c;color:#fff;padding:calc(10px + env(safe-area-inset-top)) 6px 10px 14px;display:flex;align-items:center;gap:10px;flex:none}
-.av{flex:none;width:40px;height:40px;border-radius:50%;background:var(--mint);color:var(--mintInk);display:grid;place-items:center;font-weight:600}
+.av{flex:none;width:40px;height:40px;border-radius:50%;background:var(--mint);color:var(--mintInk);display:grid;place-items:center;font-weight:600}.av svg{width:22px;height:22px}
 .wt{flex:1;min-width:0}.wt b{display:block;font:700 17px var(--h)}.wt span{display:block;font-size:13px;color:#b5b5bd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wib{min-width:44px;height:44px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:3px;color:#fff;flex:none;padding:0 6px}
 .wib:hover{background:#ffffff1a}.wib svg{width:22px;height:22px}.wib em{font:600 11px Inter,sans-serif;font-style:normal}
