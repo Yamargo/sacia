@@ -153,8 +153,9 @@ addEventListener('message',e=>{const m=e.data;if(!m||!m.sac||e.source!==parent)r
  if(m.type==='open'){W.open=!!m.v;if(W.open){render();const f=!$('#wStart').hidden?$('#wName'):!$('#wComp').hidden?$('#wTxt'):null;if(f&&innerWidth>600)f.focus()}}
  if(m.type==='player'&&m.player&&typeof m.player==='object'){W.player={id:String(m.player.id||'').slice(0,80),nome:String(m.player.nome||m.player.name||'').slice(0,80)};const n=$('#wName'),p=$('#wPid');if(n&&!n.value)n.value=W.player.nome;if(p&&!p.value)p.value=W.player.id}
  if(m.type==='lang'&&WL.includes(m.l)){A.setLang({dataset:{l:m.l}})}});
-build();connect();toParent({type:'ready'});
+function start(){build();connect();toParent({type:'ready'})}
 
+start();
 }
 </script>
 </body>

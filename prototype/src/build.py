@@ -19,7 +19,7 @@ for ln in open('tr.txt', encoding='utf8'):
     assert len(p) == 5, ln
     rows.append(p)
 
-src = ''.join(open(f, encoding='utf8').read() for f in ['app.js', 'tail.js', 'guide3.js', 'net.js', 'w.js'])
+src = ''.join(open(f, encoding='utf8').read() for f in ['app.js', 'tail.js', 'guide3.js', 'net.js', 'w.js', 'wlocal.js'])
 keys = set(re.findall(r"\bt\('((?:[^'\\]|\\.)*)'", src))
 keys |= set(re.findall(r"(?:sys|assign)\([^,]+,(?:[^,]+,)?'((?:[^'\\]|\\.)*)'", src))
 keys |= set(re.findall(r"assign\(c,(?:n|null|to),'((?:[^'\\]|\\.)*)'", src))
@@ -70,10 +70,9 @@ out, js = bundle(True)
 open(os.path.join(pub, 'app.html'), 'w', encoding='utf8').write(out)
 open('/tmp/xnet.js', 'w', encoding='utf8').write(js)
 
-wjs = ROWS + open('w.js', encoding='utf8').read()
-assert not re.search(r'</?script|<!--', wjs)
-open('/tmp/xw.js', 'w', encoding='utf8').write(wjs)
-open(os.path.join(pub, 'w.html'), 'w', encoding='utf8').write("""<!DOCTYPE html>
+def whtml(js):
+    assert not re.search(r'</?script|<!--', js)
+    return """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -89,12 +88,21 @@ open(os.path.join(pub, 'w.html'), 'w', encoding='utf8').write("""<!DOCTYPE html>
 <div id="toast" hidden></div>
 <script>
 {
-""" + wjs + """
+""" + js + """
 }
 </script>
 </body>
 </html>
-""")
+"""
+
+wjs = ROWS + open('w.js', encoding='utf8').read() + '\nstart();'
+open('/tmp/xw.js', 'w', encoding='utf8').write(wjs)
+open(os.path.join(pub, 'w.html'), 'w', encoding='utf8').write(whtml(wjs))
+# local mode (prototype on GitHub Pages): chat window + widget that use this browser's storage
+wl = ROWS + open('w.js', encoding='utf8').read() + '\n' + open('wlocal.js', encoding='utf8').read() + '\nstart();'
+open('/tmp/xwl.js', 'w', encoding='utf8').write(wl)
+open('../w-local.html', 'w', encoding='utf8').write(whtml(wl))
+open('../widget.js', 'w', encoding='utf8').write(open('widget.js', encoding='utf8').read().replace("var FRAME_PAGE = 'w';", "var FRAME_PAGE = 'w-local.html';"))
 shutil.copy('widget.js', os.path.join(pub, 'widget.js'))
 shutil.copy('demo.html', os.path.join(pub, 'demo.html'))
 print('ok')

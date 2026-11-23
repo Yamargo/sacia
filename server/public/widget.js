@@ -4,6 +4,7 @@
   if (window.SAC && window.SAC.__loaded) return;
   var s = document.currentScript || document.querySelector('script[src*="widget.js"][data-linha]');
   if (!s) return;
+  var FRAME_PAGE = 'w'; // the server serves the chat window at /w
   var base = new URL(s.src, location.href).origin;
   var line = s.getAttribute('data-linha') || '';
   var lang = s.getAttribute('data-idioma') || 'auto';
@@ -33,7 +34,8 @@
   var frame = document.createElement('iframe');
   frame.title = 'Chat';
   frame.allow = 'clipboard-write';
-  frame.src = base + '/w?line=' + encodeURIComponent(line) + '&lang=' + encodeURIComponent(lang);
+  var page = new URL(s.getAttribute('data-frame') || FRAME_PAGE, s.src).href;
+  frame.src = page + '?line=' + encodeURIComponent(line) + '&lang=' + encodeURIComponent(lang);
   panel.appendChild(frame); root.appendChild(btn); root.appendChild(panel);
 
   var opened = false, overflow = '';
